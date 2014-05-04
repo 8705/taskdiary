@@ -64,6 +64,40 @@ class AccountController extends AppController
             );
     }
 
+    public function activationAction($param)
+    {
+        $user = $this->db_manager->get('User')->fetchByName($param['property']);
+        if(!$user) {
+            return $this->redirect('/');
+        }
+        if($user['user_authority'] !== "2") {
+            return $this->redirect('/');
+        }
+
+        $activate_status = $this->db_manager->get('Activation')->fetchByUserId($user['user_id']);
+
+        //$property2のサニタイズいるよな〜。utility待ちで
+        if($activate_status['activation_token'] === $param['property2']) {
+            $this->db_manager->get('User')->doneActivateById($user['user_id']);
+
+            $this->session->setAuthenticated(true);
+            $this->session->set('user', $user);
+
+            //認証完了通知メール
+            $this->sendDoneAuthenticateMail(
+                $user['user_mail'],
+                'メールアドレスの認証が完了しました - Task Diary',
+                array(
+                    'user_name'     => $user['user_name']
+                )
+            );
+        }
+
+        return $this->redirect('/');
+
+    }
+
+
     /*
         メソッド化する必要ないかもしれない
     */
