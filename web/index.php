@@ -1,7 +1,7 @@
 <?php
 
 require '../bootstrap.php';
-require '../PerfectApplication.php';
+require '../TaskDiaryApplication.php';
 
-$app = new PerfectApplication(true);
+$app = new TaskDiaryApplication(true);
 $app->run();

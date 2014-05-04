@@ -1,11 +1,11 @@
 <?php
 
 /**
- * PerfectApplication.
+ * TaskDiaryApplication.
  *
  * @author 8705
  */
-class PerfectApplication extends Application
+class TaskDiaryApplication extends Application
 {
     protected $login_action = array('account', 'index');
 
