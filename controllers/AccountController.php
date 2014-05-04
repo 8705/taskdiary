@@ -42,11 +42,16 @@ class AccountController extends AppController
             $user = $this->db_manager->get('User')->fetchByName($post['user_name']);
             $this->session->set('user', $user);
 
+            //認証メール送信処理
+            $authenticate_token = sha1($post['user_name'] . $post['user_password'] . microtime());
+            $user = $this->db_manager->get('User')->fetchByName($post['user_name']);
+            $this->db_manager->get('Activation')->insert($user['user_id'], $authenticate_token);
             $this->sendAuthenticateMail(
                 $post['user_mail'],
                 'メールアドレスのご確認',
                 array(
-                    'user_name' => $post['user_name']
+                    'user_name' => $post['user_name'],
+                    'authenticate_token'     => $authenticate_token
                 )
             );
 
@@ -64,6 +69,39 @@ class AccountController extends AppController
             );
     }
 
+    public function activationAction($param)
+    {
+        $user = $this->db_manager->get('user')->fetchByName($param['property']);
+        if(!$user) {
+            return $this->redirect('/');
+        }
+        if($user['user_authority'] !== "2") {
+            return $this->redirect('/');
+        }
+
+        $activate_status = $this->db_manager->get('Activation')->fetchByUserId($user['user_id']);
+
+        //$property2のサニタイズいるよな〜。utility待ちで
+        if($activate_status['activation_token'] === $param['property2']) {
+            $this->db_manager->get('User')->doneActivateById($user['user_id']);
+
+            $this->session->setAuthenticated(true);
+            $this->session->set('user', $user);
+
+            //認証完了通知メール
+            $this->sendDoneAuthenticateMail(
+                $user['user_mail'],
+                'メールアドレスの認証が完了しました - Task Diary',
+                array(
+                    'user_name'     => $user['user_name']
+                )
+            );
+        }
+
+        return $this->redirect('/');
+
+    }
+
     /*
         メソッド化する必要ないかもしれない
     */
@@ -73,6 +111,17 @@ class AccountController extends AppController
         $mail->setTo($to);
         $mail->setSubject($subject);
         $mail->setTemplate('authenticate');
+        $mail->setVars($vars);
+        $mail->send();
+
+    }
+
+    private function sendDoneAuthenticateMail($to, $subject, $vars = array())
+    {
+        $mail = new SendMail();
+        $mail->setTo($to);
+        $mail->setSubject($subject);
+        $mail->setTemplate('done_authenticate');
         $mail->setVars($vars);
         $mail->send();
 
