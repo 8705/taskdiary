@@ -5,7 +5,7 @@
     メール本文のテンプレートは /views/mail/*.php に保存
 */
 
-class Sendmail
+class SendMail
 {
     protected $url;
     protected $from_name;
@@ -27,49 +27,43 @@ class Sendmail
         $this->from_name    = 'TaskDiary Aap by 8705';
     }
 
-    public function from($from)
+    public function setFrom($from)
     {
         $this->from = $from;
     }
 
-    public function to($to)
+    public function setTo($to)
     {
         $this->to = $to;
     }
 
-    public function subject($subject)
+    public function setSubject($subject)
     {
         $this->subject = $subject;
     }
 
-    public function template($template)
+    public function setTemplate($template)
     {
         $this->template = $template;
     }
 
-    public function vars($vars = array())
+    public function setVars($vars = array())
     {
         $this->vars = $vars;
     }
 
-    protected function send()
+    public function send()
     {
-        $from       = $this->from;      //差出人
-        $fromname   = $this->from_name;      //差し出し人名
-        $to         = $this->to;
-        $subject    = $this->subject;
-        $template   = $this->template;
-        $vars       = $this->vars;
-        $body       = $this->makeMailBody($template, $vars);
-
+        $body       = $this->makeMailBody($this->template, $this->vars);
         if(!$body) {
+            echo 'ボディなっしんぐ！';
             //例外なげる
         }
 
         $mail = new JPHPMailer();          //JPHPMailerのインスタンス生成
-        $mail->addTo($to);                 //宛先(To)をセット
-        $mail->setFrom($from,$fromname);   //差出人(From/From名)をセット
-        $mail->setSubject($subject);       //件名(Subject)をセット
+        $mail->addTo($this->to);                 //宛先(To)をセット
+        $mail->setFrom($this->from,$this->from_name);   //差出人(From/From名)をセット
+        $mail->setSubject($this->subject);       //件名(Subject)をセット
         $mail->setBody($body);             //本文(Body)をセット
 
         if (!$mail->send()){
@@ -78,12 +72,14 @@ class Sendmail
         }else{
             echo("Send mail OK.");
         }
+        exit;
     }
 
     protected function makeMailBody($template, $vars = array())
     {
         $template_file = dirname(__FILE__).'/../views/mail/' . $template . '.php';
         if(!is_readable($template_file)) {
+            echo 'テンプレートがない';exit;
             return false;
         }
 

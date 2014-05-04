@@ -1,4 +1,5 @@
 <?php
+require_once (dirname(__FILE__).'/../utility/SendMail.php');
 
 /**
  * AccountController.
@@ -69,10 +70,10 @@ class AccountController extends AppController
     private function sendAuthenticateMail($to, $subject, $vars = array())
     {
         $mail = new SendMail();
-        $mail->to           = $to;
-        $mail->subject;     = $subject;
-        $mail->template     = 'authenticate';
-        $mail->vars         = $vars;
+        $mail->setTo($to);
+        $mail->setSubject($subject);
+        $mail->setTemplate('authenticate');
+        $mail->setVars($vars);
         $mail->send();
 
     }

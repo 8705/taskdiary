@@ -115,7 +115,7 @@ class JPHPMailer extends PHPMailer {
 	 * @param string $from 差出人のメールアドレス
 	 * @param string $fromname 差し出し人名
 	*/
-	function setFrom($from,$fromname=""){
+	function setFrom($from,$fromname="",$auto = true){
 		$this->From = $from;
 		if ($fromname){
 			$this->setFromName($fromname);
