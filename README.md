@@ -20,4 +20,4 @@ taskdiary
 + メンバーに割り振り
 + タスクへのコメント
 
-恒例のjenkinsテスト5
+恒例のjenkinsテスト6 dev
