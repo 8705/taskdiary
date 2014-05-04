@@ -71,19 +71,21 @@ class AccountController extends AppController
 
     public function activationAction($param)
     {
-        $user = $this->db_manager->get('User')->fetchByName($param['property']);
+        $user_repo = $this->db_manager->get('User');
+        $user = $user_repo->fetchByName($param['property']);
         if(!$user) {
             return $this->redirect('/');
         }
         if($user['user_authority'] !== "2") {
             return $this->redirect('/');
         }
-
-        $activate_status = $this->db_manager->get('Activation')->fetchByUserId($user['user_id']);
+        $activation_repo = $this->db_manager->get('Activation');
+        $activate_status = $activation_repo->fetchByUserId($user['user_id']);
 
         //$property2のサニタイズいるよな〜。utility待ちで
         if($activate_status['activation_token'] === $param['property2']) {
-            $this->db_manager->get('User')->doneActivateById($user['user_id']);
+            $user_repo->doneActivateById($user['user_id']);
+            $activation_repo->delete($user['user_id']);
 
             $this->session->setAuthenticated(true);
             $this->session->set('user', $user);

@@ -9,26 +9,40 @@ class ActivationRepository extends DbRepository
 {
     public function insert($user_id, $activation_token)
     {
-        $sql = "INSERT INTO activation (
-                    user_id,
-                    activation_token
-                )
-                VALUES
-                (
-                    ?,
-                    ?
-                )";
+        if($this->fetchByUserId($user_id)) {
+            $sql = "UPDATE activation
+                        SET activation_token = :acrivation_token
+                        WHERE user_id = :user_id";
+        } else {
+            $sql = "INSERT INTO activation (
+                        user_id,
+                        activation_token
+                    )
+                    VALUES
+                    (
+                        :user_id,
+                        :activation_token
+                    )";
+        }
 
         $stmt = $this->execute(
                     $sql,
                     array(
-                        $user_id,
-                        $activation_token
+                        ':user_id'           => $user_id,
+                        ':activation_token'  => $activation_token
                     )
                 );
     }
+    public function delete($user_id)
+    {
+        $sql = "DELETE FROM activation WHERE user_id = ?";
+        $stmt = $this->execute(
+            $sql,
+            array($user_id)
+        );
+    }
 
-    public function fetchBytoken($token)
+    public function fetchByToken($token)
     {
         $sql = "SELECT a.user_id, a.activation_token FROM activation as a WHERE a.activation_token = ?";
 
@@ -40,17 +54,4 @@ class ActivationRepository extends DbRepository
 
         return $this->fetch($sql, array($user_id));
     }
-
-    public function isUniqueName($user_name)
-    {
-        $sql = "SELECT COUNT(user_id) as count FROM users WHERE user_name = ?";
-
-        $row = $this->fetch($sql, array($user_name));
-        if ($row['count'] === '0') {
-            return true;
-        }
-
-        return false;
-    }
-
 }
