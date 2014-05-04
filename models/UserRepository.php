@@ -16,11 +16,13 @@ class UserRepository extends DbRepository
                     user_name,
                     user_mail,
                     user_password,
+                    user_authority,
                     user_created,
                     user_modified
                 )
                 VALUES
                 (
+                    ?,
                     ?,
                     ?,
                     ?,
@@ -33,6 +35,7 @@ class UserRepository extends DbRepository
                     array($post['user_name'],
                           $post['user_mail'],
                           $post['user_password'],
+                          2,
                           $now->format('Y-m-d H:i:s'),
                           $now->format('Y-m-d H:i:s'))
                 );

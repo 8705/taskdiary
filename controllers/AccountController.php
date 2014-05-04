@@ -41,6 +41,14 @@ class AccountController extends AppController
             $user = $this->db_manager->get('User')->fetchByName($post['user_name']);
             $this->session->set('user', $user);
 
+            $this->sendAuthenticateMail(
+                $post['user_mail'],
+                'メールアドレスのご確認',
+                array(
+                    'user_name' => $post['user_name']
+                )
+            );
+
             return $this->redirect('/');
         }
 
@@ -53,6 +61,20 @@ class AccountController extends AppController
                   ),
                   'index'
             );
+    }
+
+    /*
+        メソッド化する必要ないかもしれない
+    */
+    private function sendAuthenticateMail($to, $subject, $vars = array())
+    {
+        $mail = new SendMail();
+        $mail->to           = $to;
+        $mail->subject;     = $subject;
+        $mail->template     = 'authenticate';
+        $mail->vars         = $vars;
+        $mail->send();
+
     }
 
     public function loginAction()
