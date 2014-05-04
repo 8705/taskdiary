@@ -20,4 +20,4 @@ taskdiary
 + メンバーに割り振り
 + タスクへのコメント
 
-master jenkins test2
+master jenkins test3
