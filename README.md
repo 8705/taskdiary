@@ -19,3 +19,5 @@ taskdiary
 + グループにチケット的なタスクを追加
 + メンバーに割り振り
 + タスクへのコメント
+
+master jenkins test1
