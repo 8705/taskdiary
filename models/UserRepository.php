@@ -89,6 +89,13 @@ class UserRepository extends DbRepository
         return $this->fetch($sql, array($user_name));
     }
 
+    public function fetchById($user_id)
+    {
+        $sql = "SELECT * FROM users WHERE user_id = ?";
+
+        return $this->fetch($sql, array($user_id));
+    }
+
     public function isUniqueName($user_name)
     {
         $sql = "SELECT COUNT(user_id) as count FROM users WHERE user_name = ?";
@@ -101,4 +108,18 @@ class UserRepository extends DbRepository
         return false;
     }
 
+    public function doneActivateById($user_id)
+    {
+        $user = $this->fetchById($user_id);
+        if($user['user_authority'] !== "2") {
+            return false;
+        }
+
+        $sql = "UPDATE users SET user_authority = 1 WHERE user_id = ?";
+        $stmt = $this->execute(
+                    $sql,
+                    array($user_id)
+                );
+        return $stmt;
+    }
 }

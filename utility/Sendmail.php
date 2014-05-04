@@ -72,14 +72,12 @@ class SendMail
         }else{
             echo("Send mail OK.");
         }
-        exit;
     }
 
     protected function makeMailBody($template, $vars = array())
     {
         $template_file = dirname(__FILE__).'/../views/mail/' . $template . '.php';
         if(!is_readable($template_file)) {
-            echo 'テンプレートがない';exit;
             return false;
         }
 

@@ -1,12 +1,13 @@
-<?php echo $user_name ?>様
+<?php echo $user_name; ?>様
 
 TaskDiary へご登録いただき有り難うございます。
 
 さっそくですが、最初のタスクをお願いします！
 
-[最初のタスク]↓のリンクをクリックしてこのメールアドレスがあなたのメールアドレスである事を教えてください。
+[最初のタスク]
+↓のリンクをクリックしてこのメールアドレスがあなたのメールアドレスである事を教えてください。
 
-http://google.co.jp
+http://dev.taskdiary.8705.co/account/activation/<?php echo $user_name; ?>/<?php echo $authenticate_token; ?>
 
 
 
