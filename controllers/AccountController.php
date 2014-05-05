@@ -80,7 +80,7 @@ class AccountController extends AppController
         if(!$user) {
             return $this->redirect('/');
         }
-        if($user['user_authority'] !== "2") {
+        if($user['user_authority'] !== "3") {
             return $this->redirect('/');
         }
         $activation_repo = $this->db_manager->get('Activation');
