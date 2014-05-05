@@ -13,7 +13,7 @@ class TwitterOauthRepository extends DbRepository
                 user_id,
                 twitter_id,
                 tw_oauth_token,
-                tw_oauth_token_secret,
+                tw_oauth_token_secret
             )
             VALUES (
                 ?,
