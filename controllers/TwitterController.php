@@ -63,14 +63,86 @@ class TwitterController extends AppController
         unset($_SESSION['oauth_token']);
         unset($_SESSION['oauth_token_secret']);
 
-        $user_id            = $access_token['user_id'];
+        $twitter_id             = $access_token['user_id'];
+        $twitteroauth_repo      = $this->db_manager->get('TwitterOauth')
+        if($twitteroauth_repo->isRegistration($twitter_id)) {
+            $twitteroauth_repo->updateAccessToken(
+                $twitter_id,
+                $access_token['oauth_token'],
+                $access_token['oauth_token_secret'],
+            );
+            return $this->redirect('/');
+        }
+
         $screen_name        = $access_token['screen_name'];
-        $oauth_token        = $access_token['oauth_token'];
-        $oauth_token_secret = $access_token['oauth_token_secret'];
+        // $oauth_token        = $access_token['oauth_token'];
+        // $oauth_token_secret = $access_token['oauth_token_secret'];
 
         return $this->render(array('user_id'      => $user_id,
                                    'screen_name'     => $screen_name,
                                    '_token' => $this->generateCsrfToken('/twitter/callback')
                             ));
+    }
+
+    public function registerAction()
+    {
+        if ($this->session->isAuthenticated()) {
+            return $this->redirect('/');
+        }
+
+        if (!$this->request->isPost()) {
+            $this->forward404();
+        }
+
+        $post = $this->request->getPost();
+        if (!$this->checkCsrfToken('/twitter/callback', $post['_token'])) {
+            return $this->redirect('/twitter/callback');
+        }
+
+        $errors = $this->db_manager->get('TwitterOauth')->validateRegister($post);
+        if (count($errors) === 0) {
+            $this->db_manager->get('User')->insertByTwitter($post);
+            $this->session->setAuthenticated(true);
+            $user = $this->db_manager->get('User')->fetchByName($post['user_name']);
+            $this->session->set('user', $user);
+
+            $this->db_manager->get('TwitterOauth')->insert(
+                $user['user_id'],
+                $_SESSION['access_token']['user_id'],
+                $_SESSION['access_token']['oauth_token'],
+                $_SESSION['access_token']['oauth_token_secret'],
+            );
+
+            //自動ログイン受理
+            if($post['is_autologin'] === 'on') {
+                $this->db_manager->get('Autologin')->setAuthToken($user['user_id'], 30);
+            }
+
+            //認証メール送信処理
+            if(!is_null($user['user_mail'])) {
+                $authenticate_token = sha1($post['user_name'] . $post['user_password'] . microtime());
+                $user = $this->db_manager->get('User')->fetchByName($post['user_name']);
+                $this->db_manager->get('Activation')->insert($user['user_id'], $authenticate_token);
+                $this->sendAuthenticateMail(
+                    $post['user_mail'],
+                    'メールアドレスのご確認',
+                    array(
+                        'user_name' => $post['user_name'],
+                        'authenticate_token'     => $authenticate_token
+                    )
+                );
+            }
+
+            return $this->redirect('/');
+        }
+
+        return $this->render(
+            array('user_name'       => $post['user_name'],
+                  'user_mail'       => $post['user_mail'],
+                  'errors'          => $errors,
+                  '_token'          => $this->generateCsrfToken('/twitter/callback')
+                  ),
+                  'callback'
+            );
     }
 }

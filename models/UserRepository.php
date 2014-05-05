@@ -38,8 +38,11 @@ class UserRepository extends DbRepository
                 );
     }
 
-    public function insertByTwitter($user_name, $user_mail = null)
+    public function insertByTwitter($post)
     {
+        if(!$post['user_mail']) {
+            $post['user_mail'] = null;
+        }
         $now = new DateTime();
 
         $sql = "INSERT INTO users (
@@ -58,8 +61,8 @@ class UserRepository extends DbRepository
 
         $stmt = $this->execute(
                     $sql,
-                    array($user_name,
-                          $user_mail,
+                    array($post['user_name'],
+                          $post['user_mail'],
                           $now->format('Y-m-d H:i:s'),
                           $now->format('Y-m-d H:i:s'))
                 );

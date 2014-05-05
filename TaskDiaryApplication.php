@@ -23,6 +23,8 @@ class TaskDiaryApplication extends Application
                 => array('action' => 'index'),
             '/:controller/:action'
                 => array(),
+            '/:controller/:action/'
+                => array(),
             '/:controller/:action/:property'
                 => array(),
             '/:controller/:action/:property/:property2'
