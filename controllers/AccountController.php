@@ -109,31 +109,6 @@ class AccountController extends AppController
 
     }
 
-    /*
-        メソッド化する必要ないかもしれない
-    */
-    private function sendAuthenticateMail($to, $subject, $vars = array())
-    {
-        $mail = new SendMail();
-        $mail->setTo($to);
-        $mail->setSubject($subject);
-        $mail->setTemplate('authenticate');
-        $mail->setVars($vars);
-        $mail->send();
-
-    }
-
-    private function sendDoneAuthenticateMail($to, $subject, $vars = array())
-    {
-        $mail = new SendMail();
-        $mail->setTo($to);
-        $mail->setSubject($subject);
-        $mail->setTemplate('done_authenticate');
-        $mail->setVars($vars);
-        $mail->send();
-
-    }
-
     public function loginAction()
     {
         if ($this->session->isAuthenticated()) {
