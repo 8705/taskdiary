@@ -64,7 +64,8 @@ class TwitterController extends AppController
         unset($_SESSION['oauth_token_secret']);
 
         $twitter_id             = $access_token['user_id'];
-        $tw_oauth_status        = $this->db_manager->get('TwitterOauth')->fetchByTwitterId($twitter_id);
+        $twitteroauth_repo      = $this->db_manager->get('TwitterOauth');
+        $tw_oauth_status        = $twitteroauth_repo->fetchByTwitterId($twitter_id);
         if($tw_oauth_status) {
             $twitteroauth_repo->updateAccessToken(
                 $twitter_id,
