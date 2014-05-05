@@ -1,7 +1,7 @@
 <?php
 
 /**
- * UserRepository.
+ * ActivationRepository.
  *
  * @author 8705
  */

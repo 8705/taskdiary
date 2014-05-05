@@ -30,6 +30,13 @@ abstract class Controller
         $this->response    = $application->getResponse();
         $this->session     = $application->getSession();
         $this->db_manager  = $application->getDbManager();
+
+        //アプリケーションコントローラの初期メソッドを実行
+        $this->beforeFilter();  //名前はcakeに倣う
+    }
+
+    protected function beforeFilter()
+    {
     }
 
     /**
