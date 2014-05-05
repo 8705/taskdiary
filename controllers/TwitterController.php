@@ -1,5 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../lib/twitteroauth/twitteroauth.php');
+define('CONSUMER_KEY', 's3kykJtPGjfQYgNDNSnhNW7yn');
+define('CONSUMER_SECRET', '3AXTSuk1I0TGazyZqUoXNjSOu7D48O0ReaxKRrYYbjpczdo9m1');
 /**
  * OauthController.
  *
@@ -12,8 +14,7 @@ class TwitterController extends AppController
     public function loginAction()
     {
         // api keys
-        define('CONSUMER_KEY', 's3kykJtPGjfQYgNDNSnhNW7yn');
-        define('CONSUMER_SECRET', '3AXTSuk1I0TGazyZqUoXNjSOu7D48O0ReaxKRrYYbjpczdo9m1');
+
         define('CALLBACK_URL', 'http://dev.taskdiary.8705.co/twitter/callback/');
 
         // request token取得
@@ -32,9 +33,44 @@ class TwitterController extends AppController
             // 認証用URL取得してredirect
             $url = $connection->getAuthorizeURL($_SESSION['oauth_token']);
             header("Location: " . $url);
+            exit;
         }
 
         //twitterに接続できなかった。例外処理投げたい
         $this->redirect('/');
+    }
+
+    public function callback()
+    {
+        if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
+            $_SESSION['oauth_status'] = 'oldtoken';
+            //セッションクリア
+            header('Location: ./clearsessions.php');
+        }
+
+        $connection = new TwitterOAuth(
+            CONSUMER_KEY,
+            CONSUMER_SECRET,
+            $_SESSION['oauth_token'],
+            $_SESSION['oauth_token_secret']
+        );
+
+        $access_token = $connection->getAccessToken($_REQUEST['oauth_verifier']);
+
+        //DBに保存
+        $_SESSION['access_token'] = $access_token;
+
+        unset($_SESSION['oauth_token']);
+        unset($_SESSION['oauth_token_secret']);
+
+        $user_id            = $access_token['user_id'];
+        $screen_name        = $access_token['screen_name'];
+        $oauth_token        = $access_token['oauth_token'];
+        $oauth_token_secret = $access_token['oauth_token_secret'];
+
+        return $this->render(array('user_id'      => $user_id,
+                                   'screen_name'     => $screen_name,
+                                   '_token' => $this->generateCsrfToken('/twitter/callback')
+                            ));
     }
 }

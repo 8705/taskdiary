@@ -16,13 +16,11 @@ class UserRepository extends DbRepository
                     user_name,
                     user_mail,
                     user_password,
-                    user_authority,
                     user_created,
                     user_modified
                 )
                 VALUES
                 (
-                    ?,
                     ?,
                     ?,
                     ?,
@@ -35,7 +33,33 @@ class UserRepository extends DbRepository
                     array($post['user_name'],
                           $post['user_mail'],
                           $post['user_password'],
-                          2,
+                          $now->format('Y-m-d H:i:s'),
+                          $now->format('Y-m-d H:i:s'))
+                );
+    }
+
+    public function insertByTwitter($user_name, $user_mail = null)
+    {
+        $now = new DateTime();
+
+        $sql = "INSERT INTO users (
+                    user_name,
+                    user_mail,
+                    user_created,
+                    user_modified
+                )
+                VALUES
+                (
+                    ?,
+                    ?,
+                    ?,
+                    ?
+                )";
+
+        $stmt = $this->execute(
+                    $sql,
+                    array($user_name,
+                          $user_mail,
                           $now->format('Y-m-d H:i:s'),
                           $now->format('Y-m-d H:i:s'))
                 );
