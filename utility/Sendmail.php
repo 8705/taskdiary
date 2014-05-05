@@ -95,37 +95,4 @@ class SendMail
     {
         //同時に複数のメールを送る事が有る場合、変数を初期化するメソッド
     }
-
-    public function sendAuthenticateMail($user_name, $to, $key)
-    {
-        //$keyをgetタグ付きURLを載せてメール送信
-        $subject = "{$user_name}さん、アカウントを確認して下さい";
-        $body ="
-            アカウントの確認を完了させて下さい。\n
-            以下のリンクをクリックして下さい。\n
-            {$this->url}/confirm/{$user_name}/{$key}\n
-            \n\n
-            登録していないのに関わらずこのメッセージを受け取った場合は、無視が一番！
-        ";
-
-        $this->sendMail($to, $subject, $body);
-    }
-
-    public function sendAuthenticateDoneMail($user_name, $to)
-    {
-        $subject = "アカウントの認証が完了しました - ToDo Aap (PYNS CREATE)";
-        $body = "
-            {$user_name}さん\n
-            有難うございます。\n
-            あなたのアカウントの認証が完了しました。\n
-            よかったですね！\n
-            これで思う存分にサイトの機能が使えますよ！\n\n
-
-            サイトはこちら！ {$this->url}\n
-            \n\n
-            登録していないのに関わらずこのメッセージを受け取った場合は、無視が一番！
-        ";
-
-        $this->sendMail($to, $subject, $body);
-    }
 }
