@@ -64,13 +64,19 @@ class TwitterController extends AppController
         unset($_SESSION['oauth_token_secret']);
 
         $twitter_id             = $access_token['user_id'];
-        $twitteroauth_repo      = $this->db_manager->get('TwitterOauth');
-        if($twitteroauth_repo->isRegistration($twitter_id)) {
+        $tw_oauth_status        = $this->db_manager->get('TwitterOauth')->fetchByTwitterId($twitter_id);
+        if($tw_oauth_status) {
             $twitteroauth_repo->updateAccessToken(
                 $twitter_id,
                 $access_token['oauth_token'],
                 $access_token['oauth_token_secret']
             );
+
+            //ログイン
+            $user = $this->db_manager->get('User')->fetchById($tw_aouth_status['user_id']);
+            $this->session->setAuthenticated(true);
+            $this->session->set('user', $user);
+
             return $this->redirect('/');
         }
 

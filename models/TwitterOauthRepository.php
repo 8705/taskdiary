@@ -47,15 +47,16 @@ class TwitterOauthRepository extends DbRepository
         return $stmt;
     }
 
-    public function isRegistration($twitter_id)
+    public function fetchByTwitterId($twitter_id)
     {
-        $sql = "SELECT COUNT(twitter_id) as count FROM twitter_oauth WHERE twitter_id = ?";
+        $sql = "SELECT
+                    t.user_id,
+                    t.twitter_id,
+                    t.tw_oauth_token,
+                    t.tw_oauth_token_secret
+                FROM twitter_oauth as t
+                WHERE twitter_id = ?";
 
-        $row = $this->fetch($sql, array($twitter_id));
-        if ($row['count'] === '0') {
-            return false;
-        }
-
-        return true;
+        return = $this->fetch($sql, array($twitter_id));
     }
 }
