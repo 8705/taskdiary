@@ -33,6 +33,9 @@
                 </div>
             </form>
 
+            <h2>twitterログイン</h2>
+                <p><a href="/twitter/login">twitterでログイン</a></p>
+
             <h2>新規ユーザー登録</h2>
             <form class="form-horizontal" action="/account/register" role="form" method="post">
                 <input type="hidden" name="_token" value="<?php echo $this->escape($_token); ?>" />
