@@ -110,7 +110,7 @@ class TwitterController extends AppController
                 $user['user_id'],
                 $_SESSION['access_token']['user_id'],
                 $_SESSION['access_token']['oauth_token'],
-                $_SESSION['access_token']['oauth_token_secret'],
+                $_SESSION['access_token']['oauth_token_secret']
             );
 
             //自動ログイン受理
