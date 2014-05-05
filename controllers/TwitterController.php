@@ -127,7 +127,7 @@ class TwitterController extends AppController
 
             //認証メール送信処理
             if(!is_null($user['user_mail'])) {
-                $authenticate_token = sha1($post['user_name'] . $post['user_password'] . microtime());
+                $authenticate_token = sha1($post['user_name'] . microtime() . '987yhjg02jfhsfsflfp0');
                 $user = $this->db_manager->get('User')->fetchByName($post['user_name']);
                 $this->db_manager->get('Activation')->insert($user['user_id'], $authenticate_token);
                 $this->sendAuthenticateMail(

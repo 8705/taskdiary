@@ -153,11 +153,11 @@ class UserRepository extends DbRepository
     public function doneActivateById($user_id)
     {
         $user = $this->fetchById($user_id);
-        if($user['user_authority'] !== "2") {
+        if($user['authority_id'] !== "3") {
             return false;
         }
 
-        $sql = "UPDATE users SET user_authority = 1 WHERE user_id = ?";
+        $sql = "UPDATE users SET authority_id = 1 WHERE user_id = ?";
         $stmt = $this->execute(
                     $sql,
                     array($user_id)
