@@ -20,7 +20,7 @@ class TwitterOauthRepository extends DbRepository
                 ?,
                 ?,
                 ?
-            )"
+            )";
         $stmt = $this->execute(
                     $sql,
                     array(
