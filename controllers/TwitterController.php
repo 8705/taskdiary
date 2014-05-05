@@ -69,7 +69,7 @@ class TwitterController extends AppController
             $twitteroauth_repo->updateAccessToken(
                 $twitter_id,
                 $access_token['oauth_token'],
-                $access_token['oauth_token_secret'],
+                $access_token['oauth_token_secret']
             );
             return $this->redirect('/');
         }
