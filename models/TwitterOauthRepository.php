@@ -57,6 +57,6 @@ class TwitterOauthRepository extends DbRepository
                 FROM twitter_oauth as t
                 WHERE twitter_id = ?";
 
-        return = $this->fetch($sql, array($twitter_id));
+        return  $this->fetch($sql, array($twitter_id));
     }
 }
