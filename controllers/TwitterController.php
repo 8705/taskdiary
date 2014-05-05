@@ -78,7 +78,7 @@ class TwitterController extends AppController
         // $oauth_token        = $access_token['oauth_token'];
         // $oauth_token_secret = $access_token['oauth_token_secret'];
 
-        return $this->render(array('user_id'      => $user_id,
+        return $this->render(array('twitter_id'      => $twitter_id,
                                    'screen_name'     => $screen_name,
                                    '_token' => $this->generateCsrfToken('/twitter/callback')
                             ));
@@ -99,7 +99,7 @@ class TwitterController extends AppController
             return $this->redirect('/twitter/callback');
         }
 
-        $errors = $this->db_manager->get('TwitterOauth')->validateRegister($post);
+        $errors = $this->db_manager->get('User')->validateRegister($post);
         if (count($errors) === 0) {
             $this->db_manager->get('User')->insertByTwitter($post);
             $this->session->setAuthenticated(true);

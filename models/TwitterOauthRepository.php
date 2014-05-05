@@ -47,21 +47,6 @@ class TwitterOauthRepository extends DbRepository
         return $stmt;
     }
 
-    public function validateRegister($post)
-    {
-        $errors = array();
-
-        if (!strlen($post['user_name'])) {
-            $errors[] = 'ユーザIDを入力してください';
-        } else if (!preg_match('/^\w{3,20}$/', $post['user_name'])) {
-            $errors[] = 'ユーザIDは半角英数字およびアンダースコアを3 ～ 20 文字以内で入力してください';
-        } else if (!$this->isUniqueName($post['user_name'])) {
-            $errors[] = 'ユーザIDは既に使用されています';
-        }
-
-        return $errors;
-    }
-
     public function isRegistration($twitter_id)
     {
         $sql = "SELECT COUNT(twitter_id) as count FROM twitter_oauth WHERE twitter_id = ?";
