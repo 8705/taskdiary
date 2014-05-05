@@ -45,7 +45,7 @@ class AppController extends Controller
     /*
         メソッド化する必要ないかもしれない
     */
-    private function sendAuthenticateMail($to, $subject, $vars = array())
+    protected function sendAuthenticateMail($to, $subject, $vars = array())
     {
         $mail = new SendMail();
         $mail->setTo($to);
@@ -56,7 +56,7 @@ class AppController extends Controller
 
     }
 
-    private function sendDoneAuthenticateMail($to, $subject, $vars = array())
+    protected function sendDoneAuthenticateMail($to, $subject, $vars = array())
     {
         $mail = new SendMail();
         $mail->setTo($to);
