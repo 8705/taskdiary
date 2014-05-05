@@ -42,6 +42,11 @@ class AccountController extends AppController
             $user = $this->db_manager->get('User')->fetchByName($post['user_name']);
             $this->session->set('user', $user);
 
+            //自動ログイン受理
+            if($post['is_autologin'] === 'on') {
+                $this->db_manager->get('Autologin')->setAuthToken($user['user_id'], 30);
+            }
+
             //認証メール送信処理
             $authenticate_token = sha1($post['user_name'] . $post['user_password'] . microtime());
             $user = $this->db_manager->get('User')->fetchByName($post['user_name']);
@@ -145,16 +150,19 @@ class AccountController extends AppController
         }
 
         $errors = $this->db_manager->get('User')->validateLogin($post);
-
         if (count($errors) === 0) {
             $user = $this->db_manager->get('User')->fetchByName($post['user_name']);
             $hashed_password = $this->db_manager->get('User')->hashPassword($post['user_password']);
-
             if (!$user || ($user['user_password'] !== $hashed_password)) {
                 $errors[] = 'ユーザIDかパスワードが不正です';
             } else {
                 $this->session->setAuthenticated(true);
                 $this->session->set('user', $user);
+
+                //自動ログイン受理
+                if($post['is_autologin'] === 'on') {
+                    $this->db_manager->get('Autologin')->setAuthToken($user['user_id'], 30);
+                }
 
                 return $this->redirect('/');
             }
@@ -169,10 +177,10 @@ class AccountController extends AppController
 
     public function logoutAction()
     {
+        $this->db_manager->get('Autologin')->deleteByUserId($this->login_user['user_id']);
         $this->session->clear();
         $this->session->setAuthenticated(false);
 
         return $this->redirect('/account/index');
     }
-
 }
