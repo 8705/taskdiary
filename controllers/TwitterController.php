@@ -99,7 +99,7 @@ class TwitterController extends AppController
             return $this->redirect('/twitter/callback');
         }
 
-        $errors = $this->db_manager->get('User')->validateRegister($post);
+        $errors = $this->db_manager->get('User')->validateTwitterRegister($post);
         if (count($errors) === 0) {
             $this->db_manager->get('User')->insertByTwitter($post);
             $this->session->setAuthenticated(true);
