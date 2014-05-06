@@ -5,7 +5,7 @@
         <div class="col-md-3 projects">
             <h2>過去のタスク一覧</h2>
             <ul class="list-group">
-                <li><a href="/top/donetask">過去のタスク</li>
+                <li><a href="/top/donetask">過去のタスク</a></li>
             </ul>
             <h2>カテゴリー</h2>
             <ul class="list-group">
@@ -24,24 +24,7 @@
                     <input type="submit" class="btn btn-info" value="追加">
                 </form>
             </ul>
-            <h2>共有プロジェクト</h2>
-            <ul class="list-group">
-                <?php foreach ($projects as $v): ?>
-                <li class="project list-group-item">
-                    <p>
-                        <a href="/project/view/<?php echo $this->escape($v['project_id']); ?>">
-                            <?php echo $this->escape($v['project_name']); ?>
-                        </a>
-                        <a href="/project/delete/<?php echo $this->escape($v['project_id']); ?>">x</a>
-                    </p>
-                    <p class="content"><?php echo $this->escape($v['project_text']); ?></p>
-                </li>
-                <?php endforeach; ?>
-                <form action="/project/add" method="POST">
-                    <input type="text" class="form-control" placeholder="プロジェクト" name="project_name">
-                    <input type="submit" class="btn btn-info" value="追加">
-                </form>
-            </ul>
+
             <h2>タスク追加</h2>
             <form action="/task/add" method="POST">
                 <p>

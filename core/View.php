@@ -56,7 +56,8 @@ class View
         $content = ob_get_clean();
 
         if ($_layout) {
-            $content = $this->render($_layout,
+            $layout_path = 'layout/'.$_layout;
+            $content = $this->render($layout_path,
                 array_merge($this->layout_variables, array(
                     '_content' => $content,
                 )

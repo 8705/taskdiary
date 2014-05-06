@@ -23,9 +23,10 @@ class TaskRepository extends DbRepository
                         OR ((DATE_FORMAT(t.task_limit,'%Y-%m-%d') < ?)
                             AND t.task_is_done = 0
                             )
+                        OR DATE_FORMAT(t.task_finish,'%Y-%m-%d') = ?
                     ORDER BY t.task_limit DESC";
 
-        return $this->fetchAll($sql, array($user_id, $today, $today));
+        return $this->fetchAll($sql, array($user_id, $today, $today, $today));
     }
 
     public function fetchById($task_id)

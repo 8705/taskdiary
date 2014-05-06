@@ -8,6 +8,7 @@
 class TopController extends AppController
 {
     protected $auth_actions = array('index');
+    protected $layout = 'top';
 
     public function indexAction()
     {
@@ -15,12 +16,10 @@ class TopController extends AppController
 
         $tasks      = $this->db_manager->get('Task')->fetchTopIndex($user['user_id']);
         $categories = $this->db_manager->get('Category')->fetchTopIndex($user['user_id']);
-        $projects   = $this->db_manager->get('Project')->fetchTopIndex($user['user_id']);
 
         return $this->render(array('user'       => $user,
                                    'tasks'      => $tasks,
                                    'categories' => $categories,
-                                   'projects'   => $projects,
                             ));
     }
 
