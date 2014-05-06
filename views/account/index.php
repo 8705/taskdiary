@@ -5,7 +5,7 @@
         <div class="col-md-12 column">
 
             <h2>ログイン</h2>
-            <form class="form-horizontal" action="/account/login" role="form" method="post">
+            <form class="form-horizontal" action="/account/login" role="form" method="post" novalidate>
                 <input type="hidden" name="_token" value="<?php echo $this->escape($_token); ?>" />
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">User Name</label>
@@ -37,7 +37,7 @@
                 <p><a href="/twitter/login">twitterでログイン</a></p>
 
             <h2>新規ユーザー登録</h2>
-            <form class="form-horizontal" action="/account/register" role="form" method="post">
+            <form class="form-horizontal" action="/account/register" role="form" method="post" novalidate>
                 <input type="hidden" name="_token" value="<?php echo $this->escape($_token); ?>" />
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">User Name</label>

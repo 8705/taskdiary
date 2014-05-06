@@ -85,8 +85,7 @@ class TwitterController extends AppController
         // $oauth_token        = $access_token['oauth_token'];
         // $oauth_token_secret = $access_token['oauth_token_secret'];
 
-        return $this->render(array('twitter_id'      => $twitter_id,
-                                   'screen_name'     => $screen_name,
+        return $this->render(array('screen_name'     => $screen_name,
                                    '_token' => $this->generateCsrfToken('/twitter/callback')
                             ));
     }

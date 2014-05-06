@@ -61,15 +61,17 @@ class AccountController extends AppController
 
             return $this->redirect('/');
         }
-
+        if(!isset($post['is_autologin'])){
+            $post['is_autologin'] = null;
+        }
         return $this->render(
             array('user_name'       => $post['user_name'],
                   'user_mail'       => $post['user_mail'],
                   'user_password'   => $post['user_password'],
+                  'is_autologin'    => $post['is_autologin'],
                   'errors'          => $errors,
                   '_token'          => $this->generateCsrfToken('/account/index')
-                  ),
-                  'index'
+                  )
             );
     }
 
@@ -128,7 +130,7 @@ class AccountController extends AppController
             $user = $this->db_manager->get('User')->fetchByName($post['user_name']);
             $hashed_password = $this->db_manager->get('User')->hashPassword($post['user_password']);
             if (!$user || ($user['user_password'] !== $hashed_password)) {
-                $errors[] = 'ユーザIDかパスワードが不正です';
+                $errors['form'] = 'ユーザIDかパスワードが不正です';
             } else {
                 $this->session->setAuthenticated(true);
                 $this->session->set('user', $user);
@@ -141,10 +143,14 @@ class AccountController extends AppController
                 return $this->redirect('/');
             }
         }
-
-        return $this->render(array('user_name'       => '',
-                                   'user_password'   => '',
-                                   '_token'          => $this->generateCsrfToken('/account/login')
+        if(!isset($post['is_autologin'])){
+            $post['is_autologin'] = null;
+        }
+        return $this->render(array('user_name'       => $post['user_name'],
+                                   'user_password'   => $post['user_password'],
+                                   'is_autologin'    => $post['is_autologin'],
+                                   'errors'          => $errors,
+                                   '_token'          => $this->generateCsrfToken('/account/index')
                           )
                 );
     }

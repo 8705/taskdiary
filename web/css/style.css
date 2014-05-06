@@ -41,3 +41,13 @@ text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     text-decoration: line-through;
 }
 
+/*************************************
+    error
+*************************************/
+input.error {
+    background-color: #FFF2F2;
+    border-color: #FFA0A0;
+}
+.error-message {
+    color: #FF4A4A;
+}

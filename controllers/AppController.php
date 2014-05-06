@@ -12,6 +12,7 @@ class AppController extends Controller
     public function beforeFilter()
     {
         $this->autoLogin();
+
         if($this->session->isAuthenticated()){
             $this->login_user = $this->session->get('user');
 
