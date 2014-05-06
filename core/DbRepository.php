@@ -68,4 +68,45 @@ abstract class DbRepository
     {
         return $this->execute($sql, $params)->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    /**
+     * トランザクション
+     *
+     * @param string $sql
+     * @param array $params
+     * @return array
+     */
+    public function commit()
+    {
+        if ($this->db_manager->isBegin()) {
+            $con->commit();
+            $this->db_manager->setBegin(false);
+        }
+    }
+    
+    public function begin()
+    {
+        if (!$this->db_manager->isBegin()) {
+            $con->beginTransaction();
+            $this->db_manager->setBegin(true);
+        }
+    }
+    
+    public function rollback()
+    {
+        if (!$this->db_manager->isBegin()) {
+            $con->rollback();
+            $this->db_manager->setBegin(false);
+        }
+    }
+
+    /**
+     *直前のinsertしたレコードのオートインクリメントで振られたIDを取得
+     *
+     */
+    public function lastInsertId()
+    {
+        return $this->con->lastInsertId();
+    }
 }

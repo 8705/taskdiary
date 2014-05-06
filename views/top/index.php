@@ -16,6 +16,12 @@
                 </li>
             <?php endforeach; ?>
         </ul>
+        <form action="/category/add" method="POST">
+            <p>
+                <input type="text" class="form-control" placeholder="カテゴリー" name="category_name">
+            </p>
+            <input type="submit" class="btn btn-info" value="追加">
+        </form>
         <h2>共有プロジェクト</h2>
         <ul class="list-group">
             <?php foreach ($projects as $v): ?>
@@ -30,26 +36,17 @@
             </li>
             <?php endforeach; ?>
         </ul>
-        <h2>カテゴリー追加</h2>
-        <form action="/category/add" method="POST">
-            <p>
-                <input type="text" class="form-control" placeholder="目標" name="category_name">
-            </p>
-            <input type="submit" class="btn btn-info" value="目標追加">
-        </form>
-        <h2>プロジェクト追加</h2>
         <form action="/project/add" method="POST">
             <p>
-                <input type="text" class="form-control" placeholder="目標" name="project_name">
+                <input type="text" class="form-control" placeholder="プロジェクト" name="project_name">
             </p>
-            <textarea name="project_text" class="form-control" placeholder="備考" id="" cols="30" rows="3"></textarea>
-            <input type="submit" class="btn btn-info" value="目標追加">
+            <input type="submit" class="btn btn-info" value="追加">
         </form>
         <h2>タスク追加</h2>
         <form action="/task/add" method="POST">
             <p>
                 <select name="category_id" id="" class="form-control">
-                    <option value="">プロジェクトを選択</option>
+                    <option value="">カテゴリーを選択</option>
                     <?php foreach($categories as $v): ?>
                         <option value="<?php echo $this->escape($v['category_id']) ?>">
                             <?php echo $this->escape($v['category_name']) ?>
@@ -58,11 +55,12 @@
                 </select>
             </p>
             <p><input type="text" class="form-control" placeholder="タスク" name="task_name"></p>
+            <input type="date" name="task_limit">
             <input type="submit" class="btn btn-info" value="タスク追加">
         </form>
     </div>
     <div class="col-md-9 tasks">
-        <h2>タスクリスト</h2>
+        <h2>今日のタスク</h2>
         <form action="/project/index" method="POST">
             <ul class="list-group">
                 <?php foreach ($tasks as $v): ?>
@@ -70,18 +68,9 @@
                         <p>
                             <input type="hidden" name="<?php echo $v['task_id']; ?>" value="0">
                             <input type="checkbox" name="<?php echo $v['task_id']; ?>" value="1" <?php if ($v['task_is_done'] == 1) echo "checked='checked'"; ?> >
-                            <span class="label label-<?php echo $this->escape($v['task_size']); ?>">
-                                <?php echo $this->escape($v['task_size']); ?>
-                            </span>
-                            <?php echo $this->escape($v['task_name']); ?>(<?php echo $this->escape($v['project_name']); ?>)
-                        </p>
-                        <p class="content">
-                            <?php echo $this->escape($v['task_text']); ?>
+                            <?php echo $this->escape($v['task_name']); ?>(<?php echo $this->escape($v['category_name']); ?>)
                             <span>
-                                [ <?php echo $this->escape($v['task_created']); ?>に作成 ]
-                            </span>
-                            <span>
-                                <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>">x</a>
+                                <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>">削除</a>
                             </span>
                         </p>
                     </li>
