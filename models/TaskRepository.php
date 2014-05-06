@@ -19,10 +19,10 @@ class TaskRepository extends DbRepository
                         LEFT JOIN tasks_categories tc ON tc.task_id = t.task_id
                         LEFT JOIN categories c ON c.category_id = tc.category_id
                     WHERE t.user_id = ?
-                        -- AND DATE_FORMAT(t.task_limit,'%Y-%m-%d') = ?
-                        -- OR ((DATE_FORMAT(t.task_limit,'%Y-%m-%d') < ?)
-                        --     AND t.task_is_done = 0
-                        --     ) 
+                        AND DATE_FORMAT(t.task_limit,'%Y-%m-%d') = ?
+                        OR ((DATE_FORMAT(t.task_limit,'%Y-%m-%d') < ?)
+                            AND t.task_is_done = 0
+                            )
                     ORDER BY t.task_limit DESC";
 
         return $this->fetchAll($sql, array($user_id, $today, $today));
@@ -72,11 +72,18 @@ class TaskRepository extends DbRepository
     public function updateIsDone($task_id, $task_is_done)
     {
         $now = new DateTime();
-        $sql = "UPDATE tasks SET task_is_done = ?, task_modified = ? WHERE task_id = ?";
+        $today = $now->format('Y-m-d H:i:s');
+
+        $sql = "UPDATE tasks
+                    SET task_is_done = ?,
+                        task_finish = ?,
+                        task_modified = ?
+                    WHERE task_id = ?";
 
         $stmt = $this->execute($sql, array(
             $task_is_done,
-            $now->format('Y-m-d H:i:s'),
+            $today,
+            $today,
             $task_id,
         ));
     }

@@ -13,13 +13,6 @@ class TopController extends AppController
     {
         $user = $this->session->get('user');
 
-        if ($this->request->isPost()) {
-            $post = $this->request->getPost();
-            foreach ($post as $task_id => $task_is_done) {
-                $this->db_manager->get('Task')->updateIsDone($task_id, $task_is_done);
-            }
-        }
-
         $tasks      = $this->db_manager->get('Task')->fetchTopIndex($user['user_id']);
         $categories = $this->db_manager->get('Category')->fetchTopIndex($user['user_id']);
         $projects   = $this->db_manager->get('Project')->fetchTopIndex($user['user_id']);

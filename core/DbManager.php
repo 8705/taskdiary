@@ -110,50 +110,37 @@ class DbManager
     // 対象のDB接続がトランザクション中かどうか判別する
     public function isBegin()
     {
-        if(!isset($this->tbl_map[$tbl][$db])){
-            throw new DbException('No tbl_map found for table : ' . $tbl . ', db : '. $db);
-        }
-        $name = $this->tbl_map[$tbl][$db];
-        return $this->db_map[$name]['begin'];
+        return $this->$transaction_is_begin;
     }
     
     // 対象のDB接続のトランザクションフラグを更新
-    public function setBegin($db, $tbl, $boo = NULL)
+    public function setBegin($boo = NULL)
     {
         if(is_null($boo)){
-            throw new DbException('No bool value');
+            echo 'No bool value';
+            exit;
         }
-        if(!isset($this->tbl_map[$tbl][$db])){
-            throw new DbException('No tbl_map found for table : ' . $tbl . ', db : '. $db);
-        }
-        $name = $this->tbl_map[$tbl][$db];
-        $this->db_map[$name]['begin'] = $boo;
+        $this->$transaction_is_begin = $boo;
     }
 
-    public function begin() {
-        return $this->transaction_is_begin = true;
-    }
-
-    public function commit()
+    public function begin()
     {
-        if($this->transaction_is_begin === true){
-            foreach($this->db_map as $k => $v){
-                if($v['begin'] === true){
-                    $this->connections[$k]->commit();
-                    $v['begin'] = false;
-                }
-            }
-            $this->is_begin = false;
+        if ($this->transaction_is_begin === false) {
+            $this->begin();
+        }
+    }
+
+    public function commit($name)
+    {
+        if ($this->transaction_is_begin === true) {
+            $this->commit();
         }
     }
     
-    public function allRollback()
+    public function allRollback($name)
     {
-        foreach($this->db_map as $k => $v){
-            if($v['begin'] === true){
-                $this->connections[$k]->rollback();
-                $v['begin'] = false;
-            }
+        if ($this->transaction_is_begin === true) {
+            $this->rollback();
         }
     }
 

@@ -77,26 +77,26 @@ abstract class DbRepository
      * @param array $params
      * @return array
      */
-    public function commit()
-    {
-        if ($this->db_manager->isBegin()) {
-            $con->commit();
-            $this->db_manager->setBegin(false);
-        }
-    }
-    
     public function begin()
     {
         if (!$this->db_manager->isBegin()) {
-            $con->beginTransaction();
+            $this->con->beginTransaction();
             $this->db_manager->setBegin(true);
         }
     }
-    
+
+    public function commit()
+    {
+        if ($this->db_manager->isBegin()) {
+            $this->con->commit();
+            $this->db_manager->setBegin(false);
+        }
+    }
+
     public function rollback()
     {
-        if (!$this->db_manager->isBegin()) {
-            $con->rollback();
+        if ($this->db_manager->isBegin()) {
+            $this->con->rollback();
             $this->db_manager->setBegin(false);
         }
     }

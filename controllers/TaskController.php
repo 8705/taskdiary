@@ -40,7 +40,19 @@ class TaskController extends AppController
         }
 
             return $this->redirect('/');
+    }
 
+    public function updateIsDoneAction()
+    {
+        if (!$this->request->isPost()) {
+            $this->forward404();
+        }
+        $post = $this->request->getPost();
+        foreach ($post as $task_id => $task_is_done) {
+            $this->db_manager->get('Task')->updateIsDone($task_id, $task_is_done);
+        }
+
+        return $this->redirect('/');
     }
 
     public function deleteAction($params)
