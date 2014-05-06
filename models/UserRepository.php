@@ -200,4 +200,9 @@ class UserRepository extends DbRepository
                 );
         return $stmt;
     }
+
+    public function updateImage($image)
+    {
+
+    }
 }
