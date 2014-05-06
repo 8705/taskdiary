@@ -15,12 +15,12 @@ class TopController extends AppController
 
         $tasks      = $this->db_manager->get('Task')->fetchTopIndex($user['user_id']);
         $categories = $this->db_manager->get('Category')->fetchTopIndex($user['user_id']);
-        $projects   = $this->db_manager->get('Project')->fetchTopIndex($user['user_id']);
+        // $projects   = $this->db_manager->get('Project')->fetchTopIndex($user['user_id']);
 
         return $this->render(array('user'       => $user,
                                    'tasks'      => $tasks,
                                    'categories' => $categories,
-                                   'projects'   => $projects,
+                                   // 'projects'   => $projects,
                             ));
     }
 
@@ -42,13 +42,13 @@ class TopController extends AppController
 
         $project_name   = $this->db_manager->get('Project')->fetchNameById($project_id);
         $tasks          = $this->db_manager->get('Task')->fetchAllByProjectId($project_id);
-        $projects       = $this->db_manager->get('Project')->fetchAllByUserId($user['user_id']);
+        // $projects       = $this->db_manager->get('Project')->fetchAllByUserId($user['user_id']);
 
         return $this->render(array('user'          => $user,
                                    'project_id'    => $project_id,
                                    'project_name'  => $project_name,
                                    'tasks'         => $tasks,
-                                   'projects'      => $projects,
+                                   // 'projects'      => $projects,
                              ));
     }
 

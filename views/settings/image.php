@@ -14,15 +14,17 @@
             <div class="row">
                 <div class="col-md-3">
                     <p class="thumbnail">
-
+                        <img src="/image/output/<?php echo $this->escape($user_id) ?>" alt="thumbnail" width="128" height="128">
                     </p>
                 </div>
                 <div class="col-md-9">
-                    <form enctype="multipart/form-data" action="/settings/update_image" method="POST">
-                        <input type="hidden" name="MAX_FILE_SIZE" value="200000" />
-                        <input name="image" type="file" />
-                        <p><input type="submit" name="save" value="送信" class="btn btn-success"/><p>
+                    <form action="/settings/image" enctype="multipart/form-data" method="POST">
+                        <input type="file" name="image" />
+                        <p><input type="submit" value="送信" class="btn btn-success"/><p>
                     </form>
+                    <?php if ($errors): ?>
+                        <?php foreach ($errors as $v) echo $this->escape($v); ?>
+                    <?php endif ?> 
                 </div>
             </div>
         </div>
