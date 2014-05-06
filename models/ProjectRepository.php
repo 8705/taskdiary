@@ -1,10 +1,5 @@
 <?php
 
-/**
- * UserRepository.
- *
- * @author 8705
- */
 class ProjectRepository extends DbRepository
 {
     public function insert($user_id, $post)
@@ -26,28 +21,15 @@ class ProjectRepository extends DbRepository
         ));
     }
 
-    public function fetchAllByUserId($user_id) {
-        $sql = "SELECT *
-                    FROM projects
-                    WHERE user_id = ? AND project_del_flg = '0'
-                    ORDER BY project_created DESC";
+    public function fetchTopIndex($user_id) {
+        $sql = "SELECT p.project_id,
+                       p.project_name
+                    FROM projects p
+                        LEFT JOIN users_projects up ON p.project_id = up.project_id
+                    WHERE up.user_id = ?
+                ";
 
         return $this->fetchAll($sql, array($user_id));
-    }
-
-
-    public function fetchById($project_id)
-    {
-        $sql = "SELECT * FROM projects WHERE project_id = ?";
-
-        return $this->fetch($sql, array($project_id));
-    }
-
-    public function fetchNameById($project_id)
-    {
-        $sql = "SELECT project_name FROM projects WHERE project_id = ?";
-        $res = $this->fetch($sql, array($project_id));
-        return $res['project_name'];
     }
 
     public function delete($project_id)

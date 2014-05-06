@@ -10,6 +10,7 @@ class DbManager
     protected $connections = array();
     protected $repository_connection_map = array();
     protected $repositories = array();
+    public    $transaction_is_begin = false;
 
     /**
      * データベースへ接続
@@ -100,6 +101,60 @@ class DbManager
         }
 
         return $this->repositories[$repository_name];
+    }
+
+    /**
+     *トランザクション用関数
+     *
+     */
+    // 対象のDB接続がトランザクション中かどうか判別する
+    public function isBegin()
+    {
+        if(!isset($this->tbl_map[$tbl][$db])){
+            throw new DbException('No tbl_map found for table : ' . $tbl . ', db : '. $db);
+        }
+        $name = $this->tbl_map[$tbl][$db];
+        return $this->db_map[$name]['begin'];
+    }
+    
+    // 対象のDB接続のトランザクションフラグを更新
+    public function setBegin($db, $tbl, $boo = NULL)
+    {
+        if(is_null($boo)){
+            throw new DbException('No bool value');
+        }
+        if(!isset($this->tbl_map[$tbl][$db])){
+            throw new DbException('No tbl_map found for table : ' . $tbl . ', db : '. $db);
+        }
+        $name = $this->tbl_map[$tbl][$db];
+        $this->db_map[$name]['begin'] = $boo;
+    }
+
+    public function begin() {
+        return $this->transaction_is_begin = true;
+    }
+
+    public function commit()
+    {
+        if($this->transaction_is_begin === true){
+            foreach($this->db_map as $k => $v){
+                if($v['begin'] === true){
+                    $this->connections[$k]->commit();
+                    $v['begin'] = false;
+                }
+            }
+            $this->is_begin = false;
+        }
+    }
+    
+    public function allRollback()
+    {
+        foreach($this->db_map as $k => $v){
+            if($v['begin'] === true){
+                $this->connections[$k]->rollback();
+                $v['begin'] = false;
+            }
+        }
     }
 
     /**

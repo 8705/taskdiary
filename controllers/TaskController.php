@@ -15,52 +15,44 @@ class TaskController extends AppController
             $this->forward404();
         }
 
-        $user = $this->session->get('user');
-        if(!$user) {
-            $this->forward404();
-        }
-
-        $post    = $this->request->getPost();
-        $project = $this->db_manager->get('Project')->fetchById($post['project_id']);
-
-        if(!$project) {
-            $this->forward404('そんなプロジェクトありません');
-        }
+        $user     = $this->session->get('user');
+        $post     = $this->request->getPost();
 
         $errors = $this->db_manager->get('Task')->validateAdd($post);
 
         if (count($errors) === 0) {
-            $this->db_manager->get('Task')->insert($post);
-
-            return $this->redirect('/');
+            $this->_add($user, $post);
         }
     }
 
-    public function indexAction()
+    public function _add($user, $post)
     {
-        $user = $this->session->get('user');
 
-        if(!$user) {
-            $this->forward404();
+        $res = $this->db_manager->get('Task')->insert($user['user_id'], $post);
+        $last_insert_id = $res;
+
+        if ($post['category_id']) {
+            $category = $this->db_manager->get('Category')->fetchById($post['category_id']);
+            if(!$category) {
+                $this->forward404('そんなカテゴリーねえよｗｗ');
+            }
+            $this->db_manager->get('TaskCategory')->insert($last_insert_id, $post['category_id']);
         }
 
-        $tasks      = $this->db_manager->get('Task')->fetchAllByUserId($user['user_id']);
-        $projects   = $this->db_manager->get('Project')->fetchAllByUserId($user['user_id']);
-        return $this->render(array('user'       => $user,
-                                   'tasks'      => $tasks,
-                                   'projects'   => $projects
-                             ));
+            return $this->redirect('/');
+
     }
 
     public function deleteAction($params)
     {
         $task_id = $params['property'];
         $task = $this->db_manager->get('Task')->fetchById($task_id);
-        if(!$task || $task['task_del_flg'] === '1') {
-            $this->forward404('そのタスクはないです');
+        if(!$task) {
+            $this->forward404('そんなタスクはないです');
         }
 
-        $this->db_manager->get('Task')->delete($task['task_id']);
+        $this->db_manager->get('TaskCategory')->deleteByTaskId($task_id);
+        $this->db_manager->get('Task')->delete($task_id);
 
         return $this->redirect('/');
 

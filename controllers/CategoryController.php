@@ -1,13 +1,8 @@
 <?php
 
-/**
- * AccountController.
- *
- * @author 8705
- */
-class ProjectController extends AppController
+class CategoryController extends AppController
 {
-    protected $auth_actions = array('index', 'add', 'delete');
+    protected $auth_actions = array('add', 'delete');
 
     public function addAction()
     {
@@ -17,17 +12,12 @@ class ProjectController extends AppController
         }
 
         $user = $this->session->get('user');
-
-        if(!$user) {
-            $this->forward404();
-        }
-
         $post = $this->request->getPost();
 
-        $errors = $this->db_manager->get('Project')->validateAdd($post);
+        $errors = $this->db_manager->get('Category')->validateAdd($post);
 
         if (count($errors) === 0) {
-            $this->db_manager->get('Project')->insert($user['user_id'],
+            $this->db_manager->get('Category')->insert($user['user_id'],
                                                       $post
                                                       );
 
@@ -46,25 +36,25 @@ class ProjectController extends AppController
             }
         }
 
-        // $tasks    = $this->db_manager->get('Task')->fetchAllAndProjectNameByUserId($user['user_id']);
-        // $projects = $this->db_manager->get('Project')->fetchAllByUserId($user['user_id']);
+        // $tasks    = $this->db_manager->get('Task')->fetchAllAndcategoryNameByUserId($user['user_id']);
+        // $categorys = $this->db_manager->get('Category')->fetchAllByUserId($user['user_id']);
 
         return $this->render(array('user'      => $user,
                                    'tasks'     => $tasks,
-                                   'projects'  => $projects,
+                                   'categorys'  => $categorys,
                             ));
     }
 
     public function deleteAction($params)
     {
-        $project_id = $params['property'];
-        $project = $this->db_manager->get('Project')->fetchById($project_id);
+        $category_id = $params['property'];
+        $category = $this->db_manager->get('Category')->fetchById($category_id);
 
-        if(!$project || $project['project_del_flg'] === '1') {
+        if(!$category || $category['category_del_flg'] === '1') {
             $this->forward404('そのタスクはないです');
         }
 
-        $this->db_manager->get('Project')->delete($project['project_id']);
+        $this->db_manager->get('Category')->delete($category['category_id']);
 
         return $this->redirect('/');
 
@@ -84,18 +74,18 @@ class ProjectController extends AppController
             }
         }
 
-        $project_id = $params['property'];
+        $category_id = $params['property'];
         $user = $this->session->get('user');
 
-        $project_name   = $this->db_manager->get('Project')->fetchNameById($project_id);
-        $tasks          = $this->db_manager->get('Task')->fetchAllByProjectId($project_id);
-        $projects       = $this->db_manager->get('Project')->fetchAllByUserId($user['user_id']);
+        $category_name   = $this->db_manager->get('Category')->fetchNameById($category_id);
+        $tasks          = $this->db_manager->get('Task')->fetchAllBycategoryId($category_id);
+        $categorys       = $this->db_manager->get('Category')->fetchAllByUserId($user['user_id']);
 
         return $this->render(array('user'          => $user,
-                                   'project_id'    => $project_id,
-                                   'project_name'  => $project_name,
+                                   'category_id'    => $category_id,
+                                   'category_name'  => $category_name,
                                    'tasks'         => $tasks,
-                                   'projects'      => $projects,
+                                   'categorys'      => $categorys,
                              ));
     }
 
