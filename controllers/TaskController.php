@@ -7,7 +7,7 @@
  */
 class TaskController extends AppController
 {
-    protected $auth_actions = array('index', 'add', 'delete');
+    protected $auth_actions = array('index', 'add', 'delete', 'add_task');
 
     public function addAction()
     {
@@ -40,6 +40,18 @@ class TaskController extends AppController
         }
 
             return $this->redirect('/');
+    }
+
+    public function add_taskAction() {
+
+        if (!$this->request->isPost()) {
+            $this->forward404();
+        }
+
+        $user     = $this->session->get('user');
+        $post     = $this->request->getPost();
+
+        foreach($post['add_task'] as )
     }
 
     public function updateIsDoneAction()

@@ -44,6 +44,12 @@
         </div>
         <div class="col-md-9 tasks">
             <h2>今日のタスク</h2>
+            <form action="/task/add_task" method="POST">
+                <ul id="task_add">
+                    <li><input type="text" class="input-task form-control" data-input-num="1" name="add_task[]"/></li>
+                </ul>
+                <p><input type="submit" value="送信" class="btn btn-primary"></p>
+            </form>
             <form action="/task/updateIsDone" method="POST">
                 <ul class="list-group">
                     <?php foreach ($tasks as $v): ?>
