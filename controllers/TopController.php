@@ -41,13 +41,13 @@ class TopController extends AppController
 
         $project_name   = $this->db_manager->get('Project')->fetchNameById($project_id);
         $tasks          = $this->db_manager->get('Task')->fetchAllByProjectId($project_id);
-        $projects       = $this->db_manager->get('Project')->fetchAllByUserId($user['user_id']);
+        // $projects       = $this->db_manager->get('Project')->fetchAllByUserId($user['user_id']);
 
         return $this->render(array('user'          => $user,
                                    'project_id'    => $project_id,
                                    'project_name'  => $project_name,
                                    'tasks'         => $tasks,
-                                   'projects'      => $projects,
+                                   // 'projects'      => $projects,
                              ));
     }
 

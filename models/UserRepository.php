@@ -68,6 +68,18 @@ class UserRepository extends DbRepository
                 );
     }
 
+    public function insertImage($user_id, $image)
+    {
+        $now = new DateTime();
+
+        $sql = "UPDATE users SET
+                    user_image = ?,
+                    user_modified = ?
+                    WHERE user_id = $user_id ";
+
+        $stmt = $this->execute($sql, array($image, $now->format('Y-m-d H:i:s')));
+    }
+
     public function validateRegister($post)
     {
         $errors = array();
@@ -143,6 +155,19 @@ class UserRepository extends DbRepository
         return $errors;
     }
 
+    public function validateImage($file)
+    {
+        $errors = array();
+        if ($file['size'] > 2000000) {
+            $errors[] = "重たいよ〜ヾ(｡>﹏<｡)ﾉ";
+        }
+        if (strpos($file['type'], "image") === false) {
+            $errors[] = "頼んでたの違うんやけど？";
+        }
+
+        return $errors;
+    }
+
     public function hashPassword($password)
     {
         return sha1($password . 'SecretKey');
@@ -201,8 +226,11 @@ class UserRepository extends DbRepository
         return $stmt;
     }
 
-    public function updateImage($image)
+    public function fetchImage($user_id)
     {
+        $sql = "SELECT user_image FROM users WHERE user_id = ?";
 
+        $row = $this->fetch($sql, array($user_id));
+        return $row['user_image'];
     }
 }
