@@ -51,3 +51,20 @@ input.error {
 .error-message {
     color: #FF4A4A;
 }
+
+/*************************************
+    task_add @top
+*************************************/
+ul#task_add {
+    list-style: none;
+    padding-left: 0px;
+}
+#task_add li {
+    box-shadow: none;
+}
+#task_add li input {
+    border: none;
+    box-shadow: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0px;
+}
