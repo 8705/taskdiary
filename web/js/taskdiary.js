@@ -38,7 +38,7 @@ $(function() {
         function appendInput(last_num) {
             var clone = $('input[data-input-num='+last_num+']').parent().clone(true);
             clone.css('display','knone');
-            $div.append(clone).find('input:last').val('').attr('data-input-num', last_num + 1);
+            $div.append(clone).find('.input-task:last').val('').attr('data-input-num', last_num + 1);
         }
         function isEmpty(number, e) {
             if(number === 8) {

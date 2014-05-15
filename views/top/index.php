@@ -46,7 +46,10 @@
             <h2>今日のタスク</h2>
             <form action="/task/add_task" method="POST">
                 <ul id="task_add">
-                    <li><input type="text" class="input-task form-control" data-input-num="1" name="add_task[]"/></li>
+                    <li>
+                        <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]"/>
+                        <input type="hidden" name="task_limit[]" value="<?php echo date('Y-m-d'); ?>">
+                    </li>
                 </ul>
                 <p><input type="submit" value="送信" class="btn btn-primary"></p>
             </form>
