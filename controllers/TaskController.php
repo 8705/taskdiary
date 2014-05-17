@@ -50,10 +50,6 @@ class TaskController extends AppController
 
         $user     = $this->session->get('user');
         $posts     = $this->request->getPost();
-        // if(!is_array($posts['category_id'])) {
-        //     $posts['category_id'] = array($posts['category_id']);
-        // }
-        // var_dump($posts);exit;
         foreach($posts['task_name'] as $key => $task_name) {
             if(strlen($task_name)) {
                 $this->_add($user['user_id'], array(
@@ -77,6 +73,29 @@ class TaskController extends AppController
         }
 
         return $this->redirect('/');
+    }
+
+    public function doneAction($params) {
+        $task_id = $params['property'];
+        $task = $this->db_manager->get('Task')->fetchById($task_id);
+        if(!$task) {
+            $this->forward404('そんなタスクはないです');
+        }
+        $task_id_done = $this->db_manager->get('Task')->toggleIsDoneById($task_id);
+        if($task_id_done !== false) {
+            $res = array(
+                "error"         => "false",
+                "task_id"       => $task_id,
+                "task_is_done"  => $task_id_done,
+            );
+        } else {
+            $res = array(
+                "error"         => "true",
+            );
+        }
+        header('Content-Type: application/json');
+        echo json_encode($res);
+        exit;
     }
 
     public function deleteAction($params)

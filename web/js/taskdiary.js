@@ -3,6 +3,15 @@
 */
 
 $(function() {
+    //イベントデフォルトを抑止
+    function cancelEvent(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        } else if (window.event) {
+            window.event.returnValue = false;
+        }
+    }
+
     function Task($div){
         function getNumberInput(e) {
 
@@ -148,4 +157,39 @@ $(function() {
         var is_done = task.isDone();
         task.toggleDone(id, is_done);
     });
+
+    //Check Task
+        $(document).on('click','.check-task', function(e){
+            cancelEvent(e);
+            var taskId      = $(this).attr('name');
+            var checked = '';
+
+            $.ajax({
+                url: '/task/done/'+ taskId,
+                type: 'POST',
+                timeout:5000,
+                data : {
+                },
+                beforeSend : function() {
+                    //$('#task_' + taskId +' .check-task').html('<img src="/img/ajax-loader.gif" alt="" />');
+                },
+                success:function(data){
+                    if(data.task_is_done == 1) {
+                        checked = true;
+
+                    } else {
+                        checked = false;
+                    }
+                    $('.check-task[name='+data.task_id+']').prop('checked',checked);
+                    $('.check-task[name='+data.task_id+']').parent().parent().toggleClass('done');
+
+                },
+                error : function() {
+                    // popUpPanel(true, 'サーバーエラー')
+                },
+                complete : function() {
+                    // $('#task_' + taskId +' .check-task').html('<input type="checkbox" '+ checked +'/>');
+                },
+            });
+        });
 });

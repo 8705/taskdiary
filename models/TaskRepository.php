@@ -57,6 +57,14 @@ class TaskRepository extends DbRepository
         return $row['count'];
     }
 
+    public function fetchIsDoneById($task_id) {
+        $sql = "SELECT task_is_done
+                    FROM tasks
+                    WHERE task_id = ?
+                ";
+        return $this->fetch($sql, array($task_id));
+    }
+
     public function insert($user_id, $post)
     {
         $now = new DateTime();
@@ -104,6 +112,35 @@ class TaskRepository extends DbRepository
             $today,
             $task_id,
         ));
+    }
+    public function toggleIsDoneById($task_id) {
+        $row = $this->fetchIsDoneById($task_id);
+        $task_is_done = $row['task_is_done'];
+        if($task_is_done === '1') {
+            $toggled_is_done = '0';
+        } else {
+            $toggled_is_done = '1';
+        }
+
+        $now = new DateTime();
+        $today = $now->format('Y-m-d H:i:s');
+
+        $sql = "UPDATE tasks
+                    SET task_is_done = ?,
+                        task_finish = ?,
+                        task_modified = ?
+                    WHERE task_id = ?";
+        $stmt = $this->execute($sql, array(
+            $toggled_is_done,
+            $today,
+            $today,
+            $task_id
+        ));
+
+        if($stmt) {
+            return $toggled_is_done;
+        }
+        return false;
     }
 
     public function validateAdd($post)
