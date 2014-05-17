@@ -50,7 +50,7 @@
                         <li class="task list-group-item <?php if ($v['task_is_done'] == 1) echo 'done'; ?>">
                             <p>
                                 <input type="hidden" name="<?php echo $v['task_id']; ?>" value="0">
-                                <input type="checkbox" name="<?php echo $v['task_id']; ?>" value="1" <?php if ($v['task_is_done'] == 1) echo "checked='checked'"; ?> >
+                                <input type="checkbox" class="check-task" name="<?php echo $v['task_id']; ?>" value="1" <?php if ($v['task_is_done'] == 1) echo "checked='checked'"; ?> >
                                 <?php echo $this->escape($v['task_name']); ?>
                                 <?php if (isset($v['category_name'])) echo '('.$this->escape($v['category_name']).')'; ?>
                                 <span>
