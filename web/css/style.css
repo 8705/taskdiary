@@ -1,5 +1,11 @@
 @charset "utf-8";
 
+.clearfix:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
 /**********************************
     開発中
 **********************************/
@@ -67,4 +73,18 @@ ul#task_add {
     box-shadow: none;
     border-bottom: 1px solid #ccc;
     border-radius: 0px;
+}
+
+#task_add .input-task {
+    width:520px;
+    float:left;
+}
+#task_add .input-date {
+    width:140px;
+    float:left;
+    border:none;
+}
+
+#task_add .input-category {
+    width: 150px;
 }

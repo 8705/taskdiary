@@ -24,11 +24,15 @@
                     <input type="submit" class="btn btn-info" value="追加">
                 </form>
             </ul>
-
-            <h2>タスク追加</h2>
-            <form action="/task/add" method="POST">
-                <p>
-                    <select name="category_id" id="" class="form-control">
+        </div>
+        <div class="col-md-9 tasks">
+            <h2>今日のタスク</h2>
+            <form action="/task/add_task" method="POST">
+                <ul id="task_add">
+                    <li class="clearfix">
+                        <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]"/>
+                        <input type="date" class="input-date" name="task_limit[]" value="<?php echo date('Y-m-d'); ?>">
+                        <select name="category_id[]" class="input-category" id="" class="form-control">
                         <option value="">カテゴリーを選択</option>
                         <?php foreach($categories as $v): ?>
                             <option value="<?php echo $this->escape($v['category_id']) ?>">
@@ -36,19 +40,6 @@
                             </option>
                         <?php endforeach; ?>
                     </select>
-                </p>
-                <p><input type="text" class="form-control" placeholder="タスク" name="task_name"></p>
-                <input type="date" name="task_limit">
-                <input type="submit" class="btn btn-info" value="タスク追加">
-            </form>
-        </div>
-        <div class="col-md-9 tasks">
-            <h2>今日のタスク</h2>
-            <form action="/task/add_task" method="POST">
-                <ul id="task_add">
-                    <li>
-                        <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]"/>
-                        <input type="hidden" name="task_limit[]" value="<?php echo date('Y-m-d'); ?>">
                     </li>
                 </ul>
                 <p><input type="submit" value="送信" class="btn btn-primary"></p>

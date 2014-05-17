@@ -27,7 +27,7 @@ class TaskController extends AppController
 
     public function _add($user, $post)
     {
-
+        // var_dump($post);exit;
         $res = $this->db_manager->get('Task')->insert($user['user_id'], $post);
         $last_insert_id = $res;
 
@@ -50,12 +50,16 @@ class TaskController extends AppController
 
         $user     = $this->session->get('user');
         $posts     = $this->request->getPost();
-        // var_dump($post);exit;
+        // if(!is_array($posts['category_id'])) {
+        //     $posts['category_id'] = array($posts['category_id']);
+        // }
+        // var_dump($posts);exit;
         foreach($posts['task_name'] as $key => $task_name) {
             if(strlen($task_name)) {
                 $this->_add($user['user_id'], array(
-                    'task_name'=>$task_name,
-                    'task_limit'=>$posts['task_limit'][$key]
+                    'task_name'     =>$task_name,
+                    'task_limit'    =>$posts['task_limit'][$key],
+                    'category_id'   =>$posts['category_id'][$key]
                 ));
             }
         }
