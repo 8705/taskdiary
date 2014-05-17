@@ -1,0 +1,151 @@
+/*
+    Task Diary App Js
+*/
+
+$(function() {
+    function Task($div){
+        function getNumberInput(e) {
+
+        }
+        function isFirstString(e) {
+            if(e.val().length == 0) {
+                return true;
+            }
+            return false;
+        }
+        function isLastChild(e) {
+            // var last_num = $div.find('.input-task:last').data('input-num');
+            var last_num = $div.find('.input-task').length;
+            if(last_num == e.attr('data-input-num')) {
+                return last_num;
+            }
+            return false;
+        }
+        function isPreLastChild(e) {
+            var pre_last_num = $div.find('.input-task').length - 1;
+            if(pre_last_num == e.attr('data-input-num')) {
+                return true;
+            }
+            return false;
+        }
+        function isPressedEnter(number) {
+            console.log(number);
+            if(number === 13) {
+                return true;
+            }
+            return false;
+        }
+        function appendInput(last_num) {
+            var clone = $('input[data-input-num='+last_num+']').parent().clone(true);
+            clone.css('display','knone');
+            $div.append(clone).find('.input-task:last').val('').attr('data-input-num', last_num + 1);
+        }
+        function isEmpty(number, e) {
+            if(number === 8) {
+                if(e.val().length === 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        function notEmpty(e) {
+            if(e.val().length > 0) {
+                return true;
+            }
+            return false;
+        }
+        function deleteLastInput() {
+            var last_input = $div.find('.input-task:last');
+            last_input.parent().remove();
+        }
+        function isPressedJp(number) {
+            if(number === 229) {
+                return true;
+            }
+
+            /*
+                firefoxはkeyUp時に13を取得するしかエンター日本語からのエンター判別法がない
+            */
+            // if(number === 13) {
+            //     return true;
+            // }
+
+            return false;
+        }
+        function focusNextInput(e) {
+            var focused_id = e.attr('data-input-num');
+            var next_focus = parseInt(focused_id) + 1;
+            $('input[data-input-num='+ next_focus+']').focus();
+        }
+        $.extend(this,{
+            'getNumberInput'    : getNumberInput,
+            'isFirstString'     : isFirstString,
+            'isLastChild'       : isLastChild,
+            'isPreLastChild'    : isPreLastChild,
+            'appendInput'       : appendInput,
+            'isPressedEnter'    : isPressedEnter,
+            'isEmpty'           : isEmpty,
+            'notEmpty'          : notEmpty,
+            'deleteLastInput'   : deleteLastInput,
+            'isPressedJp'       : isPressedJp,
+            'focusNextInput'    : focusNextInput
+        });
+    }
+
+    var task = new Task($('#task_add'));
+
+    $(document).on('keypress', '.input-task', function(e){
+        var number              = task.getNumberInput($(this));
+        var is_first_string     = task.isFirstString($(this));
+        var is_last             = task.isLastChild($(this));
+        var is_pressed_enter    = task.isPressedEnter(e.which);
+        var not_empty           = task.notEmpty($(this));
+        // var is_empty        = task.isEmpty($(this));
+
+        //最初の文字が入力された
+        if(is_last && is_first_string && e.which !== 13) {
+            task.appendInput(is_last);
+        }
+
+        //改行ではないエンター押下時、次のinpuにフォーカス移動
+        if(not_empty && is_pressed_enter) {
+            task.focusNextInput($(this));
+
+            //エンターでサブミット押す挙動を止める
+            return false;
+        }
+
+    });
+
+    $(document).on('keyup', '.input-task', function(e) {
+        var is_last             = task.isLastChild($(this));
+        var is_pre_last             = task.isPreLastChild($(this));
+        var is_empty        = task.isEmpty(e.which, $(this));
+        var is_first_string     = task.isFirstString($(this));
+        var is_pressed_jp       = task.isPressedJp(e.which);
+        //空になった
+        if(is_pre_last && is_empty) {
+            task.deleteLastInput();
+        }
+
+        if(is_last && is_first_string && is_pressed_jp) {
+            task.appendInput(is_last);
+        }
+    });
+    $(document).on('keydown','.input-task', function(e) {
+        var is_last             = task.isLastChild($(this));
+        var is_first_string     = task.isFirstString($(this));
+        var is_pressed_jp       = task.isPressedJp(e.which);
+        if(is_last && is_first_string && is_pressed_jp && e.which !== 13) {
+            task.appendInput(is_last);
+        }
+    });
+    $('#task-submit').click(function(){
+
+    });
+    $(document).on('click', '.task-done', function(e){
+        var id      = task.getTaskId();
+        var is_done = task.isDone();
+        task.toggleDone(id, is_done);
+    });
+});

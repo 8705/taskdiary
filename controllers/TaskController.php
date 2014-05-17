@@ -7,7 +7,7 @@
  */
 class TaskController extends AppController
 {
-    protected $auth_actions = array('index', 'add', 'delete');
+    protected $auth_actions = array('index', 'add', 'delete', 'add_task');
 
     public function addAction()
     {
@@ -31,7 +31,7 @@ class TaskController extends AppController
         $res = $this->db_manager->get('Task')->insert($user['user_id'], $post);
         $last_insert_id = $res;
 
-        if ($post['category_id']) {
+        if (isset($post['category_id']) && $post['category_id']) {
             $category = $this->db_manager->get('Category')->fetchById($post['category_id']);
             if(!$category) {
                 $this->forward404('そんなカテゴリーねえよｗｗ');
@@ -40,6 +40,26 @@ class TaskController extends AppController
         }
 
             return $this->redirect('/');
+    }
+
+    public function add_taskAction() {
+
+        if (!$this->request->isPost()) {
+            $this->forward404();
+        }
+
+        $user     = $this->session->get('user');
+        $posts     = $this->request->getPost();
+        // var_dump($post);exit;
+        foreach($posts['task_name'] as $key => $task_name) {
+            if(strlen($task_name)) {
+                $this->_add($user['user_id'], array(
+                    'task_name'=>$task_name,
+                    'task_limit'=>$posts['task_limit'][$key]
+                ));
+            }
+        }
+        return $this->redirect('/');
     }
 
     public function updateIsDoneAction()
