@@ -32,7 +32,7 @@
                     <li class="clearfix">
                         <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]"/>
                         <input type="date" class="input-date" name="task_limit[]" value="<?php echo date('Y-m-d'); ?>">
-                        <select name="category_id[]" class="input-category" id="" class="form-control">
+                        <select name="category_id[]" class="input-category form-control">
                         <option value="">カテゴリーを選択</option>
                         <?php foreach($categories as $v): ?>
                             <option value="<?php echo $this->escape($v['category_id']) ?>">
