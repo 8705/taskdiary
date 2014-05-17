@@ -80,9 +80,13 @@ ul#task_add {
     float:left;
 }
 #task_add .input-date {
-    width:140px;
+    width:150px;
     float:left;
     border:none;
+    border: 1px solid #ccc;
+    height: 34px;
+    margin: 0px 5px;
+    padding: 0px 5px;
 }
 
 #task_add .input-category {
