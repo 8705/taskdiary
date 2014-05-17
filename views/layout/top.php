@@ -8,7 +8,7 @@
         <p>
             <?php if ($session->isAuthenticated()): ?>
                 <a href="<?php echo $base_url; ?>/">ホーム</a>
-                <a href="<?php echo $base_url; ?>/account">アカウント</a>
+                <a href="<?php echo $base_url; ?>/settings/index">アカウント設定</a>
                 <a href="<?php echo $base_url; ?>/account/logout">サインアウト</a>
             <?php else: ?>
                 <a href="<?php echo $base_url; ?>/account/login">ログイン</a>
