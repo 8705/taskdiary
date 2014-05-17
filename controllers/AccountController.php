@@ -7,7 +7,7 @@
  */
 class AccountController extends AppController
 {
-    protected $auth_actions = array('signout');
+    protected $auth_actions = array('logout');
 
     public function indexAction()
     {

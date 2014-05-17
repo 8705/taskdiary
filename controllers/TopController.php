@@ -25,10 +25,6 @@ class TopController extends AppController
 
     public function viewAction($params)
     {
-        if (!$this->session->isAuthenticated()) {
-            return $this->redirect('/account/index');
-        }
-
         if ($this->request->isPost()) {
             $post = $this->request->getPost();
             foreach ($post as $task_id => $task_is_done) {

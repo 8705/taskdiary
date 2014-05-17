@@ -37,9 +37,11 @@ class SettingsController extends AppController
 
     }
 
-    public function uploadImageAction()
+    public function passwordAction()
     {
-        
+        if (!$this->request->isPost()) {
+            return $this->render(array('user_id' => $this->login_user['user_id'], 'errors' => null));
+        }
     }
 
 }
