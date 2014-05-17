@@ -5,8 +5,8 @@
         <div class="col-md-3 projects">
             <h2>タスク一覧</h2>
             <ul class="list-group">
-                <li><a href="/top/index">今日のタスク</a></li>
-                <li><a href="/top/list?nav=0">過去のタスク</a></li>
+                <li class="list-group-item"><a href="/top/index">今日のタスク</a></li>
+                <li class="list-group-item"><a href="/top/list?nav=0">過去のタスク</a></li>
             </ul>
             <h2>カテゴリー</h2>
             <ul class="list-group">
