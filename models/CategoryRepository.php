@@ -18,7 +18,7 @@ class CategoryRepository extends DbRepository
         ));
     }
 
-    public function fetchTopIndex($user_id)
+    public function fetchSideColum($user_id)
     {
         $sql = "SELECT category_id,
                        category_name

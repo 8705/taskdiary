@@ -29,6 +29,23 @@ class TaskRepository extends DbRepository
         return $this->fetchAll($sql, array($user_id, $today, $today, $today));
     }
 
+    public function fetchTopList($user_id, $year, $month)
+    {
+        $yyyymm = $year.'-'.$month;
+
+        $sql = "SELECT t.task_name,
+                       t.task_finish,
+                       c.category_name
+                    FROM tasks t
+                        LEFT JOIN tasks_categories tc ON tc.task_id = t.task_id
+                        LEFT JOIN categories c ON c.category_id = tc.category_id
+                    WHERE t.user_id = ? AND DATE_FORMAT(t.task_finish,'%Y-%m') = ?
+                    ORDER BY t.task_finish ASC";
+
+        return $this->fetchAll($sql, array($user_id, $yyyymm));
+
+    }
+
     public function fetchById($task_id)
     {
         $sql = "SELECT COUNT(task_id) as count

@@ -12,39 +12,40 @@ class TopController extends AppController
 
     public function indexAction()
     {
-        $user = $this->session->get('user');
+        $tasks      = $this->db_manager->get('Task')->fetchTopIndex($this->login_user['user_id']);
+        $categories = $this->db_manager->get('Category')->fetchSideColum($this->login_user['user_id']);
 
-        $tasks      = $this->db_manager->get('Task')->fetchTopIndex($user['user_id']);
-        $categories = $this->db_manager->get('Category')->fetchTopIndex($user['user_id']);
+        $now   = new DateTime();
 
-        return $this->render(array('user'       => $user,
+        return $this->render(array('user'       => $this->login_user,
                                    'tasks'      => $tasks,
                                    'categories' => $categories,
+                                   'year'       => $now->format('Y'),
+                                   'month'      => $now->format('m')
                             ));
     }
 
-    public function viewAction($params)
+    public function listAction()
     {
-        if ($this->request->isPost()) {
-            $post = $this->request->getPost();
-            foreach ($post as $task_id => $task_is_done) {
-                $this->db_manager->get('Task')->updateIsDone($task_id, $task_is_done);
-            }
-        }
+        $get = $this->request->getGet();
 
-        $project_id = $params['property'];
-        $user = $this->session->get('user');
+        $year  = date('Y', strtotime($get['nav']. ' month'));
+        $month = date('m', strtotime($get['nav']. ' month'));
 
-        $project_name   = $this->db_manager->get('Project')->fetchNameById($project_id);
-        $tasks          = $this->db_manager->get('Task')->fetchAllByProjectId($project_id);
-        // $projects       = $this->db_manager->get('Project')->fetchAllByUserId($user['user_id']);
+        $tasks      = $this->db_manager->get('Task')->fetchTopList($this->login_user['user_id'],
+                                                                   $year,
+                                                                   $month
+                                                                   );
+        $categories = $this->db_manager->get('Category')->fetchSideColum($this->login_user['user_id']);
 
-        return $this->render(array('user'          => $user,
-                                   'project_id'    => $project_id,
-                                   'project_name'  => $project_name,
-                                   'tasks'         => $tasks,
-                                   // 'projects'      => $projects,
-                             ));
+        return $this->render(array('user'       => $this->login_user,
+                                   'year'       => $year,
+                                   'month'      => $month,
+                                   'prev'       => $get['nav'] - 1,
+                                   'next'       => $get['nav'] + 1,
+                                   'tasks'      => $tasks,
+                                   'categories' => $categories,
+                            ));
     }
 
 }

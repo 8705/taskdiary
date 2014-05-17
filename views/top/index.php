@@ -3,9 +3,14 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3 projects">
-            <h2>過去のタスク一覧</h2>
+            <h2>タスク一覧</h2>
             <ul class="list-group">
-                <li><a href="/top/donetask">過去のタスク</a></li>
+                <li><a href="/top/index">今日のタスク</a></li>
+                <li>
+                    <a href="/top/list?nav=0">
+                        過去のタスク
+                    </a>
+                </li>
             </ul>
             <h2>カテゴリー</h2>
             <ul class="list-group">
