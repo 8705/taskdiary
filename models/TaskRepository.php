@@ -19,11 +19,11 @@ class TaskRepository extends DbRepository
                         LEFT JOIN tasks_categories tc ON tc.task_id = t.task_id
                         LEFT JOIN categories c ON c.category_id = tc.category_id
                     WHERE t.user_id = ?
-                        AND DATE_FORMAT(t.task_limit,'%Y-%m-%d') = ?
+                        AND (DATE_FORMAT(t.task_limit,'%Y-%m-%d') = ?
                         OR ((DATE_FORMAT(t.task_limit,'%Y-%m-%d') < ?)
                             AND t.task_is_done = 0
                             )
-                        OR DATE_FORMAT(t.task_finish,'%Y-%m-%d') = ?
+                        OR DATE_FORMAT(t.task_finish,'%Y-%m-%d') = ?)
                     ORDER BY t.task_limit DESC";
 
         return $this->fetchAll($sql, array($user_id, $today, $today, $today));
