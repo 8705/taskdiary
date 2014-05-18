@@ -71,6 +71,13 @@ a .glyphicon-remove-circle {
 a:hover .glyphicon-remove-circle {
     color:#6d6d6d;
 }
+.task-list .placeholder {
+    margin:4px 0px 4px 0px ;
+    height:42px;
+    border: 1px dashed #FF9090;
+    background-color:#FFE5E5;
+    list-style: none;
+}
 
 /*************************************
     task_add @top

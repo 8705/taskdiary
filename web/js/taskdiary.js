@@ -38,7 +38,6 @@ $(function() {
             return false;
         }
         function isPressedEnter(number) {
-            console.log(number);
             if(number === 13) {
                 return true;
             }
@@ -196,8 +195,11 @@ $(function() {
     //sortable
     $('.sort-list').sortable({
         axis : 'y',
-        opacity : 0.7,
+        opacity : 0.8,
         cursor : 'move',
+        // items : $('.sort-list li:not(.done)'),    //完了しているタスクは並び替え出来ない
+        handle : $('li:not(.done)'),    //完了しているタスクは並び替え出来ない
+        placeholder: "placeholder",
         // grid : [30,30],
         update : function(){
             $.ajax({
@@ -205,7 +207,7 @@ $(function() {
                 type : 'POST',
                 timeout : 5000,
                 data : {
-                    sequence : $(this).sortable('serialize')
+                    sequence : $(this).sortable('serialize',{key:'task[]'})
                 },
                 beforeSend : function() {
                     //全ての編集中のタスクを元に戻す。
@@ -219,7 +221,7 @@ $(function() {
                 complete : function() {
 
                 }
-            })
+            });
         }
     });
 });
