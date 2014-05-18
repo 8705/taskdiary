@@ -65,6 +65,12 @@ input.error {
 form.task-list {
     margin:10px 0px;
 }
+a .glyphicon-remove-circle {
+    color:#ccc;
+}
+a:hover .glyphicon-remove-circle {
+    color:#6d6d6d;
+}
 
 /*************************************
     task_add @top

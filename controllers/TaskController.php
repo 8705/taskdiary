@@ -123,11 +123,11 @@ class TaskController extends AppController
 
         if(!in_array(false, $result_array)) {
             $res = array(
-                "error"         => "false"
+                "error" => "false"
             );
         } else {
             $res = array(
-                "error"         => "true"
+                "error" => "true"
             );
         }
 

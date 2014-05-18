@@ -16,7 +16,7 @@
                             <a href="/top/view/<?php echo $this->escape($v['category_id']); ?>">
                                 <?php echo $this->escape($v['category_name']); ?>
                             </a>
-                            <a href="/category/delete/<?php echo $this->escape($v['category_id']); ?>">x</a>
+                            <a href="/category/delete/<?php echo $this->escape($v['category_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
                         </p>
                     </li>
                 <?php endforeach; ?>
@@ -31,7 +31,7 @@
             <form action="/task/add_task" method="POST">
                 <ul id="task_add">
                     <li class="clearfix">
-                        <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]"/>
+                        <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]" placeholder="タスクを入力"/>
                         <input type="date" class="input-date" name="task_limit[]" value="<?php echo date('Y-m-d'); ?>">
                         <select name="category_id[]" class="input-category form-control">
                         <option value="">カテゴリーを選択</option>
@@ -58,7 +58,7 @@
                                     <a href="/comment/add/<?php echo $this->escape($v['task_id']); ?>">コメント</a>
                                 </span>
                                 <span>
-                                    <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>">削除</a>
+                                    <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
                                 </span>
                             </p>
                         </li>
