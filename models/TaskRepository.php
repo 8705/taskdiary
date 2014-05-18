@@ -24,7 +24,7 @@ class TaskRepository extends DbRepository
                             AND t.task_is_done = 0
                             )
                         OR DATE_FORMAT(t.task_finish,'%Y-%m-%d') = ?)
-                    ORDER BY t.task_sequence ASC";
+                    ORDER BY t.task_is_done ASC,t.task_sequence ASC";
 
         return $this->fetchAll($sql, array($user_id, $today, $today, $today));
     }

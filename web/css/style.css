@@ -45,6 +45,7 @@ text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
 .done {
     color: #999;
     text-decoration: line-through;
+    background-color: #ececec;
 }
 
 /*************************************
@@ -56,6 +57,13 @@ input.error {
 }
 .error-message {
     color: #FF4A4A;
+}
+
+/*************************************
+    task_list @top
+*************************************/
+form.task-list {
+    margin:10px 0px;
 }
 
 /*************************************
@@ -84,11 +92,13 @@ ul#task_add {
     float:left;
     border:none;
     border: 1px solid #ccc;
-    height: 34px;
-    margin: 0px 5px;
+    height: 28px;
+    margin: 4px 5px;
     padding: 0px 5px;
 }
 
 #task_add .input-category {
     width: 150px;
+    height: 27px;
+    margin: 4px 0px;
 }

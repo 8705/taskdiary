@@ -45,7 +45,7 @@
                 </ul>
                 <p><input type="submit" value="送信" class="btn btn-primary"></p>
             </form>
-            <form action="/task/updateIsDone" method="POST">
+            <form class="task-list" method="POST">
                 <ul class="list-group sort-list ui-sortable">
                     <?php foreach ($tasks as $v): ?>
                         <li class="task list-group-item <?php if ($v['task_is_done'] == 1) echo 'done'; ?>" id="task_<?php echo $v['task_id']; ?>">
