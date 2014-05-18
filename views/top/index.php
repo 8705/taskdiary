@@ -46,9 +46,9 @@
                 <p><input type="submit" value="送信" class="btn btn-primary"></p>
             </form>
             <form action="/task/updateIsDone" method="POST">
-                <ul class="list-group">
+                <ul class="list-group sort-list ui-sortable">
                     <?php foreach ($tasks as $v): ?>
-                        <li class="task list-group-item <?php if ($v['task_is_done'] == 1) echo 'done'; ?>">
+                        <li class="task list-group-item <?php if ($v['task_is_done'] == 1) echo 'done'; ?>" id="task_<?php echo $v['task_id']; ?>">
                             <p>
                                 <input type="hidden" name="<?php echo $v['task_id']; ?>" value="0">
                                 <input type="checkbox" class="check-task" name="<?php echo $v['task_id']; ?>" value="1" <?php if ($v['task_is_done'] == 1) echo "checked='checked'"; ?> >
@@ -64,7 +64,6 @@
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <input type='submit' class="btn btn-info" value='状態を更新'>
             </form>
         </div>
     </div>

@@ -110,7 +110,30 @@ class TaskController extends AppController
         $this->db_manager->get('Task')->delete($task_id);
 
         return $this->redirect('/');
+    }
 
+    public function sortAction() {
+        $post = $this->request->getPost();
+        $sequence = $post['sequence'];
+        parse_str($sequence); //$taskに配列が入る
+        $result_array = array();
+        foreach ($task as $sequence => $task_id) {
+            $result_array[] = $this->db_manager->get('Task')->updateSequence($sequence,$task_id);
+        }
+
+        if(!in_array(false, $result_array)) {
+            $res = array(
+                "error"         => "false"
+            );
+        } else {
+            $res = array(
+                "error"         => "true"
+            );
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($res);
+        exit;
     }
 
 }

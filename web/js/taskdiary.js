@@ -159,37 +159,67 @@ $(function() {
     });
 
     //Check Task
-        $(document).on('click','.check-task', function(e){
-            cancelEvent(e);
-            var taskId      = $(this).attr('name');
-            var checked = '';
+    $(document).on('click','.check-task', function(e){
+        cancelEvent(e);
+        var taskId      = $(this).attr('name');
+        var checked = '';
 
+        $.ajax({
+            url: '/task/done/'+ taskId,
+            type: 'POST',
+            timeout:5000,
+            data : {
+            },
+            beforeSend : function() {
+                //$('#task_' + taskId +' .check-task').html('<img src="/img/ajax-loader.gif" alt="" />');
+            },
+            success:function(data){
+                if(data.task_is_done == 1) {
+                    checked = true;
+
+                } else {
+                    checked = false;
+                }
+                $('.check-task[name='+data.task_id+']').prop('checked',checked);
+                $('.check-task[name='+data.task_id+']').parent().parent().toggleClass('done');
+
+            },
+            error : function() {
+                // popUpPanel(true, 'サーバーエラー')
+            },
+            complete : function() {
+                // $('#task_' + taskId +' .check-task').html('<input type="checkbox" '+ checked +'/>');
+            },
+        });
+    });
+
+    //sortable
+    $('.sort-list').sortable({
+        axis : 'y',
+        opacity : 0.7,
+        cursor : 'move',
+        // grid : [30,30],
+        update : function(){
             $.ajax({
-                url: '/task/done/'+ taskId,
-                type: 'POST',
-                timeout:5000,
+                url : '/task/sort',
+                type : 'POST',
+                timeout : 5000,
                 data : {
+                    sequence : $(this).sortable('serialize')
                 },
                 beforeSend : function() {
-                    //$('#task_' + taskId +' .check-task').html('<img src="/img/ajax-loader.gif" alt="" />');
+                    //全ての編集中のタスクを元に戻す。
                 },
-                success:function(data){
-                    if(data.task_is_done == 1) {
-                        checked = true;
-
-                    } else {
-                        checked = false;
-                    }
-                    $('.check-task[name='+data.task_id+']').prop('checked',checked);
-                    $('.check-task[name='+data.task_id+']').parent().parent().toggleClass('done');
+                success : function() {
 
                 },
                 error : function() {
-                    // popUpPanel(true, 'サーバーエラー')
+
                 },
                 complete : function() {
-                    // $('#task_' + taskId +' .check-task').html('<input type="checkbox" '+ checked +'/>');
-                },
-            });
-        });
+
+                }
+            })
+        }
+    });
 });
