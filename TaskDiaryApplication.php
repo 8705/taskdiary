@@ -18,10 +18,14 @@ class TaskDiaryApplication extends Application
     {
         return array(
             '/'
-                => array('controller' => 'project', 'action' => 'index'),
+                => array('controller' => 'top', 'action' => 'index'),
+            '/:controller'
+                => array('action' => 'index'),
             '/:controller/'
                 => array('action' => 'index'),
             '/:controller/:action'
+                => array(),
+            '/:controller/:action/'
                 => array(),
             '/:controller/:action/:property'
                 => array(),

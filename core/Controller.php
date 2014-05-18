@@ -30,6 +30,13 @@ abstract class Controller
         $this->response    = $application->getResponse();
         $this->session     = $application->getSession();
         $this->db_manager  = $application->getDbManager();
+
+        //アプリケーションコントローラの初期メソッドを実行
+        $this->beforeFilter();  //名前はcakeに倣う
+    }
+
+    protected function beforeFilter()
+    {
     }
 
     /**
@@ -69,6 +76,9 @@ abstract class Controller
      */
     protected function render($variables = array(), $template = null, $layout = 'layout')
     {
+        if(isset($this->layout) && $layout === 'layout') {
+            $layout = $this->layout;
+        }
         $defaults = array(
             'request'  => $this->request,
             'base_url' => $this->request->getBaseUrl(),

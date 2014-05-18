@@ -10,6 +10,7 @@ class DbManager
     protected $connections = array();
     protected $repository_connection_map = array();
     protected $repositories = array();
+    public    $transaction_is_begin = false;
 
     /**
      * データベースへ接続
@@ -100,6 +101,47 @@ class DbManager
         }
 
         return $this->repositories[$repository_name];
+    }
+
+    /**
+     *トランザクション用関数
+     *
+     */
+    // 対象のDB接続がトランザクション中かどうか判別する
+    public function isBegin()
+    {
+        return $this->$transaction_is_begin;
+    }
+    
+    // 対象のDB接続のトランザクションフラグを更新
+    public function setBegin($boo = NULL)
+    {
+        if(is_null($boo)){
+            echo 'No bool value';
+            exit;
+        }
+        $this->$transaction_is_begin = $boo;
+    }
+
+    public function begin()
+    {
+        if ($this->transaction_is_begin === false) {
+            $this->begin();
+        }
+    }
+
+    public function commit($name)
+    {
+        if ($this->transaction_is_begin === true) {
+            $this->commit();
+        }
+    }
+    
+    public function allRollback($name)
+    {
+        if ($this->transaction_is_begin === true) {
+            $this->rollback();
+        }
     }
 
     /**

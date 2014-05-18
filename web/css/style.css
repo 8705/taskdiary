@@ -1,5 +1,11 @@
 @charset "utf-8";
 
+.clearfix:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
 /**********************************
     開発中
 **********************************/
@@ -39,5 +45,73 @@ text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
 .done {
     color: #999;
     text-decoration: line-through;
+    background-color: #ececec;
 }
 
+/*************************************
+    error
+*************************************/
+input.error {
+    background-color: #FFF2F2;
+    border-color: #FFA0A0;
+}
+.error-message {
+    color: #FF4A4A;
+}
+
+/*************************************
+    task_list @top
+*************************************/
+form.task-list {
+    margin:10px 0px;
+}
+a .glyphicon-remove-circle {
+    color:#ccc;
+}
+a:hover .glyphicon-remove-circle {
+    color:#6d6d6d;
+}
+.task-list .placeholder {
+    margin:4px 0px 4px 0px ;
+    height:42px;
+    border: 1px dashed #FF9090;
+    background-color:#FFE5E5;
+    list-style: none;
+}
+
+/*************************************
+    task_add @top
+*************************************/
+ul#task_add {
+    list-style: none;
+    padding-left: 0px;
+}
+#task_add li {
+    box-shadow: none;
+}
+#task_add li input {
+    border: none;
+    box-shadow: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0px;
+}
+
+#task_add .input-task {
+    width:520px;
+    float:left;
+}
+#task_add .input-date {
+    width:150px;
+    float:left;
+    border:none;
+    border: 1px solid #ccc;
+    height: 28px;
+    margin: 4px 5px;
+    padding: 0px 5px;
+}
+
+#task_add .input-category {
+    width: 150px;
+    height: 27px;
+    margin: 4px 0px;
+}

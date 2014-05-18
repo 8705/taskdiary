@@ -39,10 +39,6 @@ class ProjectController extends AppController
     {
         $user = $this->session->get('user');
 
-        if(!$user) {
-            $this->forward404();
-        }
-
         if ($this->request->isPost()) {
             $post = $this->request->getPost();
             foreach ($post as $task_id => $task_is_done) {
@@ -50,8 +46,8 @@ class ProjectController extends AppController
             }
         }
 
-        $tasks      = $this->db_manager->get('Task')->fetchAllAndProjectNameByUserId($user['user_id']);
-        $projects   = $this->db_manager->get('Project')->fetchAllByUserId($user['user_id']);
+        // $tasks    = $this->db_manager->get('Task')->fetchAllAndProjectNameByUserId($user['user_id']);
+        // $projects = $this->db_manager->get('Project')->fetchAllByUserId($user['user_id']);
 
         return $this->render(array('user'      => $user,
                                    'tasks'     => $tasks,

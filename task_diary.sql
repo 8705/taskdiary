@@ -6,22 +6,38 @@ CREATE SCHEMA IF NOT EXISTS `task_diary` DEFAULT CHARACTER SET utf8 COLLATE utf8
 USE `task_diary` ;
 
 -- -----------------------------------------------------
+-- Table `task_diary`.`authority`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `task_diary`.`authority` (
+  `authority_id` TINYINT UNSIGNED NOT NULL,
+  `class` VARCHAR(255) NOT NULL,
+  UNIQUE INDEX `authority_id_UNIQUE` (`authority_id` ASC),
+  UNIQUE INDEX `class_UNIQUE` (`class` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `task_diary`.`users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `task_diary`.`users` (
   `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_name` VARCHAR(255) NOT NULL,
-  `user_mail` VARCHAR(255) NOT NULL,
-  `user_password` VARCHAR(255) NOT NULL,
-  `user_image` BLOB NULL,
-  `user_authority` TINYINT NOT NULL COMMENT '0:管理者\n1:一般ユーザー\n2:未認証ユーザー',
+  `user_mail` VARCHAR(255) NULL,
+  `user_password` VARCHAR(255) NULL,
+  `user_image` MEDIUMBLOB NULL,
+  `authority_id` TINYINT UNSIGNED NOT NULL DEFAULT 3,
   `user_created` DATETIME NOT NULL,
   `user_modified` DATETIME NOT NULL,
   `user_del_flg` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC),
   UNIQUE INDEX `user_mail_UNIQUE` (`user_mail` ASC),
-  UNIQUE INDEX `user_password_UNIQUE` (`user_password` ASC))
+  INDEX `fk_users_authority1_idx` (`authority_id` ASC),
+  CONSTRAINT `fk_users_authority1`
+    FOREIGN KEY (`authority_id`)
+    REFERENCES `task_diary`.`authority` (`authority_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -49,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `task_diary`.`autologin` (
   `autologin_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` INT UNSIGNED NOT NULL,
   `autologin_token` VARCHAR(255) NOT NULL,
-  `expired` DATETIME NOT NULL,
+  `expires` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`autologin_id`),
   INDEX `fk_autologin_user1_idx` (`user_id` ASC),
   CONSTRAINT `fk_autologin_user1`
@@ -67,49 +83,13 @@ CREATE TABLE IF NOT EXISTS `task_diary`.`twitter_oauth` (
   `tw_oauth_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` INT UNSIGNED NOT NULL,
   `twitter_id` VARCHAR(255) NOT NULL,
-  `tw_access_token` VARCHAR(255) NOT NULL,
+  `tw_oauth_token` VARCHAR(255) NOT NULL,
+  `tw_oauth_token_secret` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`tw_oauth_id`),
   INDEX `fk_twitter_oauth_user1_idx` (`user_id` ASC),
   CONSTRAINT `fk_twitter_oauth_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `task_diary`.`users` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `task_diary`.`projects`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `task_diary`.`projects` (
-  `project_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `project_name` VARCHAR(255) NOT NULL,
-  `project_text` TEXT NULL,
-  `project_created` DATETIME NOT NULL,
-  `project_modified` DATETIME NOT NULL,
-  `project_del_flg` TINYINT NOT NULL DEFAULT 0 COMMENT 'o:有効\n1:削除',
-  PRIMARY KEY (`project_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `task_diary`.`users_projects`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `task_diary`.`users_projects` (
-  `users_projects_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` INT UNSIGNED NOT NULL,
-  `project_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`users_projects_id`),
-  INDEX `fk_users_projects_users1_idx` (`user_id` ASC),
-  INDEX `fk_users_projects_projects1_idx` (`project_id` ASC),
-  CONSTRAINT `fk_users_projects_users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `task_diary`.`users` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_users_projects_projects1`
-    FOREIGN KEY (`project_id`)
-    REFERENCES `task_diary`.`projects` (`project_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -123,18 +103,14 @@ CREATE TABLE IF NOT EXISTS `task_diary`.`tasks` (
   `user_id` INT UNSIGNED NOT NULL,
   `project_id` INT UNSIGNED NULL,
   `task_name` VARCHAR(255) NOT NULL,
-  `task_id_done` TINYINT NULL,
+  `task_text` TEXT NULL,
+  `task_is_done` TINYINT(1) NOT NULL DEFAULT 0,
+  `task_limit` DATETIME NOT NULL,
+  `task_finish` DATETIME NULL,
   `task_created` DATETIME NOT NULL,
   `task_modified` DATETIME NOT NULL,
-  `task_del_flg` TINYINT NOT NULL DEFAULT 0 COMMENT 'o:有効\n1:削除',
   PRIMARY KEY (`task_id`),
-  INDEX `fk_tasks_projects1_idx` (`project_id` ASC),
   INDEX `fk_tasks_users1_idx` (`user_id` ASC),
-  CONSTRAINT `fk_tasks_projects1`
-    FOREIGN KEY (`project_id`)
-    REFERENCES `task_diary`.`projects` (`project_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_tasks_users1`
     FOREIGN KEY (`user_id`)
     REFERENCES `task_diary`.`users` (`user_id`)
@@ -150,6 +126,8 @@ CREATE TABLE IF NOT EXISTS `task_diary`.`categories` (
   `category_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` INT UNSIGNED NOT NULL,
   `category_name` VARCHAR(255) NOT NULL,
+  `category_created` DATETIME NOT NULL,
+  `category_modified` DATETIME NOT NULL,
   PRIMARY KEY (`category_id`),
   INDEX `fk_categories_users1_idx` (`user_id` ASC),
   CONSTRAINT `fk_categories_users1`
@@ -184,33 +162,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `task_diary`.`comments`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `task_diary`.`comments` (
-  `commect_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` INT UNSIGNED NOT NULL,
-  `task_id` INT UNSIGNED NOT NULL,
-  `comment_text` TEXT NOT NULL,
-  `comment_created` DATETIME NOT NULL,
-  `comment_modified` DATETIME NOT NULL,
-  `comment_del_flg` TINYINT NOT NULL DEFAULT 0 COMMENT 'o:有効\n1:削除',
-  PRIMARY KEY (`commect_id`),
-  INDEX `fk_comments_users1_idx` (`user_id` ASC),
-  INDEX `fk_comments_tasks1_idx` (`task_id` ASC),
-  CONSTRAINT `fk_comments_users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `task_diary`.`users` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_comments_tasks1`
-    FOREIGN KEY (`task_id`)
-    REFERENCES `task_diary`.`tasks` (`task_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `task_diary`.`facebook_oauth`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `task_diary`.`facebook_oauth` (
@@ -231,3 +182,10 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- ---------------------------------------------------
+-- Insert Autnority Table
+-- ---------------------------------------------------
+INSERT INTO  `task_diary`.`authority` (`authority_id` ,`class`) VALUES ('1', 'admin');
+INSERT INTO  `task_diary`.`authority` (`authority_id` ,`class`) VALUES ('2', 'regular');
+INSERT INTO  `task_diary`.`authority` (`authority_id` ,`class`) VALUES ('3', 'nonactive');
