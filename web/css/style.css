@@ -78,6 +78,9 @@ a:hover .glyphicon-remove-circle {
     background-color:#FFE5E5;
     list-style: none;
 }
+.task-list .over-deadline {
+    color:#FF7C7C;
+}
 
 /*************************************
     task_add @top

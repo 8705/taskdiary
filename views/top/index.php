@@ -58,6 +58,9 @@
                                 <span>
                                     <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
                                 </span>
+                                <?php if($v['task_limit'] <= date('Y-m-d')):?>
+                                <span class="over-deadline glyphicon glyphicon-exclamation-sign"></span>
+                                <?php endif; ?>
                             </p>
                         </li>
                     <?php endforeach; ?>
