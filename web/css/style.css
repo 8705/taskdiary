@@ -78,6 +78,12 @@ a:hover .glyphicon-remove-circle {
     background-color:#FFE5E5;
     list-style: none;
 }
+.task-list .task-comment a{
+    color:#ccc;
+}
+.task-list .task-comment a:hover {
+    color:#6d6d6d;
+}
 .task-list .over-deadline {
     color:#FF7C7C;
 }
