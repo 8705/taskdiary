@@ -78,6 +78,15 @@ a:hover .glyphicon-remove-circle {
     background-color:#FFE5E5;
     list-style: none;
 }
+.task-list .task-comment a{
+    color:#ccc;
+}
+.task-list .task-comment a:hover {
+    color:#6d6d6d;
+}
+.task-list .over-deadline {
+    color:#FF7C7C;
+}
 
 /*************************************
     task_add @top
@@ -102,7 +111,6 @@ ul#task_add {
 }
 #task_add .input-date {
     width:150px;
-    float:left;
     border:none;
     border: 1px solid #ccc;
     height: 28px;
@@ -114,4 +122,5 @@ ul#task_add {
     width: 150px;
     height: 27px;
     margin: 4px 0px;
+    float:left;
 }

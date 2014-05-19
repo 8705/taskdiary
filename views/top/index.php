@@ -31,16 +31,14 @@
             <form action="/task/add_task" method="POST">
                 <ul id="task_add">
                     <li class="clearfix">
-                        <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]" placeholder="タスクを入力"/>
-                        <input type="date" class="input-date" name="task_limit[]" value="<?php echo date('Y-m-d'); ?>">
                         <select name="category_id[]" class="input-category form-control">
                         <option value="">カテゴリーを選択</option>
                         <?php foreach($categories as $v): ?>
-                            <option value="<?php echo $this->escape($v['category_id']) ?>">
-                                <?php echo $this->escape($v['category_name']) ?>
-                            </option>
+                            <option value="<?php echo $this->escape($v['category_id']) ?>"><?php echo $this->escape($v['category_name']) ?></option>
                         <?php endforeach; ?>
-                    </select>
+                        </select>
+                        <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]" placeholder="タスクを入力"/>
+                        <input type="date" class="input-date" name="task_limit[]" value="<?php echo date('Y-m-d'); ?>">
                     </li>
                 </ul>
                 <p><input type="submit" value="送信" class="btn btn-primary"></p>
@@ -54,12 +52,15 @@
                                 <input type="checkbox" class="check-task" name="<?php echo $v['task_id']; ?>" value="1" <?php if ($v['task_is_done'] == 1) echo "checked='checked'"; ?> >
                                 <?php echo $this->escape($v['task_name']); ?>
                                 <?php if (isset($v['category_name'])) echo '('.$this->escape($v['category_name']).')'; ?>
-                                <span>
-                                    <a href="/comment/add/<?php echo $this->escape($v['task_id']); ?>">コメント</a>
+                                <span class="task-comment">
+                                    <a href="/comment/add/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-comment"></span></a>
                                 </span>
                                 <span>
                                     <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
                                 </span>
+                                <?php if($v['task_limit'] <= date('Y-m-d')):?>
+                                <span class="over-deadline glyphicon glyphicon-exclamation-sign"></span>
+                                <?php endif; ?>
                             </p>
                         </li>
                     <?php endforeach; ?>

@@ -45,7 +45,8 @@ $(function() {
         }
         function appendInput(last_num) {
             var clone = $('input[data-input-num='+last_num+']').parent().clone(true);
-            clone.css('display','knone');
+            var category = $('input[data-input-num='+last_num+']').parent().find('select').val();
+            clone.find('select').val(category);
             $div.append(clone).find('.input-task:last').val('').attr('data-input-num', last_num + 1);
         }
         function isEmpty(number, e) {

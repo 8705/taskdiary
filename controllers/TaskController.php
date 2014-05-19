@@ -27,13 +27,12 @@ class TaskController extends AppController
 
     public function _add($user, $post)
     {
-        // var_dump($post);exit;
         $res = $this->db_manager->get('Task')->insert($user['user_id'], $post);
         $last_insert_id = $res;
 
         if (isset($post['category_id']) && $post['category_id']) {
-            $category = $this->db_manager->get('Category')->fetchById($post['category_id']);
-            if(!$category) {
+            $category = $this->db_manager->get('Category')->fetchDelFlgById($post['category_id']);
+            if(!$category || $category['category_del_flg'] === '1') {
                 $this->forward404('そんなカテゴリーねえよｗｗ');
             }
             $this->db_manager->get('TaskCategory')->insert($last_insert_id, $post['category_id']);
