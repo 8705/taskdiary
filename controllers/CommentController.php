@@ -18,7 +18,7 @@ class CommentController extends AppController
         $errors = $this->db_manager->get('Comment')->validateAdd($post);
 
         if (count($errors) === 0) {
-            $this->db_manager->get('Comment')->insert($user['user_id'],$task_id $post);
+            $this->db_manager->get('Comment')->insert($user['user_id'], $task_id, $post);
 
             return $this->redirect('/');
         }
