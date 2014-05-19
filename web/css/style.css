@@ -102,7 +102,6 @@ ul#task_add {
 }
 #task_add .input-date {
     width:150px;
-    float:left;
     border:none;
     border: 1px solid #ccc;
     height: 28px;
@@ -114,4 +113,5 @@ ul#task_add {
     width: 150px;
     height: 27px;
     margin: 4px 0px;
+    float:left;
 }
