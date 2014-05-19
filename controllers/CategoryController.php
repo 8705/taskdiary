@@ -48,13 +48,12 @@ class CategoryController extends AppController
     public function deleteAction($params)
     {
         $category_id = $params['property'];
-        $category = $this->db_manager->get('Category')->fetchById($category_id);
-
+        $category = $this->db_manager->get('Category')->fetchDelFlgByID($category_id);
         if(!$category || $category['category_del_flg'] === '1') {
             $this->forward404('そのタスクはないです');
         }
 
-        $this->db_manager->get('Category')->delete($category['category_id']);
+        $this->db_manager->get('Category')->delete($category_id);
 
         return $this->redirect('/');
 
