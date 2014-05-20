@@ -53,7 +53,7 @@
                                 <?php echo $this->escape($v['task_name']); ?>
                                 <?php if (isset($v['category_name'])) echo '('.$this->escape($v['category_name']).')'; ?>
                                 <span class="task-comment">
-                                    <a href="/comment/add/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-comment"></span></a>
+                                    <a href="/comment/add/<?php echo $this->escape($v['task_id']); ?>" data-task-id="<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-comment"></span></a>
                                 </span>
                                 <span>
                                     <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>

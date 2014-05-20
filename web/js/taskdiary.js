@@ -86,18 +86,54 @@ $(function() {
             var next_focus = parseInt(focused_id) + 1;
             $('input[data-input-num='+ next_focus+']').focus();
         }
+
+        //コメント追加用
+        function openEditor($this) {
+            this.closeEditor();
+            var task_id      = $this.data('task-id');
+            console.log(task_id);
+            var offset = $this.offset();
+            var elm = this.getElm('comment', task_id);
+            $('body').append(elm);
+            $("#comment-editor").css({
+                position:'absolute',
+                top : (offset.top - 50)+'px',
+                left : (offset.left - 100 )+'px'
+            })
+        }
+        function closeEditor() {
+            $('#comment-editor').remove();
+        }
+        function getElm(name, id) {
+            var elm = '';
+            if(name === 'comment') {
+                elm = $(
+                    '<div id="comment-editor" data-task-id="'+id+'">'+
+                        '<p class="comment-cancel"><a><span class="glyphicon glyphicon-remove-circle"></span></a></p>'+
+                        '<textarea></textarea>'+
+                        '<div class="action-area">'+
+                            '<p class="comment-btn btn btn-primary" data-task-id="'+id+'">送信</p>'+
+                        '</div>'+
+                    '</div>'
+                );
+            }
+            return elm;
+        }
         $.extend(this,{
-            'getNumberInput'    : getNumberInput,
-            'isFirstString'     : isFirstString,
-            'isLastChild'       : isLastChild,
-            'isPreLastChild'    : isPreLastChild,
-            'appendInput'       : appendInput,
-            'isPressedEnter'    : isPressedEnter,
-            'isEmpty'           : isEmpty,
-            'notEmpty'          : notEmpty,
-            'deleteLastInput'   : deleteLastInput,
-            'isPressedJp'       : isPressedJp,
-            'focusNextInput'    : focusNextInput
+            'getNumberInput'   : getNumberInput,
+            'isFirstString'    : isFirstString,
+            'isLastChild'      : isLastChild,
+            'isPreLastChild'   : isPreLastChild,
+            'appendInput'      : appendInput,
+            'isPressedEnter'   : isPressedEnter,
+            'isEmpty'          : isEmpty,
+            'notEmpty'         : notEmpty,
+            'deleteLastInput'  : deleteLastInput,
+            'isPressedJp'      : isPressedJp,
+            'focusNextInput'   : focusNextInput,
+            'openEditor'       : openEditor,
+            'closeEditor'      : closeEditor,
+            'getElm'           : getElm
         });
     }
 
@@ -191,6 +227,24 @@ $(function() {
                 // $('#task_' + taskId +' .check-task').html('<input type="checkbox" '+ checked +'/>');
             },
         });
+    });
+
+    $(document).on('click', '.task-comment a', function(e){
+        cancelEvent(e);
+        task.openEditor($(this));
+    });
+    $(document).on('click', '.comment-cancel' ,function(e) {
+        cancelEvent(e);
+        task.closeEditor();
+    });
+
+    $(document).on('click', '.comment-btn', function(e){
+        cancelEvent(e);
+        task.closeEditor();
+
+        var task_id = $(this).data('task-id');
+        var text = $('#comment-editor textarea').val();
+        console.log(text);
     });
 
     //sortable

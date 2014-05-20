@@ -87,6 +87,27 @@ a:hover .glyphicon-remove-circle {
 .task-list .over-deadline {
     color:#FF7C7C;
 }
+/*************************************
+    comment_add @top
+*************************************/
+#comment-editor {
+    position:relative;
+}
+#comment-editor .comment-cancel {
+    position:absolute;
+    top:-17px;
+    right:0px;
+    cursor: pointer;
+}
+#comment-editor .comment-cancel a {
+    color:#FF1F1F;
+}
+#comment-editor textarea{
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
 
 /*************************************
     task_add @top
