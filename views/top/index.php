@@ -52,8 +52,8 @@
                                 <input type="checkbox" class="check-task" name="<?php echo $v['task_id']; ?>" value="1" <?php if ($v['task_is_done'] == 1) echo "checked='checked'"; ?> >
                                 <?php echo $this->escape($v['task_name']); ?>
                                 <?php if (isset($v['category_name'])) echo '('.$this->escape($v['category_name']).')'; ?>
-                                <span class="task-comment">
-                                    <a href="/comment/add/<?php echo $this->escape($v['task_id']); ?>" data-task-id="<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-comment"></span></a>
+                                <span class="<?php !is_null($v['task_text'])?print'task-comment':print'task-comment-none';?>">
+                                    <a href="javascript:void();" data-task-id="<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-comment"></span></a>
                                 </span>
                                 <span>
                                     <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
@@ -61,7 +61,15 @@
                                 <?php if($v['task_limit'] <= date('Y-m-d')):?>
                                 <span class="over-deadline glyphicon glyphicon-exclamation-sign"></span>
                                 <?php endif; ?>
+                                <span class="sort-task glyphicon glyphicon-align-justify"></span>
                             </p>
+                            <div class="comment-popup" data-task-id="<?php echo $this->escape($v['task_id']);?>">
+                                <p class="comment-cancel"><a><span class="glyphicon glyphicon-remove-circle"></span></a></p>
+                                <div class="task-comment"><?php echo $this->escape($v['task_text']);?></div>
+                                <!-- <div class="action-area">
+                                    <p class="comment-edit-btn btn btn-danger" data-task-id="<?php echo $this->escape($v['task_id']);?>">編集</p>
+                                </div> -->
+                            </div>
                         </li>
                     <?php endforeach; ?>
                 </ul>

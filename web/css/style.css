@@ -71,6 +71,9 @@ a .glyphicon-remove-circle {
 a:hover .glyphicon-remove-circle {
     color:#6d6d6d;
 }
+.task-list .task {
+    position:relative;
+}
 .task-list .placeholder {
     margin:4px 0px 4px 0px ;
     height:42px;
@@ -78,22 +81,30 @@ a:hover .glyphicon-remove-circle {
     background-color:#FFE5E5;
     list-style: none;
 }
-.task-list .task-comment a{
+.task-list .task-comment-none a{
     color:#ccc;
 }
-.task-list .task-comment a:hover {
+.task-list .task-comment-none a:hover {
     color:#6d6d6d;
 }
 .task-list .over-deadline {
     color:#FF7C7C;
 }
+.task-list .sort-task {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    cursor: pointer;
+    color: #ccc;
+}
 /*************************************
-    comment_add @top
+    comment @top
 *************************************/
 #comment-editor {
     position:relative;
 }
-#comment-editor .comment-cancel {
+#comment-editor .comment-cancel,
+.comment-popup .comment-cancel {
     position:absolute;
     top:-17px;
     right:0px;
@@ -108,6 +119,25 @@ a:hover .glyphicon-remove-circle {
     border-radius: 3px;
 }
 
+.comment-popup {
+    display:none;
+    position:absolute;
+    z-index:100;
+    top : 3px;
+    left : 150px;
+}
+.comment-popup .task-comment {
+    background-color: #fff;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.comment-popup .action-area {
+    text-align: right;
+}
+.comment-popup .action-area .comment-edit-btn {
+    margin-top:3px;
+}
 
 /*************************************
     task_add @top

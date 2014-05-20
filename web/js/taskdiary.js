@@ -89,11 +89,10 @@ $(function() {
 
         //コメント追加用
         function openEditor($this) {
-            this.closeEditor();
+            this.closeComment();
             var task_id      = $this.data('task-id');
-            console.log(task_id);
             var offset = $this.offset();
-            var elm = this.getElm('comment', task_id);
+            var elm = this.getElm('comment-edit', task_id);
             $('body').append(elm);
             $("#comment-editor").css({
                 position:'absolute',
@@ -101,18 +100,26 @@ $(function() {
                 left : (offset.left - 100 )+'px'
             })
         }
-        function closeEditor() {
-            $('#comment-editor').remove();
+
+        function openPopup($this) {
+            var task_id      = $this.data('task-id');
+            $('.comment-popup[data-task-id='+task_id+']').show();
         }
+
+        function closeComment() {
+            $('#comment-editor').remove();
+            $('.comment-popup').hide();
+        }
+
         function getElm(name, id) {
             var elm = '';
-            if(name === 'comment') {
+            if(name === 'comment-edit') {
                 elm = $(
                     '<div id="comment-editor" data-task-id="'+id+'">'+
                         '<p class="comment-cancel"><a><span class="glyphicon glyphicon-remove-circle"></span></a></p>'+
                         '<textarea></textarea>'+
                         '<div class="action-area">'+
-                            '<p class="comment-btn btn btn-primary" data-task-id="'+id+'">送信</p>'+
+                            '<p class="comment-submit-btn btn btn-primary" data-task-id="'+id+'">送信</p>'+
                         '</div>'+
                     '</div>'
                 );
@@ -132,7 +139,8 @@ $(function() {
             'isPressedJp'      : isPressedJp,
             'focusNextInput'   : focusNextInput,
             'openEditor'       : openEditor,
-            'closeEditor'      : closeEditor,
+            'openPopup'        : openPopup,
+            'closeComment'     : closeComment,
             'getElm'           : getElm
         });
     }
@@ -229,32 +237,64 @@ $(function() {
         });
     });
 
-    $(document).on('click', '.task-comment a', function(e){
+    $(document).on('click', '.task-comment-none a', function(e){
         cancelEvent(e);
         task.openEditor($(this));
     });
+    $(document).on('click', '.task-comment a', function(e){
+        cancelEvent(e);
+        task.openPopup($(this));
+    });
     $(document).on('click', '.comment-cancel' ,function(e) {
         cancelEvent(e);
-        task.closeEditor();
+        task.closeComment();
     });
 
-    $(document).on('click', '.comment-btn', function(e){
+
+    $(document).on('click', '.comment-submit-btn', function(e){
         cancelEvent(e);
-        task.closeEditor();
 
         var task_id = $(this).data('task-id');
         var text = $('#comment-editor textarea').val();
         console.log(text);
+        $.ajax({
+            url: '/task/add_comment/'+ task_id,
+            type: 'POST',
+            dateType : 'json',
+            timeout:5000,
+            data : {
+                task_text:text
+            },
+            beforeSend : function() {
+                //コメント空なら終了
+                if(text === '') {
+                    return false;
+                }
+            },
+            success:function(data){
+                if(data.task_text !== '') {
+                    console.log(data.task_id);
+                    $('#task_'+data.task_id).find('.task-comment-none').removeClass('task-comment-none').addClass('task-comment');
+                }
+            },
+            error : function() {
+                // popUpPanel(true, 'サーバーエラー')
+            },
+            complete : function() {
+
+            },
+        });
+        task.closeComment();
     });
 
     //sortable
     $('.sort-list').sortable({
-        axis : 'y',
-        opacity : 0.8,
-        cursor : 'move',
-        // items : $('.sort-list li:not(.done)'),    //完了しているタスクは並び替え出来ない
-        handle : $('li:not(.done)'),    //完了しているタスクは並び替え出来ない
-        placeholder: "placeholder",
+        axis        : 'y',
+        opacity     : 0.8,
+        cursor      : 'move',
+        // items       : '.sort-task',    //完了しているタスクは並び替え出来ない
+        handle      : '.sort-task',
+        placeholder : "placeholder",
         // grid : [30,30],
         update : function(){
             $.ajax({
