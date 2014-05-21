@@ -158,4 +158,27 @@ class TaskController extends AppController
         echo json_encode($res);
         exit;
     }
+
+    public function get_commentAction($params) {
+        $task_id = $params['property'];
+        $task = $this->db_manager->get('Task')->fetchById($task_id);
+        if(!$task) {
+            $this->forward404('そんなタスクはないです');
+        }
+        $task = $this->db_manager->get('Task')->fetchComment($task_id);
+        if($task) {
+            $res = array(
+                "error"         => "false",
+                "task_id"       => $task_id,
+                "task_text"     => $task['task_text'],
+            );
+        } else {
+            $res = array(
+                "error"         => "true",
+            );
+        }
+        header('Content-Type: application/json');
+        echo json_encode($res);
+        exit;
+    }
 }

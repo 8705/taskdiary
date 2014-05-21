@@ -180,4 +180,12 @@ class TaskRepository extends DbRepository
         ));
         return $stmt;
     }
+
+    public function fetchComment($task_id) {
+        $sql = "SELECT task_id, task_text
+                FROM tasks
+                WHERE task_id = ?";
+
+        return $this->fetch($sql, array($task_id));
+    }
 }

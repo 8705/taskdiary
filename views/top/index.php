@@ -63,13 +63,6 @@
                                 <?php endif; ?>
                                 <span class="sort-task glyphicon glyphicon-align-justify"></span>
                             </p>
-                            <div class="comment-popup" data-task-id="<?php echo $this->escape($v['task_id']);?>">
-                                <p class="comment-cancel"><a><span class="glyphicon glyphicon-remove-circle"></span></a></p>
-                                <div class="task-comment"><?php echo $this->escape($v['task_text']);?></div>
-                                <!-- <div class="action-area">
-                                    <p class="comment-edit-btn btn btn-danger" data-task-id="<?php echo $this->escape($v['task_id']);?>">編集</p>
-                                </div> -->
-                            </div>
                         </li>
                     <?php endforeach; ?>
                 </ul>
