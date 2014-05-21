@@ -6,12 +6,11 @@ class CommentRepository extends DbRepository
     {
         $now = new DateTime();
 
-        $sql = "INSERT INTO categories(user_id,
-                                       task_id,
-                                       comment_text,
-                                       comment_created,
-                                       comment_modified
-                                       ) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO tasks(user_id,
+                                 task_id,
+                                 comment_text,
+                                 comment_modified
+                               ) VALUES (?, ?, ?, ?, ?)";
 
         $stmt = $this->execute($sql, array($user_id,
                                            $post['category_name'],
