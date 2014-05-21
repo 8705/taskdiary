@@ -275,6 +275,7 @@ $(function() {
         task.openEditor($(this));
         var task_id = $(this).data('task-id');
         task.ajastComment(task_id);
+        $('#comment-editor textarea').focus();
     });
 
     //コメント有りアイコンクリック
@@ -312,6 +313,7 @@ $(function() {
         task.openEditor($(this));
         task.ajastComment(task_id);
         task.closeComment('popup');
+        $('#comment-editor textarea').focus();
         $('#comment-editor textarea').val(text);
     })
 
