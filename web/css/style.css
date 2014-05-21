@@ -71,6 +71,9 @@ a .glyphicon-remove-circle {
 a:hover .glyphicon-remove-circle {
     color:#6d6d6d;
 }
+.task-list .task {
+    position:relative;
+}
 .task-list .placeholder {
     margin:4px 0px 4px 0px ;
     height:42px;
@@ -78,14 +81,85 @@ a:hover .glyphicon-remove-circle {
     background-color:#FFE5E5;
     list-style: none;
 }
-.task-list .task-comment a{
+.task-list .task-comment-none a{
     color:#ccc;
 }
-.task-list .task-comment a:hover {
+.task-list .task-comment-none a:hover {
     color:#6d6d6d;
 }
 .task-list .over-deadline {
     color:#FF7C7C;
+}
+.task-list .sort-task {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    cursor: pointer;
+    color: #ccc;
+}
+/*************************************
+    comment @top
+*************************************/
+#comment-editor {
+    position:relative;
+}
+#comment-editor .comment-cancel,
+#comment-popup .comment-cancel {
+    position:absolute;
+    top:-17px;
+    right:0px;
+    cursor: pointer;
+}
+#comment-editor .comment-cancel a,
+#comment-popup .comment-cancel a {
+    color:#FF1F1F;
+}
+#comment-editor textarea,
+#comment-popup .task-comment{
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding:5px 10px;
+    padding-bottom:20px;
+    background-color:#fff;
+}
+#comment-popup .task-comment {
+    font-style: italic;
+}
+
+.comment-popup {
+    display:none;
+    position:absolute;
+    z-index:100;
+    top : 3px;
+    left : 150px;
+}
+#comment-popup .action-area {
+    text-align: right;
+}
+#comment-popup .action-area .comment-edit-btn {
+    margin-top: 3px;
+    background-color: #FF5656;
+    border-radius: 3px;
+    width: 40px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px;
+    float: right;
+}
+
+#comment-editor .action-area .comment-submit-btn {
+    margin-top: 3px;
+    background-color: #2AA8CF;
+    border-radius: 3px;
+    width: 40px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px;
+    float: right;
+    cursor: pointer;
 }
 
 /*************************************

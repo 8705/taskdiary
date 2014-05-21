@@ -10,6 +10,7 @@ class TaskRepository extends DbRepository
         $sql = "SELECT t.task_id,
                        t.task_name,
                        t.task_is_done,
+                       t.task_text,
                        t.task_limit,
                        t.task_finish,
                        t.task_created,
@@ -166,5 +167,25 @@ class TaskRepository extends DbRepository
             $task_id
         ));
         return $stmt;
+    }
+
+    public function updateComment($task_id, $task_text) {
+        $sql = "UPDATE tasks
+                    SET task_text = ?
+                    WHERE task_id = ?
+                ";
+        $stmt = $this->execute($sql, array(
+            $task_text,
+            $task_id
+        ));
+        return $stmt;
+    }
+
+    public function fetchComment($task_id) {
+        $sql = "SELECT task_id, task_text
+                FROM tasks
+                WHERE task_id = ?";
+
+        return $this->fetch($sql, array($task_id));
     }
 }

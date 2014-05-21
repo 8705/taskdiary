@@ -86,18 +86,93 @@ $(function() {
             var next_focus = parseInt(focused_id) + 1;
             $('input[data-input-num='+ next_focus+']').focus();
         }
+
+        //コメント追加用
+        function openEditor($this) {
+            // this.closeComment();
+            var task_id      = $this.data('task-id');
+            var offset = $this.offset();
+            var elm = this.getElm('comment-edit', task_id);
+            $('body').append(elm);
+            // $("#comment-editor").css({
+            //     position:'absolute',
+            //     top : (offset.top - 50)+'px',
+            //     left : (offset.left - 100 )+'px'
+            // })
+        }
+
+        function openPopup($this) {
+            var task_id      = $this.data('task-id');
+            var elm = this.getElm('comment-popup', task_id);
+            var offset = $this.offset();
+            $('body').append(elm);
+            // $("#comment-popup").css({
+            //     position:'absolute',
+            //     top : (offset.top - 50)+'px',
+            //     left : (offset.left - 100 )+'px'
+            // })
+            // $('.comment-popup[data-task-id='+task_id+']').show();
+        }
+
+        function closeComment(elm) {
+            if(elm === undefined) {
+                $('#comment-editor').remove();
+                $('#comment-popup').remove();
+            } else if(elm === 'popup') {
+                $('#comment-popup').remove();
+            }
+        }
+
+        function getElm(name, id) {
+            var elm = '';
+            if(name === 'comment-edit') {
+                elm = $(
+                    '<div id="comment-editor" data-task-id="'+id+'">'+
+                        '<p class="comment-cancel"><a><span class="glyphicon glyphicon-remove-circle"></span></a></p>'+
+                        '<textarea></textarea>'+
+                        '<div class="action-area">'+
+                            '<p class="comment-submit-btn" data-task-id="'+id+'">送信</p>'+
+                        '</div>'+
+                    '</div>'
+                );
+            } else if(name == 'comment-popup') {
+                elm = $(
+                    '<div id="comment-popup" data-task-id="'+id+'">'+
+                        '<p class="comment-cancel"><a><span class="glyphicon glyphicon-remove-circle"></span></a></p>'+
+                        '<div class="task-comment"></div>'+
+                        '<div class="action-area">'+
+                            '<p class="comment-edit-btn" data-task-id="'+id+'">編集</p>'+
+                        '</div>'+
+                    '</div>'
+                )
+            }
+            return elm;
+        }
+        function ajastComment(task_id) {
+            var offset = $('#task_'+task_id).offset();
+            $('#comment-popup, #comment-editor').css({
+                position:'absolute',
+                top : (offset.top - 0)+'px',
+                left : (offset.left + 160 )+'px'
+            })
+        }
         $.extend(this,{
-            'getNumberInput'    : getNumberInput,
-            'isFirstString'     : isFirstString,
-            'isLastChild'       : isLastChild,
-            'isPreLastChild'    : isPreLastChild,
-            'appendInput'       : appendInput,
-            'isPressedEnter'    : isPressedEnter,
-            'isEmpty'           : isEmpty,
-            'notEmpty'          : notEmpty,
-            'deleteLastInput'   : deleteLastInput,
-            'isPressedJp'       : isPressedJp,
-            'focusNextInput'    : focusNextInput
+            'getNumberInput'   : getNumberInput,
+            'isFirstString'    : isFirstString,
+            'isLastChild'      : isLastChild,
+            'isPreLastChild'   : isPreLastChild,
+            'appendInput'      : appendInput,
+            'isPressedEnter'   : isPressedEnter,
+            'isEmpty'          : isEmpty,
+            'notEmpty'         : notEmpty,
+            'deleteLastInput'  : deleteLastInput,
+            'isPressedJp'      : isPressedJp,
+            'focusNextInput'   : focusNextInput,
+            'openEditor'       : openEditor,
+            'openPopup'        : openPopup,
+            'closeComment'     : closeComment,
+            'getElm'           : getElm,
+            'ajastComment'     : ajastComment
         });
     }
 
@@ -193,15 +268,105 @@ $(function() {
         });
     });
 
+    //コメントなしアイコンクリック
+    $(document).on('click', '.task-comment-none a', function(e){
+        cancelEvent(e);
+        task.closeComment();
+        task.openEditor($(this));
+        var task_id = $(this).data('task-id');
+        task.ajastComment(task_id);
+    });
+
+    //コメント有りアイコンクリック
+    $(document).on('click', '.task-comment a', function(e){
+        cancelEvent(e);
+        task.closeComment();
+        var task_id = $(this).data('task-id');
+        task.openPopup($(this));
+        task.ajastComment(task_id);
+        $.ajax({
+            url      : '/task/get_comment/'+ task_id,
+            type     : 'POST',
+            dateType : 'json',
+            timeout  : 5000,
+            data     : {
+            },
+            beforeSend : function() {
+            },
+            success:function(data){
+                $('#comment-popup .task-comment').html(data.task_text);
+            },
+            error : function() {
+                // popUpPanel(true, 'サーバーエラー')
+            },
+            complete : function() {
+
+            },
+        });
+    });
+
+    $(document).on('click', '.comment-edit-btn', function(e){
+        cancelEvent(e);
+        var task_id = $(this).data('task-id');
+        var text = $('#comment-popup .task-comment').text();
+        task.openEditor($(this));
+        task.ajastComment(task_id);
+        task.closeComment('popup');
+        $('#comment-editor textarea').val(text);
+    })
+
+    $(document).on('click', '.comment-cancel' ,function(e) {
+        cancelEvent(e);
+        task.closeComment();
+    });
+
+
+    $(document).on('click', '.comment-submit-btn', function(e){
+        cancelEvent(e);
+
+        var task_id = $(this).data('task-id');
+        var text = $('#comment-editor textarea').val();
+        $.ajax({
+            url: '/task/add_comment/'+ task_id,
+            type: 'POST',
+            dateType : 'json',
+            timeout:5000,
+            data : {
+                task_text:text
+            },
+            beforeSend : function() {
+                //コメント空なら終了
+                if(text === '') {
+                    return false;
+                }
+            },
+            success:function(data){
+                if(data.task_text !== '') {
+                    $('#task_'+data.task_id).find('.task-comment-none').removeClass('task-comment-none').addClass('task-comment');
+                }
+            },
+            error : function() {
+                // popUpPanel(true, 'サーバーエラー')
+            },
+            complete : function() {
+
+            },
+        });
+        task.closeComment();
+    });
+
     //sortable
     $('.sort-list').sortable({
-        axis : 'y',
-        opacity : 0.8,
-        cursor : 'move',
-        // items : $('.sort-list li:not(.done)'),    //完了しているタスクは並び替え出来ない
-        handle : $('li:not(.done)'),    //完了しているタスクは並び替え出来ない
-        placeholder: "placeholder",
+        axis        : 'y',
+        opacity     : 0.8,
+        cursor      : 'move',
+        // items       : '.sort-task',    //完了しているタスクは並び替え出来ない
+        handle      : '.sort-task',
+        placeholder : "placeholder",
         // grid : [30,30],
+        start : function() {
+            task.closeComment();
+        },
         update : function(){
             $.ajax({
                 url : '/task/sort',
