@@ -3,9 +3,6 @@
     <div class="container">
         <div id="header">
             <h1><a href="<?php echo $base_url; ?>/">Task Diary</a></h1>
-        </div>
-
-        <div id="nav">
             <p>
                 <?php if ($session->isAuthenticated()): ?>
                     <a href="<?php echo $base_url; ?>/">ホーム</a>

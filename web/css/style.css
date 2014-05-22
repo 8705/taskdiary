@@ -9,6 +9,12 @@
 /**********************************
     開発中
 **********************************/
+h1 {
+    font-family: 'Damion', cursive;
+}
+h1 a:hover {
+    text-decoration: none;
+}
 p {
     margin:0;
 }
@@ -194,7 +200,7 @@ ul#task_add {
 
 #task_add .input-category {
     width: 150px;
-    height: 27px;
+    height: 29px;
     margin: 4px 0px;
     float:left;
 }
