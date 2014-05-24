@@ -204,3 +204,12 @@ ul#task_add {
     margin: 4px 0px;
     float:left;
 }
+
+
+tr.newday {
+    border-top: solid 3px;
+}
+
+tr.sunday {
+    background-color: #ffeaea;
+}

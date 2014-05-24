@@ -35,17 +35,22 @@
             <?php endif ?>
             <table class="table">
                 <tbody>
-                    <?php $date = 0; ?>
+                    <?php
+                        $date = 0;
+                        $week = array('日', '月', '火', '水', '木', '金', '土');
+                    ?>
                     <?php foreach ($tasks as $v): ?>
-                        <tr>
-                            <td>
-                                <?php if (date('j', strtotime($v['task_finish'])) != $date): ?>
-                                    <?php echo date('j', strtotime($v['task_finish']))."日";
-                                          $date = date('j', strtotime($v['task_finish']));
+                        <?php $finish = strtotime($v['task_finish']); ?>
+                        <?php if (date('j', $finish) != $date): ?>
+                            <tr class="newday <?php if (date('w', $finish) == 6) echo "sunday" ?>">
+                                <td>
+                                    <?php echo date('j', $finish)."日（".$week[date('w', $finish)]."）";
+                                          $date = date('j', $finish);
                                     ?>
-
-                                <?php endif; ?>
-                            </td>
+                                </td>
+                        <?php else: ?>
+                            <tr class="<?php if (date('w', $finish) == 6) echo "sunday" ?>"><td></td>
+                        <?php endif; ?>
                             <td><?php echo date('G:i', strtotime($v['task_finish'])); ?></td>
                             <td><?php echo $v['task_name']; ?></td>
                             <td><?php echo $v['category_name']; ?></td>
