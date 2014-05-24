@@ -42,14 +42,14 @@
                     <?php foreach ($tasks as $v): ?>
                         <?php $finish = strtotime($v['task_finish']); ?>
                         <?php if (date('j', $finish) != $date): ?>
-                            <tr class="newday <?php if (date('w', $finish) == 6) echo "sunday" ?>">
+                            <tr class="newday <?php if (date('w', $finish) == 0) echo "sunday" ?>">
                                 <td>
                                     <?php echo date('j', $finish)."日（".$week[date('w', $finish)]."）";
                                           $date = date('j', $finish);
                                     ?>
                                 </td>
                         <?php else: ?>
-                            <tr class="<?php if (date('w', $finish) == 6) echo "sunday" ?>"><td></td>
+                            <tr class="<?php if (date('w', $finish) == 0) echo "sunday" ?>"><td></td>
                         <?php endif; ?>
                             <td><?php echo date('G:i', strtotime($v['task_finish'])); ?></td>
                             <td><?php echo $v['task_name']; ?></td>
