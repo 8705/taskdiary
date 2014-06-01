@@ -222,3 +222,11 @@ ul#task_add {
     background-color: #8DB7F0;
     color: #fff;
 }
+
+tr.newday {
+    border-top: solid 3px;
+}
+
+tr.sunday {
+    background-color: #ffeaea;
+}

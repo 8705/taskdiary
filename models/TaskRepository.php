@@ -40,7 +40,7 @@ class TaskRepository extends DbRepository
                     FROM tasks t
                         LEFT JOIN tasks_categories tc ON tc.task_id = t.task_id
                         LEFT JOIN categories c ON c.category_id = tc.category_id
-                    WHERE t.user_id = ? AND DATE_FORMAT(t.task_finish,'%Y-%m') = ?
+                    WHERE t.user_id = ? AND DATE_FORMAT(t.task_finish,'%Y-%m') = ? AND t.task_is_done = 1
                     ORDER BY t.task_finish ASC";
 
         return $this->fetchAll($sql, array($user_id, $yyyymm));
