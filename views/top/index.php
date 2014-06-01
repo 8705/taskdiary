@@ -7,7 +7,7 @@
             <form action="/task/add_task" method="POST">
                 <ul id="task_add">
                     <li class="clearfix">
-                        <input type="text" name="category_name[]" class="input-category" data-input-num="1">
+                        <input type="text" name="category_name[]" class="input-category" data-input-num="1" placeholder="カテゴリを入力">
                         <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]" placeholder="タスクを入力"/>
                         <input type="date" class="input-date" name="task_limit[]" value="<?php echo date('Y-m-d'); ?>">
                     </li>
