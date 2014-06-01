@@ -13,12 +13,11 @@ class CategoryController extends AppController
 
         $user = $this->session->get('user');
         $post = $this->request->getPost();
-
-        $errors = $this->db_manager->get('Category')->validateAdd($post);
+        $errors = $this->db_manager->get('Category')->validateAdd($post['category_name']);
 
         if (count($errors) === 0) {
             $this->db_manager->get('Category')->insert($user['user_id'],
-                                                      $post
+                                                      $post['category_name']
                                                       );
 
             return $this->redirect('/');
@@ -86,6 +85,25 @@ class CategoryController extends AppController
                                    'tasks'         => $tasks,
                                    'categorys'      => $categorys,
                              ));
+    }
+
+    protected function get_listAction()
+    {
+        $category_list = $this->db_manager->get('Category')->fetchNameList($this->login_user['user_id']);
+
+        if($category_list !== false) {
+            $res = array(
+                "error"          => "false",
+                "category_list"  => $category_list,
+            );
+        } else {
+            $res = array(
+                "error"          => "true",
+            );
+        }
+        header('Content-Type: application/json');
+        echo json_encode($res);
+        exit;
     }
 
 }

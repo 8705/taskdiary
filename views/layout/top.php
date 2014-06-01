@@ -1,21 +1,24 @@
 <?php echo $this->render('elements/header', array($title)); ?>
-<body>
-    <div class="container">
-        <div id="header">
-            <h1><a href="<?php echo $base_url; ?>/">Task Diary</a></h1>
-            <p>
-                <?php if ($session->isAuthenticated()): ?>
-                    <a href="<?php echo $base_url; ?>/">ホーム</a>
-                    <a href="<?php echo $base_url; ?>/settings/index">アカウント設定</a>
-                    <a href="<?php echo $base_url; ?>/account/logout">サインアウト</a>
-                <?php else: ?>
-                    <a href="<?php echo $base_url; ?>/account/login">ログイン</a>
-                    <a href="<?php echo $base_url; ?>/account/register">アカウント登録</a>
-                <?php endif; ?>
-            </p>
+<body id="top">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h1><a class="navbar-brand" href="<?php echo $base_url; ?>/">Task Diary</a></h1>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/top/index">今日のタスク</a></li>
+                <li><a href="/top/list?nav=0">過去のタスク</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?php echo $base_url; ?>/settings/index">アカウント設定</a></li>
+                        <li class="divider"></li>
+                        <li><a href="<?php echo $base_url; ?>/account/logout">サインアウト</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
-    </div>
-
+    </nav>
     <div id="main">
         <?php echo $_content; ?>
     </div>
