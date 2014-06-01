@@ -3,6 +3,7 @@
 */
 
 $(function() {
+
     //イベントデフォルトを抑止
     function cancelEvent(e) {
         if (e.preventDefault) {
@@ -44,10 +45,14 @@ $(function() {
             return false;
         }
         function appendInput(last_num) {
+            console.log(last_num);
             var clone = $('input[data-input-num='+last_num+']').parent().clone(true);
-            var category = $('input[data-input-num='+last_num+']').parent().find('select').val();
-            clone.find('select').val(category);
+            //var category = $('input[data-input-num='+last_num+']').parent().find('.input-category').val();
+            // clone.find('.input-caegory').val('unko');
             $div.append(clone).find('.input-task:last').val('').attr('data-input-num', last_num + 1);
+            // $div.append(clone).find('.input-task:last').val('');
+            // $('#add_task li:last').find('input').each().val('test');
+            // $('#add_task li:last').find('input').attr('data-input-num', last_num + 1);
         }
         function isEmpty(number, e) {
             if(number === 8) {
@@ -144,7 +149,12 @@ $(function() {
                             '<p class="comment-edit-btn" data-task-id="'+id+'">編集</p>'+
                         '</div>'+
                     '</div>'
-                )
+                );
+            } else if(name == 'category-list') {
+                elm = $(
+                    '<ul class="input-category-list list-group" data-input-num="'+ id +'">'+
+                    '</ul>'
+                );
             }
             return elm;
         }
@@ -154,25 +164,92 @@ $(function() {
                 position:'absolute',
                 top : (offset.top - 0)+'px',
                 left : (offset.left + 160 )+'px'
-            })
+            });
         }
+        function getCategoryList() {
+            //ajax
+            $.ajax({
+                url: '/category/get_list/',
+                type: 'POST',
+                dateType : 'json',
+                timeout:5000,
+                data : {
+                },
+                beforeSend : function() {
+
+                },
+                success:function(data){
+                    for ( i in data.category_list) {
+                        $('.input-category-list').append(
+                            '<li class="list-group-item">'+ data.category_list[i].category_name +'</li>'
+                        )
+                    }
+                },
+                error : function() {
+                },
+                complete : function() {
+
+                },
+            });
+        }
+
+        function selectCategory(e) {
+            var category_name = e.text();
+            console.log('text : '+category_name);
+            var input_num = e.parent().attr('data-input-num');
+            console.log('input_num : '+input_num);
+            $('.input-task[data-input-num='+input_num+']').parent().find('.input-category').val(category_name);
+        }
+        function removeCategoryList(mode) {
+            // var on_category_list = false;
+            // $('.input-category-list').hover(
+            //     function(){
+            //         on_category_list = true;
+            //         console.log(on_category_list);
+            //     },
+            //     function(){
+            //         on_category_list = false;
+            //         console.log(on_category_list);
+            //     }
+            // )
+            // if(bool == true) {
+            //     if(on_category_list == false) {
+            //         $('.input-category-list').remove();
+            //         return;
+            //     }
+            //     return;
+            // }
+
+            if(mode == 'remove') {
+                if($('.input-category-list').hasClass('non-remove')) {
+                    return;
+                }
+                $('.input-category-list').remove();
+            } else if(mode == 'hide') {
+                $('.input-category-list').hide();
+            }
+        }
+
         $.extend(this,{
-            'getNumberInput'   : getNumberInput,
-            'isFirstString'    : isFirstString,
-            'isLastChild'      : isLastChild,
-            'isPreLastChild'   : isPreLastChild,
-            'appendInput'      : appendInput,
-            'isPressedEnter'   : isPressedEnter,
-            'isEmpty'          : isEmpty,
-            'notEmpty'         : notEmpty,
-            'deleteLastInput'  : deleteLastInput,
-            'isPressedJp'      : isPressedJp,
-            'focusNextInput'   : focusNextInput,
-            'openEditor'       : openEditor,
-            'openPopup'        : openPopup,
-            'closeComment'     : closeComment,
-            'getElm'           : getElm,
-            'ajastComment'     : ajastComment
+            'getNumberInput'    : getNumberInput,
+            'isFirstString'     : isFirstString,
+            'isLastChild'       : isLastChild,
+            'isPreLastChild'    : isPreLastChild,
+            'appendInput'       : appendInput,
+            'isPressedEnter'    : isPressedEnter,
+            'isEmpty'           : isEmpty,
+            'notEmpty'          : notEmpty,
+            'deleteLastInput'   : deleteLastInput,
+            'isPressedJp'       : isPressedJp,
+            'focusNextInput'    : focusNextInput,
+            'openEditor'        : openEditor,
+            'openPopup'         : openPopup,
+            'closeComment'      : closeComment,
+            'getElm'            : getElm,
+            'ajastComment'      : ajastComment,
+            'getCategoryList'   : getCategoryList,
+            'selectCategory'    : selectCategory,
+            'removeCategoryList': removeCategoryList
         });
     }
 
@@ -248,7 +325,7 @@ $(function() {
             beforeSend : function() {
                 //$('#task_' + taskId +' .check-task').html('<img src="/img/ajax-loader.gif" alt="" />');
             },
-            success:function(data){
+            success:function(data, status, xhr){
                 if(data.task_is_done == 1) {
                     checked = true;
 
@@ -356,6 +433,34 @@ $(function() {
         });
         task.closeComment();
     });
+
+    $(document).on('focus', '.input-category', function(e){
+        //すでにある他のinputのカテゴリリスト消去
+        task.removeCategoryList('remove');
+        input_num = $(this).parent().find('.input-task').attr('data-input-num');
+        //すでにulがないか確認
+        if(!$(this).next().hasClass('input-category-list')) {
+            var ul = task.getElm('category-list', input_num);
+            $(this).after(ul);
+        }
+
+        var category_list = task.getCategoryList();
+    });
+    $(document).on('blur', '.input-category', function(e){
+        task.removeCategoryList('remove');
+    });
+    $(document).on('click', '.input-category-list li', function(e){
+        task.selectCategory($(this));
+        task.removeCategoryList('hide');
+    });
+    $(document).on({
+        mouseenter: function(){
+            $(this).addClass('non-remove');
+        },
+        mouseleave: function(){
+            $(this).removeClass('non-remove');
+        }
+    }, '.input-category-list');
 
     //sortable
     $('.sort-list').sortable({

@@ -2,31 +2,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-3 projects">
-            <h2>タスク一覧</h2>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="/top/index">今日のタスク</a></li>
-                <li class="list-group-item"><a href="/top/list?nav=0">過去のタスク</a></li>
-            </ul>
-            <h2>カテゴリー</h2>
-            <ul class="list-group">
-                <?php foreach ($categories as $v): ?>
-                    <li class="project list-group-item">
-                        <p>
-                            <a href="/top/view/<?php echo $this->escape($v['category_id']); ?>">
-                                <?php echo $this->escape($v['category_name']); ?>
-                            </a>
-                            <a href="/category/delete/<?php echo $this->escape($v['category_id']); ?>">x</a>
-                        </p>
-                    </li>
-                <?php endforeach; ?>
-                <form action="/category/add" method="POST">
-                    <input type="text" class="form-control" placeholder="カテゴリー" name="category_name">
-                    <input type="submit" class="btn btn-info" value="追加">
-                </form>
-            </ul>
-        </div>
-        <div class="col-md-9 tasks">
+        <div class="col-md-9 tasks col-md-offset-1">
             <h2><?php echo $this->escape($year)."年".$this->escape($month)."月のタスク"; ?></h2>
             <a href="/top/list?nav=<?php echo $this->escape($prev) ?>">←前月</a>
             <a href="/top/list?nav=<?php echo $this->escape($next) ?>">次月→</a>
