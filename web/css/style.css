@@ -11,6 +11,8 @@
 **********************************/
 h1 {
     font-family: 'Damion', cursive;
+    margin:0px;
+    padding:0px;
 }
 h1 a:hover {
     text-decoration: none;
@@ -176,7 +178,8 @@ ul#task_add {
     padding-left: 0px;
 }
 #task_add li {
-    box-shadow: none;
+    box-shadow : none;
+    position : relative;
 }
 #task_add li input {
     border: none;
@@ -184,7 +187,6 @@ ul#task_add {
     border-bottom: 1px solid #ccc;
     border-radius: 0px;
 }
-
 #task_add .input-task {
     width:520px;
     float:left;
@@ -200,7 +202,31 @@ ul#task_add {
 
 #task_add .input-category {
     width: 150px;
-    height: 29px;
+    height: 30px;
     margin: 4px 0px;
     float:left;
+}
+#task_add .input-category-list {
+    position:absolute;
+    top:40px;
+    left:0px;
+    z-index:1;
+}
+#task_add .input-category-list li {
+    padding: 2px 10px;
+    cursor: pointer;
+    color:#7a7a7a;
+    min-width: 150px;
+}
+#task_add .input-category-list li:hover {
+    background-color: #8DB7F0;
+    color: #fff;
+}
+
+tr.newday {
+    border-top: solid 3px;
+}
+
+tr.sunday {
+    background-color: #ffeaea;
 }

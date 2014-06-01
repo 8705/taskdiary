@@ -29,16 +29,29 @@ class TaskController extends AppController
     {
         $res = $this->db_manager->get('Task')->insert($user['user_id'], $post);
         $last_insert_id = $res;
-
-        if (isset($post['category_id']) && $post['category_id']) {
-            $category = $this->db_manager->get('Category')->fetchDelFlgById($post['category_id']);
-            if(!$category || $category['category_del_flg'] === '1') {
-                $this->forward404('そんなカテゴリーねえよｗｗ');
+        if (isset($post['category_name']) && $post['category_name']) {
+            $category = $this->db_manager->get('Category')->fetchByName($post['category_name'], $user);
+            if(!$category) {
+                $this->_add_category($post['category_name']);
+                $category = $this->db_manager->get('Category')->fetchLastInsertId($user);
             }
-            $this->db_manager->get('TaskCategory')->insert($last_insert_id, $post['category_id']);
+
+            $this->db_manager->get('TaskCategory')->insert($last_insert_id, $category['category_id']);
         }
 
             return $this->redirect('/');
+    }
+    public function _add_category($category_name)
+    {
+        $user = $this->session->get('user');
+
+        $errors = $this->db_manager->get('Category')->validateAdd($category_name);
+
+        if (count($errors) === 0) {
+            $this->db_manager->get('Category')->insert($user['user_id'],
+                                                      $category_name
+                                                      );
+        }
     }
 
     public function add_taskAction() {
@@ -54,7 +67,7 @@ class TaskController extends AppController
                 $this->_add($user['user_id'], array(
                     'task_name'     =>$task_name,
                     'task_limit'    =>$posts['task_limit'][$key],
-                    'category_id'   =>$posts['category_id'][$key]
+                    'category_name'   =>$posts['category_name'][$key]
                 ));
             }
         }

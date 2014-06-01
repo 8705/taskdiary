@@ -40,7 +40,7 @@ class TaskRepository extends DbRepository
                     FROM tasks t
                         LEFT JOIN tasks_categories tc ON tc.task_id = t.task_id
                         LEFT JOIN categories c ON c.category_id = tc.category_id
-                    WHERE t.user_id = ? AND DATE_FORMAT(t.task_finish,'%Y-%m') = ?
+                    WHERE t.user_id = ? AND DATE_FORMAT(t.task_finish,'%Y-%m') = ? AND t.task_is_done = 1
                     ORDER BY t.task_finish ASC";
 
         return $this->fetchAll($sql, array($user_id, $yyyymm));
@@ -115,16 +115,19 @@ class TaskRepository extends DbRepository
         ));
     }
     public function toggleIsDoneById($task_id) {
+        $now = new DateTime();
+        $today = $now->format('Y-m-d H:i:s');
         $row = $this->fetchIsDoneById($task_id);
         $task_is_done = $row['task_is_done'];
         if($task_is_done === '1') {
             $toggled_is_done = '0';
+            $finish_date = NULL;
         } else {
             $toggled_is_done = '1';
+            $finish_date = $today;
         }
 
-        $now = new DateTime();
-        $today = $now->format('Y-m-d H:i:s');
+
 
         $sql = "UPDATE tasks
                     SET task_is_done = ?,
@@ -133,7 +136,7 @@ class TaskRepository extends DbRepository
                     WHERE task_id = ?";
         $stmt = $this->execute($sql, array(
             $toggled_is_done,
-            $today,
+            $finish_date,
             $today,
             $task_id
         ));
