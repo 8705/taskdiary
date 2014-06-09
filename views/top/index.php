@@ -2,41 +2,12 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-3 projects">
-            <h2>タスク一覧</h2>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="/top/index">今日のタスク</a></li>
-                <li class="list-group-item"><a href="/top/list?nav=0">過去のタスク</a></li>
-            </ul>
-            <h2>カテゴリー</h2>
-            <ul class="list-group">
-                <?php foreach ($categories as $v): ?>
-                    <li class="project list-group-item">
-                        <p>
-                            <a href="/top/view/<?php echo $this->escape($v['category_id']); ?>">
-                                <?php echo $this->escape($v['category_name']); ?>
-                            </a>
-                            <a href="/category/delete/<?php echo $this->escape($v['category_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
-                        </p>
-                    </li>
-                <?php endforeach; ?>
-                <form action="/category/add" method="POST">
-                    <input type="text" class="form-control" placeholder="カテゴリー" name="category_name">
-                    <input type="submit" class="btn btn-info" value="追加">
-                </form>
-            </ul>
-        </div>
-        <div class="col-md-9 tasks">
+        <div class="col-md-9 tasks col-md-offset-1">
             <h2>今日のタスク</h2>
             <form action="/task/add_task" method="POST">
                 <ul id="task_add">
                     <li class="clearfix">
-                        <select name="category_id[]" class="input-category form-control">
-                        <option value="">カテゴリーを選択</option>
-                        <?php foreach($categories as $v): ?>
-                            <option value="<?php echo $this->escape($v['category_id']) ?>"><?php echo $this->escape($v['category_name']) ?></option>
-                        <?php endforeach; ?>
-                        </select>
+                        <input type="text" name="category_name[]" class="input-category" data-input-num="1" placeholder="カテゴリを入力">
                         <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]" placeholder="タスクを入力"/>
                         <input type="date" class="input-date" name="task_limit[]" value="<?php echo date('Y-m-d'); ?>">
                     </li>

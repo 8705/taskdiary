@@ -8,6 +8,7 @@
 class SettingsController extends AppController
 {
     protected $auth_actions = array('index');
+    protected $layout = 'top';
 
     public function indexAction()
     {
