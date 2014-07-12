@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col-md-9 tasks col-md-offset-1">
             <h2><?php echo $this->escape($year)."年".$this->escape($month)."月のタスク"; ?></h2>
-            <a href="/top/list?nav=<?php echo $this->escape($prev) ?>">←前月</a>
-            <a href="/top/list?nav=<?php echo $this->escape($next) ?>">次月→</a>
+            <a href="/top/past?nav=<?php echo $this->escape($prev) ?>">←前月</a>
+            <a href="/top/past?nav=<?php echo $this->escape($next) ?>">次月→</a>
             <?php if (!$tasks): ?>
                 <p>今月は何もしてません</p>
             <?php endif ?>

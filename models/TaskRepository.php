@@ -44,7 +44,20 @@ class TaskRepository extends DbRepository
                     ORDER BY t.task_finish ASC";
 
         return $this->fetchAll($sql, array($user_id, $yyyymm));
+    }
 
+    public function fetchTopFuture($user_id)
+    {
+        $sql = "SELECT t.task_name,
+                       t.task_limit,
+                       c.category_name
+                    FROM tasks t
+                        LEFT JOIN tasks_categories tc ON tc.task_id = t.task_id
+                        LEFT JOIN categories c ON c.category_id = tc.category_id
+                    WHERE t.user_id = ? AND t.task_is_done = 0
+                    ORDER BY t.task_limit ASC";
+
+        return $this->fetchAll($sql, array($user_id));
     }
 
     public function fetchById($task_id)
