@@ -25,7 +25,7 @@ class TopController extends AppController
                             ));
     }
 
-    public function listAction()
+    public function pastAction()
     {
         $get = $this->request->getGet();
 
@@ -45,6 +45,17 @@ class TopController extends AppController
                                    'next'       => $get['nav'] + 1,
                                    'tasks'      => $tasks,
                                    'categories' => $categories,
+                            ));
+    }
+
+    public function futureAction()
+    {
+        $tasks      = $this->db_manager->get('Task')->fetchTopFuture($this->login_user['user_id']);
+        // $categories = $this->db_manager->get('Category')->fetchSideColum($this->login_user['user_id']);
+
+        return $this->render(array('user'       => $this->login_user,
+                                   'tasks'      => $tasks,
+                                   // 'categories' => $categories,
                             ));
     }
 
