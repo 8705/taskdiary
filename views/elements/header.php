@@ -10,4 +10,5 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/taskdiary.js"></script>
     <script src="/js/jquery-ui.js"></script>
+    <link rel=”shortcut icon” href=”favicon.ico”>
 </head>

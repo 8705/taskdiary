@@ -12,7 +12,7 @@
                         <input type="date" class="input-date" name="task_limit[]" value="<?php echo date('Y-m-d'); ?>">
                     </li>
                 </ul>
-                <p><input type="submit" value="送信" class="btn btn-primary"></p>
+                <p><input type="submit" value="追加" class="btn btn-primary"></p>
             </form>
             <form class="task-list" method="POST">
                 <ul class="list-group sort-list ui-sortable">
@@ -38,6 +38,9 @@
                     <?php endforeach; ?>
                 </ul>
             </form>
+        </div>
+        <div class="col-md-2 future-tasks">
+            <p>明日</p>
         </div>
     </div>
 </div>
