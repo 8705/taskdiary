@@ -39,8 +39,5 @@
                 </ul>
             </form>
         </div>
-        <div class="col-md-2 future-tasks">
-            <p>明日</p>
-        </div>
     </div>
 </div>
