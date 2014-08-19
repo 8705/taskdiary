@@ -2,7 +2,7 @@
 
 class TaskRepository extends DbRepository
 {
-    public function fetchTopIndex($user_id)
+    public function fetchTodays($user_id)
     {
         $now   = new DateTime();
         $today = $now->format('Y-m-d');
@@ -203,5 +203,14 @@ class TaskRepository extends DbRepository
                 WHERE task_id = ?";
 
         return $this->fetch($sql, array($task_id));
+    }
+
+    public function fetchFinishTasks($user_id) {
+        $sql = "SELECT count(task_id) as count
+                FROM tasks
+                WHERE user_id = ?
+                AND task_is_done = 1";
+
+        return $this->fetch($sql, array($user_id));
     }
 }
