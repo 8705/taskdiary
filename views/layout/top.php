@@ -7,7 +7,7 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/top/index">今日のタスク</a></li>
-                <li><a href="/top/future?nav=0">未来のタスク</a></li>
+                <!-- <li><a href="/top/future?nav=0">未来のタスク</a></li> -->
                 <li><a href="/top/past?nav=0">過去のタスク</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <b class="caret"></b></a>

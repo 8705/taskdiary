@@ -467,6 +467,7 @@ $(function() {
         axis        : 'y',
         opacity     : 0.8,
         cursor      : 'move',
+        connectWith : '.connected',
         // items       : '.sort-task',    //完了しているタスクは並び替え出来ない
         handle      : '.sort-task',
         placeholder : "placeholder",
