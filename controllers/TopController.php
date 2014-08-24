@@ -12,13 +12,15 @@ class TopController extends AppController
 
     public function indexAction()
     {
-        $tasks      = $this->db_manager->get('Task')->fetchTopIndex($this->login_user['user_id']);
+        $todays      = $this->db_manager->get('Task')->fetchTodays($this->login_user['user_id']);
+        $futures      = $this->db_manager->get('Task')->fetchFutures($this->login_user['user_id']);
         $categories = $this->db_manager->get('Category')->fetchSideColum($this->login_user['user_id']);
 
         $now   = new DateTime();
 
         return $this->render(array('user'       => $this->login_user,
-                                   'tasks'      => $tasks,
+                                   'todays'     => $todays,
+                                   'futures'    => $futures,
                                    'categories' => $categories,
                                    'year'       => $now->format('Y'),
                                    'month'      => $now->format('m')

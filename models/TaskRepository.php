@@ -2,11 +2,18 @@
 
 class TaskRepository extends DbRepository
 {
-    public function fetchTopIndex($user_id)
-    {
-        $now   = new DateTime();
-        $today = $now->format('Y-m-d');
+    protected $today;
 
+    public function __construct($con)
+    {
+        parent::__construct($con);
+
+        $now   = new DateTime();
+        $this->today = $now->format('Y-m-d');
+    }
+
+    public function fetchTodays($user_id)
+    {
         $sql = "SELECT t.task_id,
                        t.task_name,
                        t.task_is_done,
@@ -27,7 +34,29 @@ class TaskRepository extends DbRepository
                         OR DATE_FORMAT(t.task_finish,'%Y-%m-%d') = ?)
                     ORDER BY t.task_is_done ASC,t.task_sequence ASC";
 
-        return $this->fetchAll($sql, array($user_id, $today, $today, $today));
+        return $this->fetchAll($sql, array($user_id, $this->today, $this->today, $this->today));
+    }
+
+    public function fetchFutures($user_id)
+    {
+        $sql = "SELECT t.task_id,
+                       t.task_name,
+                       t.task_is_done,
+                       t.task_text,
+                       t.task_limit,
+                       t.task_finish,
+                       t.task_created,
+                       tc.category_id,
+                       c.category_name
+                    FROM tasks t
+                        LEFT JOIN tasks_categories tc ON tc.task_id = t.task_id
+                        LEFT JOIN categories c ON c.category_id = tc.category_id
+                    WHERE t.user_id = ?
+                        AND t.task_limit is NULL
+                        AND t.task_is_done = 0
+                    ORDER BY t.task_sequence ASC";
+
+        return $this->fetchAll($sql, array($user_id));
     }
 
     public function fetchTopList($user_id, $year, $month)
@@ -94,9 +123,9 @@ class TaskRepository extends DbRepository
         $stmt = $this->execute($sql, array(
             $user_id,
             $post['task_name'],
-            $post['task_limit'],
-            $now->format('Y-m-d H:i:s'),
-            $now->format('Y-m-d H:i:s'),
+            $now->format('Y-m-d'),
+            $now->format('Y-m-d'),
+            $now->format('Y-m-d'),
         ));
 
         return $this->lastInsertId();
@@ -111,9 +140,6 @@ class TaskRepository extends DbRepository
 
     public function updateIsDone($task_id, $task_is_done)
     {
-        $now = new DateTime();
-        $today = $now->format('Y-m-d H:i:s');
-
         $sql = "UPDATE tasks
                     SET task_is_done = ?,
                         task_finish = ?,
@@ -122,14 +148,12 @@ class TaskRepository extends DbRepository
 
         $stmt = $this->execute($sql, array(
             $task_is_done,
-            $today,
-            $today,
+            $this->today,
+            $this->today,
             $task_id,
         ));
     }
     public function toggleIsDoneById($task_id) {
-        $now = new DateTime();
-        $today = $now->format('Y-m-d H:i:s');
         $row = $this->fetchIsDoneById($task_id);
         $task_is_done = $row['task_is_done'];
         if($task_is_done === '1') {
@@ -137,7 +161,7 @@ class TaskRepository extends DbRepository
             $finish_date = NULL;
         } else {
             $toggled_is_done = '1';
-            $finish_date = $today;
+            $finish_date = $this->today;
         }
 
 
@@ -150,7 +174,7 @@ class TaskRepository extends DbRepository
         $stmt = $this->execute($sql, array(
             $toggled_is_done,
             $finish_date,
-            $today,
+            $this->today,
             $task_id
         ));
 
@@ -187,11 +211,12 @@ class TaskRepository extends DbRepository
 
     public function updateComment($task_id, $task_text) {
         $sql = "UPDATE tasks
-                    SET task_text = ?
+                    SET task_text = ?, task_modified = ?
                     WHERE task_id = ?
                 ";
         $stmt = $this->execute($sql, array(
             $task_text,
+            $this->today,
             $task_id
         ));
         return $stmt;
@@ -203,5 +228,51 @@ class TaskRepository extends DbRepository
                 WHERE task_id = ?";
 
         return $this->fetch($sql, array($task_id));
+    }
+
+    public function fetchFinishTasks($user_id) {
+        $sql = "SELECT count(task_id) as count
+                FROM tasks
+                WHERE user_id = ?
+                AND task_is_done = 1";
+
+        return $this->fetch($sql, array($user_id));
+    }
+
+    public function fetchLimitById($task_id)
+    {
+        $sql = "SELECT task_limit
+                FROM tasks
+                WHERE task_id = ?";
+
+        $row = $this->fetch($sql, array($task_id));
+        return $row['task_limit'];
+    }
+
+    public function setTaskToday($task_id)
+    {
+        $task_limit = $this->fetchLimitById($task_id);
+        // var_dump($task_limit);exit;
+        if($task_limit === NULL) {
+            $sql = "UPDATE tasks
+                    SET task_limit = ?, task_modified = ?
+                    WHERE task_id = ?";
+
+            $stmt = $this->execute($sql, array($this->today, $this->today, $task_id));
+            return $stmt;
+        }
+
+        return true;
+    }
+
+    public function setTaskFuture($task_id)
+    {
+        $sql = "UPDATE tasks
+                SET task_limit = NULL, task_modified = ?
+                WHERE task_id = ?";
+
+        $stmt = $this->execute($sql, array($this->today,$task_id));
+
+        return $stmt;
     }
 }

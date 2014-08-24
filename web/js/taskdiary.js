@@ -45,7 +45,6 @@ $(function() {
             return false;
         }
         function appendInput(last_num) {
-            console.log(last_num);
             var clone = $('input[data-input-num='+last_num+']').parent().clone(true);
             //var category = $('input[data-input-num='+last_num+']').parent().find('.input-category').val();
             // clone.find('.input-caegory').val('unko');
@@ -195,9 +194,7 @@ $(function() {
 
         function selectCategory(e) {
             var category_name = e.text();
-            console.log('text : '+category_name);
             var input_num = e.parent().attr('data-input-num');
-            console.log('input_num : '+input_num);
             $('.input-task[data-input-num='+input_num+']').parent().find('.input-category').val(category_name);
         }
         function removeCategoryList(mode) {
@@ -205,11 +202,9 @@ $(function() {
             // $('.input-category-list').hover(
             //     function(){
             //         on_category_list = true;
-            //         console.log(on_category_list);
             //     },
             //     function(){
             //         on_category_list = false;
-            //         console.log(on_category_list);
             //     }
             // )
             // if(bool == true) {
@@ -228,6 +223,30 @@ $(function() {
             } else if(mode == 'hide') {
                 $('.input-category-list').hide();
             }
+        }
+
+        function changeDivision(task_id, division){
+            $.ajax({
+                url : '/task/changeDivision',
+                type : 'POST',
+                timeout : 5000,
+                data : {
+                    task_id  : task_id,
+                    division : division
+                },
+                beforeSend : function() {
+                    //全ての編集中のタスクを元に戻す。
+                },
+                success : function() {
+
+                },
+                error : function() {
+
+                },
+                complete : function() {
+
+                }
+            });
         }
 
         $.extend(this,{
@@ -249,7 +268,8 @@ $(function() {
             'ajastComment'      : ajastComment,
             'getCategoryList'   : getCategoryList,
             'selectCategory'    : selectCategory,
-            'removeCategoryList': removeCategoryList
+            'removeCategoryList': removeCategoryList,
+            'changeDivision'    : changeDivision
         });
     }
 
@@ -464,17 +484,30 @@ $(function() {
 
     //sortable
     $('.sort-list').sortable({
-        axis        : 'y',
+        // axis        : 'y',
         opacity     : 0.8,
         cursor      : 'move',
+        connectWith : '.connected',
         // items       : '.sort-task',    //完了しているタスクは並び替え出来ない
         handle      : '.sort-task',
         placeholder : "placeholder",
         // grid : [30,30],
-        start : function() {
+        start : function(event, ui) {
             task.closeComment();
+
         },
-        update : function(){
+        remove : function(event, ui) {
+            var task_id = $(ui.item).attr('id').substr(5);
+            var division = 'todays';
+            if($(this).hasClass('todays')) {
+                division = 'futures';
+            }
+
+            task.changeDivision(task_id, division);
+
+        },
+        update : function(event, ui){
+            var task_id = $(ui.item).attr('id').substr(5);
             $.ajax({
                 url : '/task/sort',
                 type : 'POST',

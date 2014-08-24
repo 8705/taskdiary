@@ -24,6 +24,7 @@ h2 {
     font-size: 16px;
     background: #FFC48E;
     padding: 4px 5px;
+    margin:0px 0 10px 0;
     border-radius: 3px;
     color: #fff;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
@@ -85,8 +86,9 @@ a:hover .glyphicon-remove-circle {
 .task-list .placeholder {
     margin:4px 0px 4px 0px ;
     height:42px;
-    border: 1px dashed #FF9090;
-    background-color:#FFE5E5;
+    border: 1px dashed #ececec;
+    /*background-color:#FFE5E5;*/
+    background-color:#F7F7F7;
     list-style: none;
 }
 .task-list .task-comment-none a{
@@ -132,7 +134,7 @@ a:hover .glyphicon-remove-circle {
     background-color:#fff;
 }
 #comment-popup .task-comment {
-    font-style: italic;
+    /*font-style: italic;*/
 }
 
 .comment-popup {

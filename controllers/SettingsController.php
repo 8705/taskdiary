@@ -12,8 +12,10 @@ class SettingsController extends AppController
 
     public function indexAction()
     {
+        $finish_tasks = $this->db_manager->get('Task')->fetchFinishTasks($this->login_user['user_id']);
         return $this->render(array(
             'login_user' => $this->login_user,
+            'finish_tasks' => $finish_tasks,
         ));
     }
 
