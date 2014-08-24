@@ -249,6 +249,27 @@ $(function() {
             });
         }
 
+        function addNoTask() {
+            var task_uls = $('.task-list').find('ul');
+
+            task_uls.each(function(){
+                if($(this).find('li.task').length === 0) {
+                    $(this).append('<li class="task empty-task list-group-item">タスクがありません</li>');
+                }
+            });
+
+        }
+
+        function removeNoTask() {
+            var task_uls = $('.task-list').find('ul');
+
+            task_uls.each(function(){
+                if($(this).find('li.task').length > 0) {
+                    $(this).find('.empty-task').remove();
+                }
+            });
+        }
+
         $.extend(this,{
             'getNumberInput'    : getNumberInput,
             'isFirstString'     : isFirstString,
@@ -269,7 +290,9 @@ $(function() {
             'getCategoryList'   : getCategoryList,
             'selectCategory'    : selectCategory,
             'removeCategoryList': removeCategoryList,
-            'changeDivision'    : changeDivision
+            'changeDivision'    : changeDivision,
+            'addNoTask'         : addNoTask,
+            'removeNoTask'      : removeNoTask
         });
     }
 
@@ -505,6 +528,8 @@ $(function() {
 
             task.changeDivision(task_id, division);
 
+            task.removeNoTask();
+            task.addNoTask();
         },
         update : function(event, ui){
             var task_id = $(ui.item).attr('id').substr(5);

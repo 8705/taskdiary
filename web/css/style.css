@@ -99,6 +99,9 @@ a:hover .glyphicon-remove-circle {
 }
 .task-list .over-deadline {
     color:#FF7C7C;
+    position: absolute;
+    top: 14px;
+    left: -25px;
 }
 .task-list .sort-task {
     position: absolute;
