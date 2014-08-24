@@ -43,7 +43,7 @@
                         </li>
                     <?php endforeach; ?>
                     <?php else: ?>
-                        <li class="task list-group-item">
+                        <li class="task list-group-item empty-task">
                             タスクがありません
                         </li>
                     <?php endif; ?>
@@ -74,7 +74,7 @@
                         </li>
                     <?php endforeach; ?>
                     <?php else: ?>
-                        <li class="task list-group-item">
+                        <li class="task list-group-item empty-task">
                             タスクがありません
                         </li>
                     <?php endif; ?>
