@@ -464,7 +464,7 @@ $(function() {
 
     //sortable
     $('.sort-list').sortable({
-        axis        : 'y',
+        // axis        : 'y',
         opacity     : 0.8,
         cursor      : 'move',
         connectWith : '.connected',
@@ -472,8 +472,9 @@ $(function() {
         handle      : '.sort-task',
         placeholder : "placeholder",
         // grid : [30,30],
-        start : function() {
+        start : function(event, ui) {
             task.closeComment();
+            var task_id = $(ui.item).attr('id').substr(5);
         },
         update : function(){
             $.ajax({

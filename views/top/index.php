@@ -14,10 +14,14 @@
                 </ul>
                 <p><input type="submit" value="追加" class="btn btn-primary"></p>
             </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
             <!-- todays tasks -->
             <h2>今日のタスク</h2>
             <form class="task-list" method="POST">
-                <ul class="list-group sort-list ui-sortable connected">
+                <ul class="list-group sort-list ui-sortable connected todays">
                     <?php if(count($todays)): ?>
                     <?php foreach ($todays as $v): ?>
                         <li class="task list-group-item <?php if ($v['task_is_done'] == 1) echo 'done'; ?>" id="task_<?php echo $v['task_id']; ?>">
@@ -46,11 +50,12 @@
                     <?php endif; ?>
                 </ul>
             </form>
-
+        </div>
+        <div class="col-md-6">
             <!-- futures tasks -->
             <h2>未来のタスク</h2>
             <form class="task-list" method="POST">
-                <ul class="list-group sort-list ui-sortable connected">
+                <ul class="list-group sort-list ui-sortable connected futures">
                     <?php if(count($futures)): ?>
                     <?php foreach ($futures as $v): ?>
                         <li class="task list-group-item <?php if ($v['task_is_done'] == 1) echo 'done'; ?>" id="task_<?php echo $v['task_id']; ?>">
@@ -65,9 +70,6 @@
                                 <span>
                                     <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
                                 </span>
-                                <?php if($v['task_limit'] <= date('Y-m-d')):?>
-                                <span class="over-deadline glyphicon glyphicon-exclamation-sign"></span>
-                                <?php endif; ?>
                                 <span class="sort-task glyphicon glyphicon-align-justify"></span>
                             </p>
                         </li>
@@ -79,6 +81,7 @@
                     <?php endif; ?>
                 </ul>
             </form>
+        </div>
         </div>
     </div>
 </div>
