@@ -134,7 +134,7 @@ a:hover .glyphicon-remove-circle {
     background-color:#fff;
 }
 #comment-popup .task-comment {
-    font-style: italic;
+    /*font-style: italic;*/
 }
 
 .comment-popup {

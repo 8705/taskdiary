@@ -213,7 +213,7 @@ class TaskController extends AppController
             $res = array(
                 "error"         => "false",
                 "task_id"       => $task_id,
-                "task_text"     => $task['task_text'],
+                "task_text"     => nl2br($task['task_text']),
             );
         } else {
             $res = array(
