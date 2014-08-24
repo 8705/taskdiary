@@ -86,8 +86,9 @@ a:hover .glyphicon-remove-circle {
 .task-list .placeholder {
     margin:4px 0px 4px 0px ;
     height:42px;
-    border: 1px dashed #FF9090;
-    background-color:#FFE5E5;
+    border: 1px dashed #ececec;
+    /*background-color:#FFE5E5;*/
+    background-color:#F7F7F7;
     list-style: none;
 }
 .task-list .task-comment-none a{
