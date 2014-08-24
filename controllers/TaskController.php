@@ -41,6 +41,7 @@ class TaskController extends AppController
 
             return $this->redirect('/');
     }
+
     public function _add_category($category_name)
     {
         $user = $this->session->get('user');

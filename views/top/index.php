@@ -9,7 +9,6 @@
                     <li class="clearfix">
                         <input type="text" name="category_name[]" class="input-category" data-input-num="1" placeholder="カテゴリを入力">
                         <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]" placeholder="タスクを入力"/>
-                        <input type="date" class="input-date" name="task_limit[]" value="<?php echo date('Y-m-d'); ?>">
                     </li>
                 </ul>
                 <p><input type="submit" value="追加" class="btn btn-primary"></p>
