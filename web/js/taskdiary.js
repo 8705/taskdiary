@@ -225,6 +225,30 @@ $(function() {
             }
         }
 
+        function changeDivision(task_id, division){
+            $.ajax({
+                url : '/task/changeDivision',
+                type : 'POST',
+                timeout : 5000,
+                data : {
+                    task_id  : task_id,
+                    division : division
+                },
+                beforeSend : function() {
+                    //全ての編集中のタスクを元に戻す。
+                },
+                success : function() {
+
+                },
+                error : function() {
+
+                },
+                complete : function() {
+
+                }
+            });
+        }
+
         $.extend(this,{
             'getNumberInput'    : getNumberInput,
             'isFirstString'     : isFirstString,
@@ -244,7 +268,8 @@ $(function() {
             'ajastComment'      : ajastComment,
             'getCategoryList'   : getCategoryList,
             'selectCategory'    : selectCategory,
-            'removeCategoryList': removeCategoryList
+            'removeCategoryList': removeCategoryList,
+            'changeDivision'    : changeDivision
         });
     }
 
@@ -477,27 +502,9 @@ $(function() {
             if($(this).hasClass('todays')) {
                 division = 'futures';
             }
-            $.ajax({
-                url : '/task/changeDivision',
-                type : 'POST',
-                timeout : 5000,
-                data : {
-                    task_id  : task_id,
-                    division : division
-                },
-                beforeSend : function() {
-                    //全ての編集中のタスクを元に戻す。
-                },
-                success : function() {
 
-                },
-                error : function() {
+            task.changeDivision(task_id, division);
 
-                },
-                complete : function() {
-
-                }
-            });
         },
         update : function(event, ui){
             var task_id = $(ui.item).attr('id').substr(5);
