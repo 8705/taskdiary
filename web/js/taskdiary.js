@@ -45,7 +45,6 @@ $(function() {
             return false;
         }
         function appendInput(last_num) {
-            console.log(last_num);
             var clone = $('input[data-input-num='+last_num+']').parent().clone(true);
             //var category = $('input[data-input-num='+last_num+']').parent().find('.input-category').val();
             // clone.find('.input-caegory').val('unko');
@@ -195,9 +194,7 @@ $(function() {
 
         function selectCategory(e) {
             var category_name = e.text();
-            console.log('text : '+category_name);
             var input_num = e.parent().attr('data-input-num');
-            console.log('input_num : '+input_num);
             $('.input-task[data-input-num='+input_num+']').parent().find('.input-category').val(category_name);
         }
         function removeCategoryList(mode) {
@@ -205,11 +202,9 @@ $(function() {
             // $('.input-category-list').hover(
             //     function(){
             //         on_category_list = true;
-            //         console.log(on_category_list);
             //     },
             //     function(){
             //         on_category_list = false;
-            //         console.log(on_category_list);
             //     }
             // )
             // if(bool == true) {
@@ -474,9 +469,38 @@ $(function() {
         // grid : [30,30],
         start : function(event, ui) {
             task.closeComment();
-            var task_id = $(ui.item).attr('id').substr(5);
+
         },
-        update : function(){
+        remove : function(event, ui) {
+            var task_id = $(ui.item).attr('id').substr(5);
+            var division = 'todays';
+            if($(this).hasClass('todays')) {
+                division = 'futures';
+            }
+            $.ajax({
+                url : '/task/changeDivision',
+                type : 'POST',
+                timeout : 5000,
+                data : {
+                    task_id  : task_id,
+                    division : division
+                },
+                beforeSend : function() {
+                    //全ての編集中のタスクを元に戻す。
+                },
+                success : function() {
+
+                },
+                error : function() {
+
+                },
+                complete : function() {
+
+                }
+            });
+        },
+        update : function(event, ui){
+            var task_id = $(ui.item).attr('id').substr(5);
             $.ajax({
                 url : '/task/sort',
                 type : 'POST',

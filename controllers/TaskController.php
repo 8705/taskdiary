@@ -124,13 +124,42 @@ class TaskController extends AppController
         return $this->redirect('/');
     }
 
-    public function sortAction() {
+    public function sortAction()
+    {
         $post = $this->request->getPost();
         $sequence = $post['sequence'];
         parse_str($sequence); //$taskに配列が入る
         $result_array = array();
         foreach ($task as $sequence => $task_id) {
             $result_array[] = $this->db_manager->get('Task')->updateSequence($sequence,$task_id);
+        }
+
+        if(!in_array(false, $result_array)) {
+            $res = array(
+                "error" => "false"
+            );
+        } else {
+            $res = array(
+                "error" => "true"
+            );
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($res);
+        exit;
+    }
+
+    public function changeDivisionAction()
+    {
+        $post = $this->request->getPost();
+        $division           = $post['division'];
+        $changed_task_id    = $post['task_id'];
+
+        $result_array = array();
+        if($division === 'todays') {
+            $result_array[] = $this->db_manager->get('Task')->setTaskToday($changed_task_id);
+        } elseif($division === 'futures') {
+            $result_array[] = $this->db_manager->get('Task')->setTaskFuture($changed_task_id);
         }
 
         if(!in_array(false, $result_array)) {

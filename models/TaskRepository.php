@@ -48,11 +48,11 @@ class TaskRepository extends DbRepository
                         LEFT JOIN tasks_categories tc ON tc.task_id = t.task_id
                         LEFT JOIN categories c ON c.category_id = tc.category_id
                     WHERE t.user_id = ?
-                        AND (DATE_FORMAT(t.task_limit,'%Y-%m-%d') > ?)
+                        AND t.task_limit is NULL
                         AND t.task_is_done = 0
                     ORDER BY t.task_sequence ASC";
 
-        return $this->fetchAll($sql, array($user_id, $today));
+        return $this->fetchAll($sql, array($user_id));
     }
 
     public function fetchTopList($user_id, $year, $month)
@@ -237,5 +237,46 @@ class TaskRepository extends DbRepository
                 AND task_is_done = 1";
 
         return $this->fetch($sql, array($user_id));
+    }
+
+    public function fetchLimitById($task_id)
+    {
+        $sql = "SELECT task_limit
+                FROM tasks
+                WHERE task_id = ?";
+
+        $row = $this->fetch($sql, array($task_id));
+        return $row['task_limit'];
+    }
+
+    public function setTaskToday($task_id)
+    {
+        $now   = new DateTime();
+        $today = $now->format('Y-m-d');
+
+        $task_limit = $this->fetchLimitById($task_id);
+        // var_dump($task_limit);exit;
+        if($task_limit === NULL) {
+            $sql = "UPDATE tasks
+                    SET task_limit = ?
+                    WHERE task_id = ?";
+
+            $stmt = $this->execute($sql, array($today, $task_id));
+            return $stmt;
+        }
+
+        return true;
+    }
+
+    public function setTaskFuture($task_id)
+    {
+        var_dump($task_id);
+        $sql = "UPDATE tasks
+                SET task_limit = NULL
+                WHERE task_id = ?";
+
+        $stmt = $this->execute($sql, array($task_id));
+
+        return $stmt;
     }
 }
