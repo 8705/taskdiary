@@ -1,9 +1,8 @@
 <?php $this->setLayoutVar('title', 'アカウント') ?>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-9 tasks col-md-offset-1">
-
+    <div class="row insert-task">
+        <div class="col-md-12 tasks">
             <form action="/task/add_task" method="POST">
                 <ul id="task_add">
                     <li class="clearfix">
@@ -11,7 +10,7 @@
                         <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]" placeholder="タスクを入力"/>
                     </li>
                 </ul>
-                <p><input type="submit" value="追加" class="btn btn-primary"></p>
+                <p><input type="submit" value="追加" class="btn btn-info"></p>
             </form>
         </div>
     </div>
