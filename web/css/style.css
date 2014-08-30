@@ -83,6 +83,11 @@ a:hover .glyphicon-remove-circle {
 .task-list .task {
     position:relative;
 }
+.task-list .delete-task {
+    position: absolute;
+    top:10px;
+    right:10px;
+}
 .task-list .placeholder {
     margin:4px 0px 4px 0px ;
     height:42px;
@@ -100,8 +105,8 @@ a:hover .glyphicon-remove-circle {
 .task-list .over-deadline {
     color:#FF7C7C;
     position: absolute;
-    top: 14px;
-    left: -25px;
+    top: 12px;
+    right: 30px;
 }
 .task-list .sort-task {
     position: absolute;
@@ -109,6 +114,9 @@ a:hover .glyphicon-remove-circle {
     top: 12px;
     cursor: pointer;
     color: #ccc;
+}
+.task-list .futures .check-task {
+    cursor: default;
 }
 /*************************************
     comment @top
