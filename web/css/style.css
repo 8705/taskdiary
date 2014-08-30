@@ -9,6 +9,9 @@
 /**********************************
     開発中
 **********************************/
+body {
+    background-color: #FCFCFC;
+}
 h1 {
     font-family: 'Damion', cursive;
     margin:0px;
@@ -22,7 +25,7 @@ p {
 }
 h2 {
     font-size: 16px;
-    background: #FFC48E;
+    background: #EC6D5B;
     padding: 4px 5px;
     margin:0px 0 10px 0;
     border-radius: 3px;
@@ -82,6 +85,15 @@ a:hover .glyphicon-remove-circle {
 }
 .task-list .task {
     position:relative;
+    cursor: pointer;
+}
+.task-list .task:hover {
+    background-color: #FFFCFC;
+}
+.task-list .delete-task {
+    position: absolute;
+    top:10px;
+    right:10px;
 }
 .task-list .placeholder {
     margin:4px 0px 4px 0px ;
@@ -100,8 +112,8 @@ a:hover .glyphicon-remove-circle {
 .task-list .over-deadline {
     color:#FF7C7C;
     position: absolute;
-    top: 14px;
-    left: -25px;
+    top: 12px;
+    right: 30px;
 }
 .task-list .sort-task {
     position: absolute;
@@ -109,6 +121,9 @@ a:hover .glyphicon-remove-circle {
     top: 12px;
     cursor: pointer;
     color: #ccc;
+}
+.task-list .futures .check-task {
+    cursor: default;
 }
 /*************************************
     comment @top
@@ -178,6 +193,9 @@ a:hover .glyphicon-remove-circle {
 /*************************************
     task_add @top
 *************************************/
+.insert-task {
+    margin:0 0 10px 0;
+}
 ul#task_add {
     list-style: none;
     padding-left: 0px;
@@ -193,7 +211,7 @@ ul#task_add {
     border-radius: 0px;
 }
 #task_add .input-task {
-    width:520px;
+    margin: 0 0 3px 0;
     float:left;
 }
 #task_add .input-date {

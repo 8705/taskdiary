@@ -270,29 +270,36 @@ $(function() {
             });
         }
 
+        function changeEnableCheckBox() {
+            console.log($('ul.todays').find('input[type=checkbox]'));
+            $('ul.todays').find('input[type=checkbox]').prop('disabled', false);
+            $('ul.futures').find('input[type=checkbox]').prop('disabled', true);
+        }
+
         $.extend(this,{
-            'getNumberInput'    : getNumberInput,
-            'isFirstString'     : isFirstString,
-            'isLastChild'       : isLastChild,
-            'isPreLastChild'    : isPreLastChild,
-            'appendInput'       : appendInput,
-            'isPressedEnter'    : isPressedEnter,
-            'isEmpty'           : isEmpty,
-            'notEmpty'          : notEmpty,
-            'deleteLastInput'   : deleteLastInput,
-            'isPressedJp'       : isPressedJp,
-            'focusNextInput'    : focusNextInput,
-            'openEditor'        : openEditor,
-            'openPopup'         : openPopup,
-            'closeComment'      : closeComment,
-            'getElm'            : getElm,
-            'ajastComment'      : ajastComment,
-            'getCategoryList'   : getCategoryList,
-            'selectCategory'    : selectCategory,
-            'removeCategoryList': removeCategoryList,
-            'changeDivision'    : changeDivision,
-            'addNoTask'         : addNoTask,
-            'removeNoTask'      : removeNoTask
+            'getNumberInput'      : getNumberInput,
+            'isFirstString'       : isFirstString,
+            'isLastChild'         : isLastChild,
+            'isPreLastChild'      : isPreLastChild,
+            'appendInput'         : appendInput,
+            'isPressedEnter'      : isPressedEnter,
+            'isEmpty'             : isEmpty,
+            'notEmpty'            : notEmpty,
+            'deleteLastInput'     : deleteLastInput,
+            'isPressedJp'         : isPressedJp,
+            'focusNextInput'      : focusNextInput,
+            'openEditor'          : openEditor,
+            'openPopup'           : openPopup,
+            'closeComment'        : closeComment,
+            'getElm'              : getElm,
+            'ajastComment'        : ajastComment,
+            'getCategoryList'     : getCategoryList,
+            'selectCategory'      : selectCategory,
+            'removeCategoryList'  : removeCategoryList,
+            'changeDivision'      : changeDivision,
+            'addNoTask'           : addNoTask,
+            'removeNoTask'        : removeNoTask,
+            'changeEnableCheckBox': changeEnableCheckBox
         });
     }
 
@@ -512,7 +519,7 @@ $(function() {
         cursor      : 'move',
         connectWith : '.connected',
         // items       : '.sort-task',    //完了しているタスクは並び替え出来ない
-        handle      : '.sort-task',
+        //handle      : '.task',
         placeholder : "placeholder",
         // grid : [30,30],
         start : function(event, ui) {
@@ -527,7 +534,7 @@ $(function() {
             }
 
             task.changeDivision(task_id, division);
-
+            task.changeEnableCheckBox();
             task.removeNoTask();
             task.addNoTask();
         },
