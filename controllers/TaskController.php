@@ -67,8 +67,8 @@ class TaskController extends AppController
             if(strlen($task_name)) {
                 $this->_add($user['user_id'], array(
                     'task_name'     =>$task_name,
-                    'task_limit'    =>$posts['task_limit'][$key],
-                    'category_name'   =>$posts['category_name'][$key]
+                    // 'task_limit'    =>$posts['task_limit'][$key],
+                    // 'category_name'   =>$posts['category_name'][$key]
                 ));
             }
         }
