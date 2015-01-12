@@ -63,14 +63,9 @@ class TaskController extends AppController
 
         $user     = $this->session->get('user');
         $posts     = $this->request->getPost();
-        foreach($posts['task_name'] as $key => $task_name) {
-            if(strlen($task_name)) {
-                $this->_add($user['user_id'], array(
-                    'task_name'     =>$task_name,
-                    // 'task_limit'    =>$posts['task_limit'][$key],
-                    // 'category_name'   =>$posts['category_name'][$key]
-                ));
-            }
+        // var_dump($posts);exit;
+        if(strlen($posts['task_name'])) {
+            $this->_add($user['user_id'], $posts);
         }
         return $this->redirect('/');
     }

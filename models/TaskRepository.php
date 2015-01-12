@@ -16,6 +16,7 @@ class TaskRepository extends DbRepository
     {
         $sql = "SELECT t.task_id,
                        t.task_name,
+                       t.task_time,
                        t.task_is_done,
                        t.task_text,
                        t.task_limit,
@@ -41,6 +42,7 @@ class TaskRepository extends DbRepository
     {
         $sql = "SELECT t.task_id,
                        t.task_name,
+                       t.task_time,
                        t.task_is_done,
                        t.task_text,
                        t.task_limit,
@@ -110,19 +112,22 @@ class TaskRepository extends DbRepository
 
     public function insert($user_id, $post)
     {
+        // var_dump($post);exit;
         $now = new DateTime();
 
         $sql = "INSERT INTO tasks (user_id,
                                    task_name,
+                                   task_time,
                                    task_limit,
                                    task_created,
                                    task_modified
                                    )
-                    VALUES(?,?,?,?,?)";
+                    VALUES(?,?,?,?,?,?)";
 
         $stmt = $this->execute($sql, array(
             $user_id,
             $post['task_name'],
+            $post['task_time'],
             $now->format('Y-m-d'),
             $now->format('Y-m-d'),
             $now->format('Y-m-d'),

@@ -45,6 +45,8 @@ $(function() {
             return false;
         }
         function appendInput(last_num) {
+            return;
+
             var clone = $('input[data-input-num='+last_num+']').parent().clone(true);
             //var category = $('input[data-input-num='+last_num+']').parent().find('.input-category').val();
             // clone.find('.input-caegory').val('unko');
@@ -271,9 +273,25 @@ $(function() {
         }
 
         function changeEnableCheckBox() {
-            console.log($('ul.todays').find('input[type=checkbox]'));
             $('ul.todays').find('input[type=checkbox]').prop('disabled', false);
             $('ul.futures').find('input[type=checkbox]').prop('disabled', true);
+        }
+
+        function calc_time() {
+            var res = 0;
+            $('.task-list .todays .task-time').each(function(){
+                if ($(this).attr('data-time') !== undefined) {
+                    res = res + Number($(this).attr('data-time'));
+                }
+            });
+            if (res > 60) {
+                var h = Math.floor(res / 60);
+                var m = res % 60;
+                res = h + "時間" + m + "分";
+            } else {
+                res = res + "分";
+            }
+            $('.todays-time .time').text(res);
         }
 
         $.extend(this,{
@@ -299,11 +317,14 @@ $(function() {
             'changeDivision'      : changeDivision,
             'addNoTask'           : addNoTask,
             'removeNoTask'        : removeNoTask,
-            'changeEnableCheckBox': changeEnableCheckBox
+            'changeEnableCheckBox': changeEnableCheckBox,
+            'calc_time'           : calc_time
         });
     }
 
     var task = new Task($('#task_add'));
+    
+    task.calc_time();
 
     $(document).on('keypress', '.input-task', function(e){
         var number              = task.getNumberInput($(this));
@@ -320,12 +341,21 @@ $(function() {
 
         //改行ではないエンター押下時、次のinpuにフォーカス移動
         if(not_empty && is_pressed_enter) {
-            task.focusNextInput($(this));
+            $(this).next().focus();
+            // task.focusNextInput($(this));
 
             //エンターでサブミット押す挙動を止める
             return false;
         }
 
+    });
+
+    $(document).on('keypress', '.input-time',function(e){
+        var is_pressed_enter    = task.isPressedEnter(e.which);
+        var form                = $('#task-form');
+        if(is_pressed_enter){
+            form.submit();
+        }
     });
 
     $(document).on('keyup', '.input-task', function(e) {
@@ -537,6 +567,7 @@ $(function() {
             task.changeEnableCheckBox();
             task.removeNoTask();
             task.addNoTask();
+            
         },
         update : function(event, ui){
             var task_id = $(ui.item).attr('id').substr(5);
@@ -560,6 +591,7 @@ $(function() {
 
                 }
             });
+            task.calc_time();
         }
     });
 });
