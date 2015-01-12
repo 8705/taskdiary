@@ -3,21 +3,37 @@
 <div class="container">
     <div class="row insert-task">
         <div class="col-md-12 tasks">
-            <form action="/task/add_task" method="POST">
+            <form action="/task/add_task" method="POST" id="task-form">
                 <ul id="task_add">
                     <li class="clearfix">
-                        <!-- <input type="text" name="category_name[]" class="input-category" data-input-num="1" placeholder="カテゴリを入力"> -->
-                        <input type="text" class="input-task form-control" data-input-num="1" name="task_name[]" placeholder="タスクを入力"/>
+                        <input type="text" class="input-task form-control" data-input-num="1" name="task_name" placeholder="タスクを入力"/>
+                        <select name="task_time" class="input-time form-control">
+                            <option value="0">何分？</option>
+                            <option value="5">5分</option>
+                            <option value="10">10分</option>
+                            <option value="15">15分</option>
+                            <option value="20">20分</option>
+                            <option value="30">30分</option>
+                            <option value="40">40分</option>
+                            <option value="50">50分</option>
+                            <option value="60">1時間</option>
+                            <option value="90">1時間30分</option>
+                            <option value="120">2時間</option>
+                            <option value="150">2時間30分</option>
+                            <option value="180">3時間</option>
+                            <option value="240">4時間</option>
+                        </select>
+                        <!-- <input type="text" class="input-time form-control" data-input-num="1" name="task_time" /> -->
                     </li>
                 </ul>
-                <p><input type="submit" value="追加" class="btn btn-info"></p>
+                <!-- <p><input type="submit" value="追加" class="btn btn-info"></p> -->
             </form>
         </div>
     </div>
     <div class="row">
         <div class="col-md-8">
             <!-- todays tasks -->
-            <h2>today's</h2>
+            <h2>today's <span class="todays-time">残り：<span class="time"></span></span></h2>
             <form class="task-list" method="POST">
                 <ul class="list-group sort-list ui-sortable connected todays">
                     <?php if(count($todays)): ?>
@@ -31,6 +47,9 @@
                                 <span class="<?php !is_null($v['task_text'])?print'task-comment':print'task-comment-none';?>">
                                     <a href="javascript:void();" data-task-id="<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-comment"></span></a>
                                 </span>
+                                <?php if($v['task_time']): ?>
+                                    <span class="task-time label label-primary" data-time="<?php echo $v['task_time']; ?>"><?php echo $v['task_time']; ?> min</span>
+                                <?php endif; ?>
                                 <span class="delete-task">
                                     <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
                                 </span>
@@ -64,6 +83,9 @@
                                 <span class="<?php !is_null($v['task_text'])?print'task-comment':print'task-comment-none';?>">
                                     <a href="javascript:void();" data-task-id="<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-comment"></span></a>
                                 </span>
+                                <?php if($v['task_time']): ?>
+                                    <span class="task-time label label-primary" data-time="<?php echo $v['task_time']; ?>"><?php echo $v['task_time']; ?> min</span>
+                                <?php endif; ?>
                                 <span class="delete-task">
                                     <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
                                 </span>
