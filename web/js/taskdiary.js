@@ -279,7 +279,7 @@ $(function() {
 
         function calc_time() {
             var res = 0;
-            $('.task-list .todays .task-time').each(function(){
+            $('.task-list .todays li:not(.done) .task-time').each(function(){
                 if ($(this).attr('data-time') !== undefined) {
                     res = res + Number($(this).attr('data-time'));
                 }
@@ -414,6 +414,7 @@ $(function() {
                 }
                 $('.check-task[name='+data.task_id+']').prop('checked',checked);
                 $('.check-task[name='+data.task_id+']').parent().parent().toggleClass('done');
+                task.calc_time();
 
             },
             error : function() {
