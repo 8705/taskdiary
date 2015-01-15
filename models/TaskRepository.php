@@ -280,4 +280,15 @@ class TaskRepository extends DbRepository
 
         return $stmt;
     }
+
+    public function updateTime($task_id, $number)
+    {
+        $sql = "UPDATE tasks
+                SET task_time = ?
+                WHERE task_id = ?";
+
+        $stmt = $this->execute($sql, array($number,$task_id));
+
+        return $stmt;
+    }
 }

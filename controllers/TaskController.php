@@ -219,4 +219,24 @@ class TaskController extends AppController
         echo json_encode($res);
         exit;
     }
+
+    public function time_updateAction(){
+        $post     = $this->request->getPost();
+        $number = $post['number'];
+        $id     = $post['id'];
+        $res = $this->db_manager->get('Task')->updateTime($id, $number);
+        if($res) {
+            $res = array(
+                "error"         => "false",
+                "number"       => $number,
+            );
+        } else {
+            $res = array(
+                "error"         => "true",
+            );
+        }
+        header('Content-Type: application/json');
+        echo json_encode($res);
+        exit;
+    }
 }

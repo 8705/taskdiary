@@ -1,6 +1,21 @@
 /*
     Task Diary App Js
 */
+var AjaxAPI = {
+    post: function(fn, val) {
+        var defer = $.Deferred();
+        run = $.ajax({
+            type: 'POST',
+            url: fn,
+            data: val,
+            dataType: 'json',
+            scriptCharset: 'utf-8',
+            success: defer.resolve,
+            error: defer.reject
+        });
+        return defer.promise();
+    }
+};
 
 $(function() {
 
@@ -294,6 +309,11 @@ $(function() {
             $('.todays-time .time').text(res);
         }
 
+        function input_time(elm) {
+            elm.html('<input type="text" class="input-time" value="'+elm.attr('data-time')+'">');
+            elm.find('.input-time').val('').focus().val(elm.attr('data-time'));
+        }
+
         $.extend(this,{
             'getNumberInput'      : getNumberInput,
             'isFirstString'       : isFirstString,
@@ -318,13 +338,60 @@ $(function() {
             'addNoTask'           : addNoTask,
             'removeNoTask'        : removeNoTask,
             'changeEnableCheckBox': changeEnableCheckBox,
-            'calc_time'           : calc_time
+            'calc_time'           : calc_time,
+            'input_time'          : input_time
         });
     }
 
     var task = new Task($('#task_add'));
     
     task.calc_time();
+
+    $(document).on('dblclick','.task-time',function(e){
+        var min = $(this).attr('data-time');
+        task.input_time($(this));
+
+    });
+
+    $(document).on('keypress keydown', '.task-list .input-time',function(e){
+        var $this               = $(this);
+        var id                  = $this.closest('.task').attr('id').substr(5);
+        var parent              = $this.parent();
+        var is_pressed_enter    = task.isPressedEnter(e.which);
+        var pre_number          = parent.attr('data-time');
+        var number,data,url;
+
+        if(is_pressed_enter){
+            number = $this.val();
+
+            if(number.match(/[^0-9]+/) || number.length === 0) {
+                parent.html(pre_number + " min");
+                return false;
+            }
+
+            number = parseInt(number, 10);
+
+            if(number === 0) {
+                parent.html(pre_number + " min");
+                return false;
+            }
+
+            data = {
+                number : number,
+                id : id
+            };
+            url = '/task/time_update/';
+            AjaxAPI.post(url,data)
+            .done(function(res){
+                parent.attr('data-time',res.number);
+                parent.html(res.number + " min");
+                task.calc_time();
+            });
+        return false;
+        }
+
+    });
+
 
     $(document).on('keypress', '.input-task', function(e){
         var number              = task.getNumberInput($(this));
@@ -350,7 +417,7 @@ $(function() {
 
     });
 
-    $(document).on('keypress', '.input-time',function(e){
+    $(document).on('keypress', '#task_add .input-time',function(e){
         var is_pressed_enter    = task.isPressedEnter(e.which);
         var form                = $('#task-form');
         if(is_pressed_enter){
