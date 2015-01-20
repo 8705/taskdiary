@@ -346,6 +346,7 @@ $(function() {
     var task = new Task($('#task_add'));
     
     task.calc_time();
+    $('#task_add .input-task').focus();
 
     $(document).on('dblclick','.task-time',function(e){
         var min = $(this).attr('data-time');
