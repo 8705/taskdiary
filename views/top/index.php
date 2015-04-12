@@ -7,24 +7,8 @@
                 <ul id="task_add">
                     <li class="clearfix">
                         <input type="text" class="input-task form-control" data-input-num="1" name="task_name" placeholder="タスクを入力"/>
-                        <select name="task_time" class="input-time form-control">
-                            <option value="0">何分？</option>
-                            <option value="5">5分</option>
-                            <option value="10">10分</option>
-                            <option value="15">15分</option>
-                            <option value="20">20分</option>
-                            <option value="30">30分</option>
-                            <option value="40">40分</option>
-                            <option value="50">50分</option>
-                            <option value="60">1時間</option>
-                            <option value="90">1時間30分</option>
-                            <option value="120">2時間</option>
-                            <option value="150">2時間30分</option>
-                            <option value="180">3時間</option>
-                            <option value="240">4時間</option>
-                        </select>
-                        <!-- <input type="text" class="input-time form-control" data-input-num="1" name="task_time" /> -->
                     </li>
+                    <input type="hidden" name="task_time" value="0">
                 </ul>
                 <!-- <p><input type="submit" value="追加" class="btn btn-info"></p> -->
             </form>

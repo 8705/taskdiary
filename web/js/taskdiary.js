@@ -409,11 +409,10 @@ $(function() {
 
         //改行ではないエンター押下時、次のinpuにフォーカス移動
         if(not_empty && is_pressed_enter) {
-            $(this).next().focus();
+            //$(this).next().focus();
             // task.focusNextInput($(this));
-
+            form.submit();
             //エンターでサブミット押す挙動を止める
-            return false;
         }
 
     });
