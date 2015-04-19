@@ -413,7 +413,7 @@ $(function() {
             // task.focusNextInput($(this));
             //form.submit();
             //エンターでサブミット押す挙動を止める
-            return false;
+            //return false;
         }
 
     });
