@@ -166,7 +166,7 @@ class TaskRepository extends DbRepository
             $finish_date = NULL;
         } else {
             $toggled_is_done = '1';
-            $finish_date = $this->today;
+            $finish_date = date('Y-m-d H:i:s');
         }
 
 
