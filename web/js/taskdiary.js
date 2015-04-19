@@ -409,7 +409,7 @@ $(function() {
 
         //改行ではないエンター押下時、次のinpuにフォーカス移動
         if(not_empty && is_pressed_enter) {
-            form.submit();
+            $('#task-form').submit();
             $(this).blur();
             // task.focusNextInput($(this));
             //エンターでサブミット押す挙動を止める
