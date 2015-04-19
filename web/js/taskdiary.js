@@ -344,7 +344,7 @@ $(function() {
     }
 
     var task = new Task($('#task_add'));
-    
+
     task.calc_time();
     $('#task_add .input-task').focus();
 
@@ -411,8 +411,9 @@ $(function() {
         if(not_empty && is_pressed_enter) {
             //$(this).next().focus();
             // task.focusNextInput($(this));
-            form.submit();
+            //form.submit();
             //エンターでサブミット押す挙動を止める
+            return false;
         }
 
     });
@@ -635,7 +636,7 @@ $(function() {
             task.changeEnableCheckBox();
             task.removeNoTask();
             task.addNoTask();
-            
+
         },
         update : function(event, ui){
             var task_id = $(ui.item).attr('id').substr(5);
