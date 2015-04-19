@@ -13,5 +13,5 @@
     <?php if($_SERVER["SERVER_NAME"] === 'taskdiary.8705.co'): ?>
     <script src="/js/google_analytics.js"></script>
     <?php endif; ?>
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico">
 </head>
