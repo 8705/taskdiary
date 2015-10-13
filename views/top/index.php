@@ -33,7 +33,7 @@
     <div class="row">
         <div class="col-md-8">
             <!-- todays tasks -->
-            <h2>today's <span class="todays-time">残り：<span class="time"></span></span></h2>
+            <h2><?php echo (new DateTime)->format('m月d日')."中にやること" ?> <span class="todays-time">残り：<span class="time"></span></span></h2>
             <form class="task-list" method="POST">
                 <ul class="list-group sort-list ui-sortable connected todays">
                     <?php if(count($todays)): ?>
@@ -69,7 +69,7 @@
         </div>
         <div class="col-md-4">
             <!-- futures tasks -->
-            <h2>future's</h2>
+            <h2>そのうちやること</h2>
             <form class="task-list" method="POST">
                 <ul class="list-group sort-list ui-sortable connected futures">
                     <?php if(count($futures)): ?>
