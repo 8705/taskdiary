@@ -354,7 +354,7 @@ $(function() {
 
     });
 
-    $(document).on('keypress keydown', '.task-list .input-time',function(e){
+    $(document).on('keypress keydown blur', '.task-list .input-time',function(e){
         var $this               = $(this);
         var id                  = $this.closest('.task').attr('id').substr(5);
         var parent              = $this.parent();
@@ -362,7 +362,7 @@ $(function() {
         var pre_number          = parent.attr('data-time');
         var number,data,url;
 
-        if(is_pressed_enter){
+        if(is_pressed_enter || e.type === "focusout"){
             number = $this.val();
 
             if(number.match(/[^0-9]+/) || number.length === 0) {
