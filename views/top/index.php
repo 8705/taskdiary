@@ -103,3 +103,6 @@
         </div>
     </div>
 </div>
+<script>
+    var work_info = <?php echo json_encode(array_merge($work_time_info,array('work_time_min'=>$work_time_min))); ?>
+</script>

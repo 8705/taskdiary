@@ -23,5 +23,19 @@
     <div id="main">
         <?php echo $_content; ?>
     </div>
+    <div id="time-bar">
+        <p class="toggleBtn">押す</p>
+        <div class="time-box">
+            <ul class="bar clearfix">
+                <li class="task-bar">タスク</li>
+                <li class="task-bar">タスク</li>
+                <li class="task-bar">タスク</li>
+                <li class="task-bar">タスク</li>
+                <li class="task-bar">タスク</li>
+            </ul>
+            <p class="this-time"><?php echo (new Datetime)->format('H:i');?><br>▼</p>
+        </div>
+
+    </div>
 </body>
 </html>

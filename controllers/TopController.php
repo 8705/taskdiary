@@ -15,13 +15,16 @@ class TopController extends AppController
         $todays      = $this->db_manager->get('Task')->fetchTodays($this->login_user['user_id']);
         $futures      = $this->db_manager->get('Task')->fetchFutures($this->login_user['user_id']);
         $categories = $this->db_manager->get('Category')->fetchSideColum($this->login_user['user_id']);
-
+        $work_time_min = $this->db_manager->get('WorkTime')->fetchWorkTimeMin($this->login_user['user_id']);
+        $work_time_info = $this->db_manager->get('WorkTime')->fetchWorkTimeInfo($this->login_user['user_id']);
         $now   = new DateTime();
 
         return $this->render(array('user'       => $this->login_user,
                                    'todays'     => $todays,
                                    'futures'    => $futures,
                                    'categories' => $categories,
+                                   'work_time_min' => $work_time_min,
+                                   'work_time_info' => $work_time_info,
                                    'year'       => $now->format('Y'),
                                    'month'      => $now->format('m')
                             ));

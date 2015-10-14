@@ -664,4 +664,10 @@ $(function() {
             task.calc_time();
         }
     });
+    var today = moment().toArray();
+    var start = work_info.start_time.replace(':','');
+    var test = moment().diff(moment('000001','HHmmss'),'minutes');
+    var pathedMin = moment('185000','HHmmss').diff(moment(start,'HHmmss'),'minutes');
+    var left = parseInt(pathedMin) / parseInt(work_info.work_time_min) * 1020;
+    $('#time-bar .this-time').css('left',left+'px');
 });
