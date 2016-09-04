@@ -10,8 +10,10 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/taskdiary.js"></script>
     <script src="/js/jquery-ui.js"></script>
+    <script src="/js/moment.min.js"></script>
     <?php if($_SERVER["SERVER_NAME"] === 'taskdiary.8705.co'): ?>
     <script src="/js/google_analytics.js"></script>
     <?php endif; ?>
+    <!-- <script src="/js/desktop-notify.js"></script> -->
     <link rel="shortcut icon" href="/favicon.ico">
 </head>

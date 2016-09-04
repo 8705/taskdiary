@@ -345,14 +345,54 @@ $(function() {
 
     var task = new Task($('#task_add'));
 
-    task.calc_time();
+    // task.calc_time();
     $('#task_add .input-task').focus();
 
-    $(document).on('dblclick','.task-time',function(e){
-        var min = $(this).attr('data-time');
-        task.input_time($(this));
+    // $(document).on('dblclick','.task-time',function(e){
+    //     var min = $(this).attr('data-time');
+    //     task.input_time($(this));
+    //
+    // });
+    var notify;
+    var checkNotify = function(){
+      ss = moment().format('ss');
+      if ( ss >= 10) {
+        return;
+      }
 
-    });
+      $('ul.todays li').each(function(e){
+        task_name = $(this).find('.task_name').html();
+        date = $(this).data('notify');
+        if ( moment().format('YYYY-MM-DD HH:mm:00') === date ) {
+          notify = new Notification(
+            date,
+            {
+              body: task_name,
+              icon:"http://taskdiary.8705.co/img/tokei.png",
+            }
+          );
+          // notify .config({pageVisibility: false, autoClose: 500});
+          notify.onclick = function (e) {
+            e.target.close();
+            window.focus();
+          }
+        }
+      });
+
+    };
+    // setInterval(checkNotify, 3000);
+    checkNotify();
+    setInterval(checkNotify, 10000);
+
+    $('input[name="enable-notify"]').change(function(){
+      checked = $(this).prop("checked");
+      if ( checked ) {
+        $('#task_add select').removeAttr('disabled');
+      } else {
+        $('#task_add select').attr('disabled',"disabled");
+      }
+      console.log(checked);
+    })
 
     $(document).on('keypress keydown blur', '.task-list .input-time',function(e){
         var $this               = $(this);
@@ -409,8 +449,8 @@ $(function() {
 
         //改行ではないエンター押下時、次のinpuにフォーカス移動
         if(not_empty && is_pressed_enter) {
-            $(this).next().focus();
-            // $('#task-form').submit();
+            // $(this).next().focus();
+            $('#task-form').submit();
             // $(this).blur();
             // task.focusNextInput($(this));
             //エンターでサブミット押す挙動を止める

@@ -15,29 +15,31 @@ class TaskController extends AppController
             $this->forward404();
         }
 
-        $user     = $this->session->get('user');
+        $user_id     = $this->session->get('user');
         $post     = $this->request->getPost();
 
         $errors = $this->db_manager->get('Task')->validateAdd($post);
 
         if (count($errors) === 0) {
-            $this->_add($user, $post);
+            $this->_add($user_id, $post);
         }
     }
 
-    public function _add($user, $post)
+    public function _add($user_id, $post)
     {
-        $res = $this->db_manager->get('Task')->insert($user['user_id'], $post);
+        $res = $this->db_manager->get('Task')->insert($user_id, $post);
         $last_insert_id = $res;
-        if (isset($post['category_name']) && $post['category_name']) {
-            $category = $this->db_manager->get('Category')->fetchByName($post['category_name'], $user);
-            if(!$category) {
-                $this->_add_category($post['category_name']);
-                $category = $this->db_manager->get('Category')->fetchLastInsertId($user);
-            }
 
-            $this->db_manager->get('TaskCategory')->insert($last_insert_id, $category['category_id']);
-        }
+        // カテゴリー登録
+        // if (isset($post['category_name']) && $post['category_name']) {
+        //     $category = $this->db_manager->get('Category')->fetchByName($post['category_name'], $user);
+        //     if(!$category) {
+        //         $this->_add_category($post['category_name']);
+        //         $category = $this->db_manager->get('Category')->fetchLastInsertId($user);
+        //     }
+        //
+        //     $this->db_manager->get('TaskCategory')->insert($last_insert_id, $category['category_id']);
+        // }
 
             return $this->redirect('/');
     }

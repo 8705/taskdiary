@@ -23,5 +23,18 @@
     <div id="main">
         <?php echo $_content; ?>
     </div>
+    <script>
+    if (Notification.permission === 'default') {
+      Notification.requestPermission(function(result) {
+        // if (result === 'denied') {
+        //   alert('リクエスト結果：通知許可されませんでした');
+        // } else if (result === 'default') {
+        //   alert('リクエスト結果：通知可能か不明です');
+        // } else if (result === 'granted') {
+        //   alert('リクエスト結果：通知許可されました！！');
+        // }
+      })
+    }
+    </script>
 </body>
 </html>

@@ -19,6 +19,7 @@ class TaskRepository extends DbRepository
                        t.task_time,
                        t.task_is_done,
                        t.task_text,
+                       t.notify_datetime,
                        t.task_limit,
                        t.task_finish,
                        t.task_created,
@@ -114,20 +115,27 @@ class TaskRepository extends DbRepository
     {
         // var_dump($post);exit;
         $now = new DateTime();
+        if ( $post['enable-notify']) {
+          $notify_datetime = $post['notify-year']."-".$post['notify-month']."-".$post['notify-day']." ".$post['notify-hour'].":".$post['notify-minute'].":00";
+        } else {
+          $notify_datetime = null;
+        }
 
         $sql = "INSERT INTO tasks (user_id,
                                    task_name,
                                    task_time,
+                                   notify_datetime,
                                    task_limit,
                                    task_created,
                                    task_modified
                                    )
-                    VALUES(?,?,?,?,?,?)";
+                    VALUES(?,?,?,?,?,?,?)";
 
         $stmt = $this->execute($sql, array(
             $user_id,
             $post['task_name'],
             $post['task_time'],
+            $notify_datetime,
             $now->format('Y-m-d'),
             $now->format('Y-m-d'),
             $now->format('Y-m-d'),
