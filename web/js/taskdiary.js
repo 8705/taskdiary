@@ -483,15 +483,16 @@ $(function() {
         }
 
         //改行ではないエンター押下時、次のinpuにフォーカス移動
-        if(not_empty && is_pressed_enter) {
+        if(is_pressed_enter) {
             // $(this).next().focus();
-            $('#task-form').submit();
+            if ( not_empty ) {
+              $('#task-form').submit();
+            }
             // $(this).blur();
             // task.focusNextInput($(this));
             //エンターでサブミット押す挙動を止める
             return false;
         }
-
     });
 
     $(document).on('keypress', '#task_add .input-time',function(e){
