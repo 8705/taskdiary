@@ -47,30 +47,32 @@
                 <ul class="list-group sort-list ui-sortable connected todays">
                     <?php if(count($todays)): ?>
                     <?php foreach ($todays as $v): ?>
-                      <li class="task list-group-item <?php if ($v['task_is_done'] == 1) echo 'done'; ?>" id="task_<?php echo $v['task_id']; ?>" data-notify="<?php echo $v['notify_datetime']; ?>">
-                          <p>
-                              <input type="hidden" name="<?php echo $v['task_id']; ?>" value="0">
-                              <input type="checkbox" class="check-task" name="<?php echo $v['task_id']; ?>" value="1" <?php if ($v['task_is_done'] == 1) echo "checked='checked'"; ?> >
+                    <li class="task list-group-item <?php if ($v['task_is_done'] == 1) echo 'done'; ?>" id="task_<?php echo $v['task_id']; ?>" data-notify="<?php echo $v['notify_datetime']; ?>">
+                        <p class="task-inner">
+                            <input type="hidden" name="<?php echo $v['task_id']; ?>" value="0">
+                            <input type="checkbox" class="check-task" name="<?php echo $v['task_id']; ?>" value="1" <?php if ($v['task_is_done'] == 1) echo "checked='checked'"; ?> >
+                            <span class="task_name_wrap">
                               <span class="task_name"><?php echo $this->escape($v['task_name']); ?></span>
-                              <?php if (isset($v['category_name'])) echo '('.$this->escape($v['category_name']).')'; ?>
-                              <span class="<?php !is_null($v['task_text'])?print'task-comment':print'task-comment-none';?>">
-                                  <a href="javascript:void();" data-task-id="<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-comment"></span></a>
-                              </span>
-                              <?php if($v['notify_datetime']): ?>
-                                  <span class="notify-time <?php echo date('Y-m-d H:i:s') > $v['notify_datetime']?"over":""; ?>"><?php echo date('Y-m-d H:i', strtotime($v['notify_datetime'])); ?></span>
-                              <?php endif; ?>
-                              <span class="delete-task">
-                                  <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
-                              </span>
-                          </p>
-                      </li>
+                              <input class="task_name_input" type="text" data-id="<?php echo $v['task_id']; ?>" name="task_name_input" value="<?php echo $this->escape($v['task_name']); ?>">
+                            </span>
+                            <?php if (isset($v['category_name'])) echo '('.$this->escape($v['category_name']).')'; ?>
+                            <?php if($v['notify_datetime']): ?>
+                                <span class="notify-time <?php echo date('Y-m-d H:i:s') > $v['notify_datetime']?"over":""; ?>"><span class="glyphicon glyphicon-time"></span><?php echo date('Y-m-d H:i', strtotime($v['notify_datetime'])); ?></span>
+                            <?php endif; ?>
+                            <span class="delete-task">
+                                <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                            </span>
+                            <span class="sort-handle glyphicon glyphicon-align-justify"></span>
+                        </p>
+                    </li>
                     <?php endforeach; ?>
                     <?php else: ?>
-                      <li class="task list-group-item empty-task">
-                          タスクがありません
-                      </li>
+                    <li class="task list-group-item empty-task">
+                        タスクがありません
+                    </li>
                     <?php endif; ?>
                 </ul>
+                <p class="notice">※タスクをダブルクリックすると編集</p>
             </form>
         </div>
         <div class="col-md-4">
@@ -81,20 +83,20 @@
                     <?php if(count($futures)): ?>
                     <?php foreach ($futures as $v): ?>
                         <li class="task list-group-item <?php if ($v['task_is_done'] == 1) echo 'done'; ?>" id="task_<?php echo $v['task_id']; ?>">
-                            <p>
+                            <p class="task-inner">
                                 <input type="hidden" name="<?php echo $v['task_id']; ?>" value="0">
                                 <input type="checkbox" class="check-task" name="<?php echo $v['task_id']; ?>" value="1" <?php if ($v['task_is_done'] == 1) echo "checked='checked'"; ?> disabled="disabled">
-                                <?php echo $this->escape($v['task_name']); ?>
-                                <?php if (isset($v['category_name'])) echo '('.$this->escape($v['category_name']).')'; ?>
-                                <span class="<?php !is_null($v['task_text'])?print'task-comment':print'task-comment-none';?>">
-                                    <a href="javascript:void();" data-task-id="<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-comment"></span></a>
+                                <span class="task_name_wrap">
+                                  <span class="task_name"><?php echo $this->escape($v['task_name']); ?></span>
                                 </span>
+                                <?php if (isset($v['category_name'])) echo '('.$this->escape($v['category_name']).')'; ?>
                                 <?php if($v['task_time']): ?>
                                     <span class="task-time label label-primary" data-time="<?php echo $v['task_time']; ?>"><?php echo $v['task_time']; ?> min</span>
                                 <?php endif; ?>
                                 <span class="delete-task">
                                     <a href="/task/delete/<?php echo $this->escape($v['task_id']); ?>"><span class="glyphicon glyphicon-remove-circle"></span></a>
                                 </span>
+                                <span class="sort-handle glyphicon glyphicon-align-justify"></span>
                             </p>
                         </li>
                     <?php endforeach; ?>

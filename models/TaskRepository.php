@@ -151,6 +151,20 @@ class TaskRepository extends DbRepository
         $stmt = $this->execute($sql, array($task_id));
     }
 
+    public function updateTask($task_id,$task_name)
+    {
+      $sql = "UPDATE tasks
+                  SET task_name = ?,
+                      task_modified = ?
+                  WHERE task_id = ?";
+      $stmt = $this->execute($sql, array(
+          $task_name,
+          date('Y-m-d H:i:s'),
+          $task_id,
+      ));
+      return $stmt;
+    }
+
     public function updateIsDone($task_id, $task_is_done)
     {
         $sql = "UPDATE tasks

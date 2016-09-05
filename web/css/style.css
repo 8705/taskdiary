@@ -5,6 +5,9 @@
   clear: both;
   display: block;
 }
+.list-group {
+  margin-bottom: 0px;
+}
 
 /**********************************
     開発中
@@ -56,10 +59,23 @@ text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
 text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
 }
 
-.done {
+.done,
+.task-list .task.done:hover {
     color: #999;
     text-decoration: line-through;
     background-color: #ececec;
+}
+.task-list .task.done .notify-time {
+  display: none;
+}
+.sort-handle {
+  cursor: pointer;
+  display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+  position: relative;
+  left: 15px;
+  color: #909090;
 }
 
 /*************************************
@@ -80,17 +96,49 @@ form.task-list {
     margin:10px 0px;
 }
 a .glyphicon-remove-circle {
-    color:#ccc;
+    color:#e0e0e0;
 }
 a:hover .glyphicon-remove-circle {
     color:#6d6d6d;
 }
 .task-list .task {
     position:relative;
-    cursor: pointer;
+    padding: 12px 15px 18px 15px;
+}
+.task-list .task .task-inner {
+  /*padding: 15px;*/
+  display: table;
 }
 .task-list .task:hover {
     background-color: #FFFCFC;
+}
+.task-list .task_name_wrap {
+  display: inline-block;
+  width: 670px;
+  word-wrap: break-word;
+  word-break: break-all;
+  padding: 0 0 0 25px;
+}
+.task-list .futures .task_name_wrap {
+  width:280px;
+}
+.task-list .task_name {
+    width: 100%;
+    color:#444;
+}
+.task-list .task_name_input {
+  display: none;
+  width: 100%;
+  padding: 2px 5px;
+  border-radius: 3px;
+  border: 1px solid #efe2a6;
+  background-color: #fff9dc;
+  outline: none;
+}
+.task-list .check-task {
+  float: left;
+  position: absolute;
+  top: 32%;
 }
 .task-time {
     position: absolute;
@@ -104,8 +152,9 @@ a:hover .glyphicon-remove-circle {
 }
 .task-list .delete-task {
     position: absolute;
-    top:10px;
-    right:10px;
+    top: 1px;
+    right: 3px;
+
 }
 .task-list .placeholder {
     margin:4px 0px 4px 0px ;
@@ -115,105 +164,30 @@ a:hover .glyphicon-remove-circle {
     background-color:#F7F7F7;
     list-style: none;
 }
-.task-list .task-comment-none a{
-    color:#ccc;
-}
-.task-list .task-comment-none a:hover {
-    color:#6d6d6d;
-}
 .task-list .over-deadline {
     color:#FF7C7C;
     position: absolute;
     top: 12px;
     right: 30px;
 }
-.task-list .sort-task {
-    position: absolute;
-    right: 10px;
-    top: 12px;
-    cursor: pointer;
-    color: #ccc;
-}
 .task-list .task .notify-time {
-    position: absolute;
-    left: -141px;
-    top: 10px;
-    font-style: italic;
-    background-color: #c8ece3;
-    padding: 0px 10px;
-    border-radius: 2px;
-    color: #3d8270;
+  position: absolute;
+  left: 27px;
+  bottom: 2px;
+  font-style: italic;
+  padding: 0px 10px 0 14px;
+  border-radius: 2px;
+  color: #3d8270;
+  font-size: 11px;
 }
 .task-list .task .notify-time.over {
-  background-color: #ecc8d5;
   color: #925168;
+}
+.task-list .task .notify-time .glyphicon-time {
+  margin: 0 3px 0 0;
 }
 .task-list .futures .check-task {
     cursor: default;
-}
-/*************************************
-    comment @top
-*************************************/
-#comment-editor {
-    position:relative;
-}
-#comment-editor .comment-cancel,
-#comment-popup .comment-cancel {
-    position:absolute;
-    top:-17px;
-    right:0px;
-    cursor: pointer;
-}
-#comment-editor .comment-cancel a,
-#comment-popup .comment-cancel a {
-    color:#FF1F1F;
-}
-#comment-editor textarea,
-#comment-popup .task-comment{
-    width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    padding:5px 10px;
-    padding-bottom:20px;
-    background-color:#fff;
-}
-#comment-popup .task-comment {
-    /*font-style: italic;*/
-}
-
-.comment-popup {
-    display:none;
-    position:absolute;
-    z-index:100;
-    top : 3px;
-    left : 150px;
-}
-#comment-popup .action-area {
-    text-align: right;
-}
-#comment-popup .action-area .comment-edit-btn {
-    margin-top: 3px;
-    background-color: #FF5656;
-    border-radius: 3px;
-    width: 40px;
-    text-align: center;
-    color: #fff;
-    font-size: 12px;
-    padding: 2px;
-    float: right;
-}
-
-#comment-editor .action-area .comment-submit-btn {
-    margin-top: 3px;
-    background-color: #2AA8CF;
-    border-radius: 3px;
-    width: 40px;
-    text-align: center;
-    color: #fff;
-    font-size: 12px;
-    padding: 2px;
-    float: right;
-    cursor: pointer;
 }
 
 /*************************************
@@ -229,10 +203,14 @@ a:hover .glyphicon-remove-circle {
     background: none;
     border-radius: 0px;
     border: 1px solid #ccc;
+    border: none;
     color: #5f5f5f;
     margin: 0 3px 0px 0;
     outline: none;
-  }
+}
+.insert-task select:disabled {
+  color: #cecece;
+}
 ul#task_add {
     list-style: none;
     padding-left: 0px;
@@ -289,4 +267,11 @@ tr.newday {
 
 tr.sunday {
     background-color: #ffeaea;
+}
+
+.notice {
+    text-align: right;
+    padding: 5px 0px;
+    font-size: 12px;
+    color: #ccc;
 }

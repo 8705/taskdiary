@@ -15,7 +15,7 @@ class TaskController extends AppController
             $this->forward404();
         }
 
-        $user_id     = $this->session->get('user');
+        $user_id  = $this->session->get('user');
         $post     = $this->request->getPost();
 
         $errors = $this->db_manager->get('Task')->validateAdd($post);
@@ -220,6 +220,27 @@ class TaskController extends AppController
         header('Content-Type: application/json');
         echo json_encode($res);
         exit;
+    }
+
+    public function task_updateAction()
+    {
+      $post     = $this->request->getPost();
+      $id     = $post['id'];
+      $task_name = $post['task_name'];
+      $res = $this->db_manager->get('Task')->updateTask($id, $task_name);
+      if($res) {
+          $res = array(
+              "error"         => "false",
+              "task_name"       => $task_name,
+          );
+      } else {
+          $res = array(
+              "error"         => "true",
+          );
+      }
+      header('Content-Type: application/json');
+      echo json_encode($res);
+      exit;
     }
 
     public function time_updateAction(){

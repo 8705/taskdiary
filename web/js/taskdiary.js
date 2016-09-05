@@ -353,6 +353,42 @@ $(function() {
     //     task.input_time($(this));
     //
     // });
+    $(document).on('dblclick','.task_name',function(e){
+      $this = $(this);
+      $this.hide();
+      var p = $this.parent();
+      $text = $this.text();
+      p.find('.task_name_input').show().focus();
+    });
+    $(document).on('keypress keydown blur','.task_name_input',function(e){
+      // debugger;
+      if ( e.type == "keydown" || e.type == "keypress" ) {
+        is_pressed_enter    = task.isPressedEnter(e.which);
+        if ( !is_pressed_enter ) return;
+      }
+      id = $(this).data('id');
+      text = $(this).val();
+      p = $(this).parent();
+      if ( text == "" ) {
+        p.find('.task_name').show();
+        $(this).hide();
+        return;
+      }
+      data = {
+          task_name : text,
+          id : id
+      };
+      url = '/task/task_update/';
+      AjaxAPI.post(url,data)
+      .done(function(res){
+          console.log(res);
+      });
+
+      $(this).hide();
+      p.find('.task_name').text(text);
+      p.find('.task_name').show();
+    });
+
     var notify;
     var checkNotify = function(){
       ss = moment().format('ss');
@@ -391,7 +427,6 @@ $(function() {
       } else {
         $('#task_add select').attr('disabled',"disabled");
       }
-      console.log(checked);
     })
 
     $(document).on('keypress keydown blur', '.task-list .input-time',function(e){
@@ -659,7 +694,7 @@ $(function() {
         cursor      : 'move',
         connectWith : '.connected',
         // items       : '.sort-task',    //完了しているタスクは並び替え出来ない
-        //handle      : '.task',
+        handle      : '.sort-handle',
         placeholder : "placeholder",
         // grid : [30,30],
         start : function(event, ui) {
