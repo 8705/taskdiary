@@ -69,13 +69,17 @@ text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   display: none;
 }
 .sort-handle {
+  display: none;
   cursor: pointer;
-  display: table-cell;
 	text-align: center;
 	vertical-align: middle;
   position: relative;
   left: 15px;
   color: #e0e0e0;
+}
+.task:hover .sort-handle {
+  display: table-cell;
+
 }
 
 /*************************************
@@ -151,10 +155,13 @@ a:hover .glyphicon-remove-circle {
     text-align: center;
 }
 .task-list .delete-task {
+    display: none;
     position: absolute;
     top: 1px;
     right: 3px;
-
+}
+.task:hover .delete-task {
+  display: block;
 }
 .task-list .placeholder {
     margin:4px 0px 4px 0px ;
