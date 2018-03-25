@@ -740,4 +740,10 @@ $(function() {
             task.calc_time();
         }
     });
+    $(document).on('click','.delete-task',function(e){
+        if(!window.confirm('削除しますか？')){
+            cancelEvent(e);
+            return false;
+        }
+    })
 });

@@ -113,9 +113,8 @@ class TaskRepository extends DbRepository
 
     public function insert($user_id, $post)
     {
-        // var_dump($post);exit;
         $now = new DateTime();
-        if ( $post['enable-notify']) {
+        if ( isset($post['enable-notify']) && $post['enable-notify']) {
           $notify_datetime = $post['notify-year']."-".$post['notify-month']."-".$post['notify-day']." ".$post['notify-hour'].":".$post['notify-minute'].":00";
         } else {
           $notify_datetime = null;
