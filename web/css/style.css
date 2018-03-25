@@ -107,7 +107,7 @@ a:hover .glyphicon-remove-circle {
 }
 .task-list .task {
     position:relative;
-    padding: 12px 15px 18px 15px;
+    padding: 12px 15px 13px 15px;
 }
 .task-list .task .task-inner {
   /*padding: 15px;*/
