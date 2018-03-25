@@ -139,6 +139,11 @@ a:hover .glyphicon-remove-circle {
   background-color: #fff9dc;
   outline: none;
 }
+.task-list .created {
+  font-size: 70%;
+  font-style: italic;
+  color: #a2a2a2;
+}
 .task-list .check-task {
   float: left;
   position: absolute;

@@ -54,6 +54,7 @@
                             <span class="task_name_wrap">
                               <span class="task_name"><?php echo $this->escape($v['task_name']); ?></span>
                               <input class="task_name_input" type="text" data-id="<?php echo $v['task_id']; ?>" name="task_name_input" value="<?php echo $this->escape($v['task_name']); ?>">
+                              <span class="created"><?php echo $now_datetime->diff((new DateTime($v['task_created'])))->format('%a日前'); ?></span>
                             </span>
                             <?php if (isset($v['category_name'])) echo '('.$this->escape($v['category_name']).')'; ?>
                             <?php if($v['notify_datetime']): ?>
@@ -88,6 +89,7 @@
                                 <input type="checkbox" class="check-task" name="<?php echo $v['task_id']; ?>" value="1" <?php if ($v['task_is_done'] == 1) echo "checked='checked'"; ?> disabled="disabled">
                                 <span class="task_name_wrap">
                                   <span class="task_name"><?php echo $this->escape($v['task_name']); ?></span>
+                                  <span class="created"><?php echo $now_datetime->diff((new DateTime($v['task_created'])))->format('%a日前'); ?></span>
                                 </span>
                                 <?php if (isset($v['category_name'])) echo '('.$this->escape($v['category_name']).')'; ?>
                                 <?php if($v['task_time']): ?>

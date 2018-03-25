@@ -23,7 +23,8 @@ class TopController extends AppController
                                    'futures'    => $futures,
                                    'categories' => $categories,
                                    'year'       => $now->format('Y'),
-                                   'month'      => $now->format('m')
+                                   'month'      => $now->format('m'),
+                                   'now_datetime' => new DateTime()
                             ));
     }
 
