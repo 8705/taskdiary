@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title><?php if (isset($title)): echo $this->escape($title) . ' - '; endif; ?>Task Diary</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, user-scalable=yes">
     <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />
     <link href='http://fonts.googleapis.com/css?family=Damion' rel='stylesheet' type='text/css'>

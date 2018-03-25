@@ -287,3 +287,13 @@ tr.sunday {
     font-size: 12px;
     color: #ccc;
 }
+
+@media screen and ( max-width:600px )
+{
+  .nav {
+    display: none;
+  }
+  .task-list .task_name_wrap {
+    width: auto;
+  }
+}
